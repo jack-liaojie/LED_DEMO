@@ -9,7 +9,7 @@ class InputCSV(object):
     def __init__(self, arg):
         super(InputCSV, self).__init__()
         self.arg = arg
-#1
+#2
     def readfile(filename):
         rows = []
         with open(filename, 'r',encoding='utf-8') as f:
