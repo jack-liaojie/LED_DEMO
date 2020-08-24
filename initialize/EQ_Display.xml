@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Configuration>
+	<Module language="chn" name="ranking">
+		<Text h="111" w="345" x="234" y="456"/>
+	</Module>
+	<EQ event="dancing" pharse="1 round">d:/workstudio
+		<Text h="111" w="345" x="234" y="456">formalignment</Text></EQ>
+</Configuration>

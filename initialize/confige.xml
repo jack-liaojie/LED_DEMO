@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<configuration>
+	<language name="chn"/>
+	<directory name="d:/workstudio/"/>
+	<udp ip="127.0.0.1" port="8080"/>
+	<database db="eq" ip="." password="111" useer="sa"/>
+	<display color="red" height="768" width="68" x="6" y="8"/>
+	<top color="768" font="微软雅黑" height="768" size="24" text="equestrain champion" width="68" x="6" y="8"/>
+	<footer color="768" font="微软雅黑" height="768" size="24" text="equestrain champion" width="68" x="6" y="8"/>
+	<eq font="微软雅黑" grid="6" modul_name="ranking" size="24">
+		<text alignment="left" backgroundcolor="black" color="768" datafield="txt_title" font="微软雅黑" height="768" name="column_1" size="24" width="68" x="6" y="8"/>
+		<image file="c:/x.bmp" h_alignment="left" height="768" name="image_1" size="24" v_alignment="top" width="68" x="6" y="8"/>
+		<grid color="red" cols="left" height="768" name="rank_grid" rows="6" size="24" width="68" x="6" y="8"/>
+		<shape border_width="left" color="red" height="768" name="shape" shape="6" visable="false" width="68" x="6" y="8"/>
+	</eq>
+</configuration>
