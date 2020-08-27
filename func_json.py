@@ -1,4 +1,10 @@
 import json
+import uuid
+from decimal import Decimal
+
+def generateUUID():
+    id = uuid.uuid1()	# 还有uuid2、uuid3、uuid4、uuid5等其他方法
+    return id
 
 def read_file(path):
 	try:
@@ -16,7 +22,7 @@ def write_file(path,args):
 	try:
 		f = open(path,"w",encoding="utf-8")
 		if type(args) == dict:
-			data = json.dumps(args, sort_keys=True, indent=4, separators=(",", ":"))#dict对象转换成格式化字符串
+			data = json.dumps(args, indent=4, separators=(",", ":"), ensure_ascii=False)#dict对象转换成格式化字符串
 		else:
 			data = args.replace("\'","\"")
 		f.write(data)#写入文件中
@@ -27,7 +33,7 @@ def write_file(path,args):
 		f.close()
 
 def strtojs_format(args):
-	data = json.dumps(args, sort_keys=True, indent=4, separators=(",", ":"))#dict对象转换成格式化字符串
+	data = json.dumps(args, indent=4, separators=(",", ":"), ensure_ascii=False)#dict对象转换成格式化字符串 sort_keys=True,
 	return data
 
 def str_to_dict(args):
@@ -78,14 +84,25 @@ if __name__ == "__main__":
 	}
 
 	args =	{
-		"schedule":{"title":"盛装舞步预赛"},
-		"content":
-			[
-				{"time":"10:00","sport":"盛装舞步","event":"资格赛"},
-				{"time":"11:00","sport":"盛装舞步","event":"资格赛"},
-				{"time":"12:00","sport":"盛装舞步","event":"资格赛"}
-			]
-	}
+		    "schedule":"盛装舞步个人赛资格赛",
+		    "content":[
+		        [
+		            "09:00",
+		            "盛装舞步个人赛-资格赛",
+		            "盛装舞步个人赛-资格赛"
+		        ],
+		        [
+		            "09:00",
+		            "盛装舞步个人赛-预赛",
+		            "盛装舞步个人赛-预赛"
+		        ],
+		        [
+		            "09:00",
+		            "盛装舞步个人赛-决赛",
+		            "盛装舞步个人赛-决赛"
+		        ]
+		    ]
+		}
 
 	args =	{
 		"judge" :{"title":"盛装舞步预赛"},
@@ -116,7 +133,7 @@ if __name__ == "__main__":
 	}
 
 	args =	{
-		"startlist" :{"title":"盛装舞步预赛"},
+		"startlist" :"盛装舞步预赛",
 		"content":
 			[
 		 		{"order":"1","name":"吉喆","horse":"火龙驹","city":"山东"},
@@ -169,6 +186,23 @@ if __name__ == "__main__":
 
 	}
 
+	args =	{
+		"medal" : {"title":"盛装舞步个人赛"},
+		"content":
+			[	{"order":"1","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"2","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"3","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"4","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"5","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"6","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"7","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"8","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"9","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"10","name":"吉喆","result":"222","city":"山东","sign":"Q"},
+		 		{"order":"11","name":"吉喆","result":"222","city":"山东","sign":"Q"}
+		 	]
+
+	}
 	args =	{
 		"teamresultlist": {"title":"盛装舞步预赛"},
 		"content":

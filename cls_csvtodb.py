@@ -1,26 +1,31 @@
 # -*- coding: utf-8 -*-
-import pymssql
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem, QAbstractItemView
 import csv
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QAbstractItemView, QTableWidgetItem
+
+import pymssql
+
 
 class InputCSV(object):
     """docstring for ClassName"""
+
     def __init__(self, arg):
         super(InputCSV, self).__init__()
         self.arg = arg
-#2
+# 2
+
     def readfile(filename):
         rows = []
-        with open(filename, 'r',encoding='utf-8') as f:
+        with open(filename, 'r', encoding='utf-8') as f:
             reader = csv.reader(f)
             # print(type(reader))
             for row in reader:
                 rows.append(row)
         return rows
 
-    def writefile(filename,params):
-        with open(filename,'w',encoding='gbk') as f:
+    def writefile(filename, params):
+        with open(filename, 'w', encoding='gbk') as f:
             csv_writer = csv.writer(f)
             for row in params:
                 csv_writer.writerow(row)
@@ -57,8 +62,9 @@ class get_Results(object):
     def __init__(self):
         super().__init__()
         self.description = []
-        self.conn = {"server": '127.0.0.1', "user": 'sa', "password": '111', "database": 'db_demo'}
-    
+        self.conn = {"server": '127.0.0.1', "user": 'sa',
+                     "password": '111', "database": 'db_demo'}
+
     def get_sport(param):
         return f"exec Proc_GetSports @LanguageCode={param[0]}"
 
@@ -272,16 +278,15 @@ class get_Results(object):
         @Result=@Result output
         select @Result"""
 
-
     switcher = {
-        'UpdateUnOfficials2DB':UpdateUnOfficials2DB,
-        'InsertUnOfficials2TempTable':InsertUnOfficials2TempTable,
-        'IntiTempUnOfficialTable':IntiTempUnOfficialTable,
-        'UpdateRegister2DB':UpdateRegister2DB,
-        'Insert2TempTable':Insert2TempTable,
-        'IntiTempRegisterTable':IntiTempRegisterTable,
-        'DelRegisterByDiscipline':DelRegisterByDiscipline, 
-        'GetDisciplineAthletes':GetDisciplineAthletes,
+        'UpdateUnOfficials2DB': UpdateUnOfficials2DB,
+        'InsertUnOfficials2TempTable': InsertUnOfficials2TempTable,
+        'IntiTempUnOfficialTable': IntiTempUnOfficialTable,
+        'UpdateRegister2DB': UpdateRegister2DB,
+        'Insert2TempTable': Insert2TempTable,
+        'IntiTempRegisterTable': IntiTempRegisterTable,
+        'DelRegisterByDiscipline': DelRegisterByDiscipline,
+        'GetDisciplineAthletes': GetDisciplineAthletes,
         'edit_SportActive': edit_SportActive,
         'edit_LanguageActive': edit_LanguageActive,
         'edit_DisciplineActive': edit_DisciplineActive,
@@ -350,56 +355,59 @@ class get_Results(object):
         with open_db(self.conn['server'], self.conn['user'], self.conn['password'], self.conn['database']) as db:
             print(self.switcher.get(operation, self.get_default)(param))
             db.execute(self.switcher.get(operation, self.get_default)(param))
-            
+
             self.results = db.fetchall()  # 得到结果集
         return self.results
 
     def do_one(self, operation, param):
-        self.results=0
+        self.results = 0
         with open_db(self.conn['server'], self.conn['user'], self.conn['password'], self.conn['database']) as db:
             db.execute(self.switcher.get(operation, self.get_default)(param))
             self.results = db.fetchone()  # 得到结果值
         return self.results
 
+
 class doProdure(object):
     """docstring for doProdure"""
+
     def __init__(self, arg):
         super(doProdure, self).__init__()
         self.arg = arg
 
     def OnBnExportAthletes():
         x = get_Results()
-        y = x.do('GetDisciplineAthletes',["eq"])
+        y = x.do('GetDisciplineAthletes', ["eq"])
         print(y)
 
     def OnBtnCleanAthletes():
         x = get_Results()
-        y = x.do('DelRegisterByDiscipline',[1])
+        y = x.do('DelRegisterByDiscipline', [1])
         print(y)
-    
+
     def OnBtnImportAthletes():
 
         x = get_Results()
-        y = x.do('IntiTempRegisterTable',["eq"])  #初始化临时表人员和报项信息导入成功
+        y = x.do('IntiTempRegisterTable', ["eq"])  # 初始化临时表人员和报项信息导入成功
         print(y)
         params = InputCSV.readfile("equestrain.csv")
         for param in params:
-            param.insert(0,"eq") #插入代码在头一个单词
+            param.insert(0, "eq")  # 插入代码在头一个单词
             print(param)
-            y = x.do('Insert2TempTable',param) #将人员和报项信息导入到数据库中的临时表
-        y = x.do('UpdateRegister2DB',['eq'])  #将临时表中的人员和报项信息更新到数据库中
+            y = x.do('Insert2TempTable', param)  # 将人员和报项信息导入到数据库中的临时表
+        y = x.do('UpdateRegister2DB', ['eq'])  # 将临时表中的人员和报项信息更新到数据库中
 
     def OnBtnImportUnOfficals():
         x = get_Results()
-        y = x.do('IntiTempUnOfficialTable',["eq"])    #初始化临时表非竞赛官员信息导入
+        y = x.do('IntiTempUnOfficialTable', ["eq"])  # 初始化临时表非竞赛官员信息导入
         print(y)
-        params = InputCSV.readfile("equestrain.csv")#将人员和报项信息导入到数据库中的临时表
+        params = InputCSV.readfile("equestrain.csv")  # 将人员和报项信息导入到数据库中的临时表
         for param in params:
-            param.insert(0,"eq")
+            param.insert(0, "eq")
             print(param)
-            y = x.do('InsertUnOfficials2TempTable',param)
-        y = x.do('UpdateUnOfficials2DB',['eq'])    #将临时表中的非竞赛官员信息导入更新到数据库中
+            y = x.do('InsertUnOfficials2TempTable', param)
+        y = x.do('UpdateUnOfficials2DB', ['eq'])  # 将临时表中的非竞赛官员信息导入更新到数据库中
         print(y)
+
 
 if __name__ == '__main__':
 

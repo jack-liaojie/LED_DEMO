@@ -180,7 +180,7 @@ def load_data(object):
 			object.tempform = mod_ranklist(data_ini_args)
 		elif (a == "judge"):
 			object.tempform = mod_judge(data_ini_args)
-			
+		else: return
 		object.ly_center.addWidget(object.tempform)
 
 	except Exception as e:

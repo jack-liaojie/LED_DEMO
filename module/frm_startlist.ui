@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="lbl_title">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -97,25 +97,9 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>30</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTableWidget" name="tableWidget">
+      <widget class="QTableWidget" name="tbwgt_content">
        <property name="palette">
         <palette>
          <active>

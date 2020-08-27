@@ -90,34 +90,38 @@ class cod_display(QWidget,Ui_Form):
 
 	def load_data(self,args):
 		try:
-			write_file(self.datapath,args)
 			print(args)
 			self.data_ini_args = json.loads(args.replace("\'","\""))
 			a = self.data_ini_args.keys()
 			a = list(a)[0]
+			if (a == "C8kPeuWjMxOqm4Ca"):
+				pass
+			
+			else:
+				write_file(self.datapath,args)
 
-			# 从ly_center卸载widget
-			if (self.ly_center.itemAt(0)): 
-				for i in reversed(range(self.ly_center.count())): 
-					self.ly_center.itemAt(i).widget().deleteLater()
-					# ly_center.itemAt(i).widget().setParent(None)
+				# 从ly_center卸载widget
+				if (self.ly_center.itemAt(0)): 
+					for i in reversed(range(self.ly_center.count())): 
+						self.ly_center.itemAt(i).widget().deleteLater()
+						# ly_center.itemAt(i).widget().setParent(None)
 
-			if (a == "welcome"):
-				self.tempform = mod_welcome(self.data_ini_args)
-			elif (a == "result"):
-				self.tempform = mod_result(self.data_ini_args)
-			elif (a == "schedule"):
-				self.tempform = mod_schedule(self.data_ini_args)
-			elif (a == "startlist"):
-				self.tempform = mod_startlist(self.data_ini_args)
-			elif (a == "resultlist"):
-				self.tempform = mod_resultlist(self.data_ini_args)
-			elif (a == "ranklist"):
-				self.tempform = mod_ranklist(self.data_ini_args)
-			elif (a == "judge"):
-				self.tempform = mod_judge(self.data_ini_args)
-				
-			self.ly_center.addWidget(self.tempform)
+				if (a == "welcome"):
+					self.tempform = mod_welcome(self.data_ini_args)
+				elif (a == "result"):
+					self.tempform = mod_result(self.data_ini_args)
+				elif (a == "schedule"):
+					self.tempform = mod_schedule(self.data_ini_args)
+				elif (a == "startlist"):
+					self.tempform = mod_startlist(self.data_ini_args)
+				elif (a == "resultlist"):
+					self.tempform = mod_resultlist(self.data_ini_args)
+				elif (a == "ranklist"):
+					self.tempform = mod_ranklist(self.data_ini_args)
+				elif (a == "judge"):
+					self.tempform = mod_judge(self.data_ini_args)
+					
+				self.ly_center.addWidget(self.tempform)
 
 		except Exception as e:
 			raise e
@@ -138,9 +142,10 @@ class UDPThread(QThread):
 	def run(self): 
 		global server
 		while self.flag == True:
-			# data, addr = self.server.recvfrom(1024) #1024是接收字节
-			data = server.recv(1024) #1024是接收字节
+			data, addr = server.recvfrom(1024) #1024是接收字节
+			# data = server.recv(1024) #1024是接收字节
 			sx = str(data.decode('utf-8'))
+			server.sendto("ok".encode('utf-8'), addr)
 			self.sinOut.emit(sx)
 			# time.sleep(0.99)
 

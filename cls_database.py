@@ -36,8 +36,19 @@ class get_Results(object):
     def __init__(self,args):
         super().__init__()
         self.description = []
-        self.conn = {"server": agrs['dbserver'], "user": agrs['dbuser'], "password": agrs['dbpwd'], 
-                    "database": agrs['dbdatabase']}
+        self.conn = {"server": args['dbserver'], "user": args['dbuser'], "password": args['dbpwd'], 
+                    "database": args['dbdatabase']}
+
+    def get_sport(param):
+        return f"exec Proc_GetSports @LanguageCode={param[0]}"
+
+    def get_sportDisciplines(param):
+        return f"""EXEC Proc_GetSportDisciplines @SportID={param[0]},
+                        @LanguageCode={param[1]}"""
+
+    def get_disciplineEvents(param):
+        return f"""EXEC Proc_GetDisciplineEvents @DisciplineID={param[0]},
+                        @LanguageCode={param[1]}"""
 
     def get_Proc_EQ_GetIPadScoreList(param):
         return f"""exec Proc_EQ_GetIPadScoreList 
@@ -73,13 +84,139 @@ class get_Results(object):
     def get_venuelist(param):
         return f"EXEC  Proc_GetVenueList @DisciplineCode={param[0]}"
 
+    def get_Proc_Report_EQ_GetEventResult(param):
+        #返回项目成绩
+        return f"""exec Proc_Report_EQ_GetEventResult
+                    @EventID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                    """
+    def get_Proc_Report_EQ_GetCompetitionSchedule(param):
+        # 返回竞赛日程表
+        return f"""exec Proc_Report_EQ_GetCompetitionSchedule
+                    @DisciplineID='{param[0]}',
+                    @@DateTime='{param[1]}',
+                    @LanguageCode='{param[2]}'
+                    """
+
+    def get_Proc_Report_EQ_GetMatchInfo(param):
+        """得到标题信息"""
+        return f"""exec Proc_Report_EQ_GetMatchInfo
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+
+    def get_Proc_EQ_GetMatchInfo(param):
+        """得到标题信息"""
+        return f"""exec Proc_EQ_GetMatchInfo
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_Report_EQ_GetMatchJudges(param):
+        return f"""exec Proc_Report_EQ_GetMatchJudges
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+
+    def get_Proc_EQ_GetMatchOfficial(param):
+        return f"""exec Proc_Report_EQ_GetMatchJudges
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_EQ_GetMatchResultList(param):
+
+        return f"""exec Proc_EQ_GetMatchResultList
+                    @MatchID='{param[0]}',
+                    @ShowFrom='{param[1]}',
+                    @LanguageCode='{param[2]}'
+                """
+    def get_Proc_EQ_GetMFList(param):
+        """得到步伐信息"""
+        return f"""exec Proc_EQ_GetMFList
+                    @MatchConfigID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_SCB_EQ_GetMatchInfo_LJ(param):
+         return f"""exec Proc_SCB_EQ_GetMatchInfo_LJ
+                    @EventID = '{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+
+    def get_Proc_SCB_GetEvents(param):
+         return f"""exec Proc_SCB_GetEvents
+                    @DisciplineCode='{param[0]}'
+                """
+    def get_Proc_SCB_EQ_GetSchedule(param):
+        return f"""exec Proc_SCB_EQ_GetSchedule
+                    @DateTime = '{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_SCB_EQ_GetJudgeList(param):
+        return f"""exec Proc_SCB_EQ_GetJudgeList
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+
+    def get_Proc_SCB_EQ_GetStartList(param):
+        return f"""exec Proc_SCB_EQ_GetStartList
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_SCB_EQ_GetMatchResultList(param):
+        return f"""exec Proc_SCB_EQ_GetMatchResultList
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+
+    def get_Proc_SCB_EQ_GetMatchRegisterList(param):
+        return f"""exec Proc_SCB_EQ_GetMatchRegisterList
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_SCB_EQ_GetDRRiderResult(param):
+        return f"""exec Proc_SCB_EQ_GetDRRiderResult
+                    @MatchID='{param[0]}',
+                    @RegisterID='{param[1]}',
+                    @IsCut='{param[2]}',
+                    @LanguageCode='{param[3]}'
+                """
+    def get_Proc_SCB_EQ_GetMedalList(param):
+        return f"""exec Proc_SCB_EQ_GetMedalList
+                    @EventID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_Proc_SCB_EQ_GetMatchMovementList(param):
+        return f"""exec Proc_SCB_EQ_GetMatchMovementList
+                    @MatchID='{param[0]}',
+                    @LanguageCode='{param[1]}'
+                """
+    def get_default(param):
+        pass
 
     switcher = {
-        "get_venuelist":get_venuelist,
+        'get_sport': get_sport,
+        'get_Proc_SCB_EQ_GetMatchMovementList':get_Proc_SCB_EQ_GetMatchMovementList,
+        'get_Proc_SCB_EQ_GetMedalList':get_Proc_SCB_EQ_GetMedalList,
+        'get_Proc_SCB_EQ_GetDRRiderResult':get_Proc_SCB_EQ_GetDRRiderResult,
+        'get_Proc_SCB_EQ_GetMatchRegisterList':get_Proc_SCB_EQ_GetMatchRegisterList,
+        'get_Proc_SCB_EQ_GetMatchResultList':get_Proc_SCB_EQ_GetMatchResultList,
+        'get_Proc_SCB_EQ_GetStartList':get_Proc_SCB_EQ_GetStartList,
+        'get_Proc_SCB_EQ_GetJudgeList':get_Proc_SCB_EQ_GetJudgeList,
+        'get_Proc_SCB_EQ_GetSchedule':get_Proc_SCB_EQ_GetSchedule,
+        'get_Proc_SCB_GetEvents': get_Proc_SCB_GetEvents,
+        'get_disciplineEvents': get_disciplineEvents,
+        'get_sportDisciplines': get_sportDisciplines,
+        "get_Proc_EQ_GetMFList" : get_Proc_EQ_GetMFList,
+        "get_Proc_SCB_EQ_GetMatchInfo_LJ" : get_Proc_SCB_EQ_GetMatchInfo_LJ,
+        "get_Proc_EQ_GetMatchOfficial":get_Proc_EQ_GetMatchOfficial,
+        "get_Proc_Report_EQ_GetMatchJudges":get_Proc_Report_EQ_GetMatchJudges,
+        "get_Proc_Report_EQ_GetMatchInfo":get_Proc_Report_EQ_GetMatchInfo,
+        "get_Proc_EQ_GetMatchInfo":get_Proc_EQ_GetMatchInfo,
+        "get_Proc_Report_EQ_GetEventResult" : get_Proc_Report_EQ_GetEventResult,
         "get_Proc_EQ_GetIPadScoreList" :get_Proc_EQ_GetIPadScoreList,
         'get_Proc_AutoSwitch_SearchMatches': get_Proc_AutoSwitch_SearchMatches,
         'get_Proc_EQ_GetMatchResultList': get_Proc_EQ_GetMatchResultList,
-        "get_Proc_EQ_GetMatchResultDetailList":get_Proc_EQ_GetMatchResultDetailList
+        "get_Proc_EQ_GetMatchResultDetailList":get_Proc_EQ_GetMatchResultDetailList,
+        "get_default": get_default
     }
 
     def get_SQL_results(self, tablewidget, operate_name, params):
@@ -93,7 +230,7 @@ class get_Results(object):
         tablewidget.setColumnCount(len(results['desc']))  # 设定列数
         tablewidget.setHorizontalHeaderLabels(results['desc'])  # 设置表头内容
 
-        # 加载数据到表格
+        # 加载数据到表格   
         i = 0
         for row in results['results']:
             j = 0
@@ -119,7 +256,8 @@ class get_Results(object):
             for field in db.description:
                 self.description.append(field[0])
         #返回json格式的文本
-        return strtojs_format({'desc': self.description, 'results': self.results})
+        # return strtojs_format({'desc': self.description, 'results': self.results})
+        return ({'desc': self.description, 'results': self.results})
 
     def do(self, operation, param):
         with open_db(self.conn['server'], self.conn['user'], self.conn['password'], self.conn['database']) as db:
@@ -127,15 +265,37 @@ class get_Results(object):
             self.results = db.fetchall()  # 得到结果集
         
         #返回json格式的文本
-        return strtojs_format(self.results)
+        return (self.results)
+        # return strtojs_format(self.results)
 
 
 if __name__ == '__main__':
-    agrs = {"dbserver":".","dbport":"1433","dbuser":"sa","dbpwd":"111","dbdatabase":"n_eq"}
-    x = get_Results(agrs)
+    args = {"dbserver":".","dbport":"1433","dbuser":"sa","dbpwd":"111","dbdatabase":"bj_eq"}
+    x = get_Results(args)
     # y = x.do_field('get_venuelist', ['1'])
     # y = x.do_field('get_Proc_EQ_GetIPadScoreList', ['1','1324','2','chn'])
     # y = x.do_field('get_Proc_AutoSwitch_SearchMatches ', ['EQ','-1','全部','-1','-1','-1'])
-    y = x.do_field('get_Proc_EQ_GetMatchResultDetailList', ['2','4958'])
+    # y = x.do_field('get_Proc_EQ_GetMatchResultDetailList', ['2','4958'])
+
+    # y = x.do('get_Proc_Report_EQ_GetEventResult', ['1','chn'])
+    # y = x.do_field('get_Proc_EQ_GetMatchInfo', ['1','chn'])
+    # print(y)
+    # y = x.do_field('get_Proc_Report_EQ_GetMatchInfo', ['1','chn'])
+    # y = x.do_field('get_Proc_Report_EQ_GetMatchJudges', ['1','chn'])
+    # y = x.do_field('get_Proc_EQ_GetMatchOfficial', ['1','chn'])
+    # y = x.do_field('get_Proc_EQ_GetMFList', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetSchedule', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetMatchInfo_LJ', ['1','chn'])
+    # y = x.do_field('get_sport', ['chn'])
+    # y = x.do_field('get_sportDisciplines', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_GetEvents', ['eq'])
+    # y = x.do_field('get_disciplineEvents', ['1','chn'])
+    # y = x.do_field('get_Proc_EQ_GetMatchResultList', ['1','1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetMatchResultList', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetMatchRegisterList', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','4958','0','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
+    y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
 
     print(y)
+    # print(y['results'])
