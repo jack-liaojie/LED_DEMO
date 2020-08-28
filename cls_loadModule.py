@@ -29,24 +29,27 @@ class mod_result(QWidget,b):
         super(mod_result, self).__init__()
         self.setupUi(self)
         self.args = args
-        self.lbl_title.setText(args['result'])
-        self.lbl_rank.setText(args['data'][0]['rank'])
-        self.lbl_name.setText(args['data'][0]['name'])
-        self.lbl_city.setText(args['data'][0]['city'])
-        self.lbl_horse.setText(args['data'][0]['horse'])
-        self.lbl_E.setText(args['data'][0]['E'])
-        self.lbl_M.setText(args['data'][0]['M'])
-        self.lbl_C.setText(args['data'][0]['C'])
-        self.lbl_P.setText(args['data'][0]['P'])
-        self.lbl_result.setText(args['data'][0]['result'])
+        self.lbl_title.setText(str(args['result']))
+        self.lbl_rank.setText(str(args['data'][0][0]))
+        self.lbl_name.setText(str(args['data'][0][1]))
+        self.lbl_city.setText(str(args['data'][0][2]))
+        self.lbl_horse.setText(str(args['data'][0][3]))
+        self.lbl_E.setText(str(args['data'][0][4]))
+        self.lbl_M.setText(str(args['data'][0][5]))
+        self.lbl_C.setText(str(args['data'][0][6]))
+        self.lbl_P.setText(str(args['data'][0][8]))
+        self.lbl_result.setText(str(args['data'][0][8]))
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','单位'])  # 设置表头内容
+
+        register = eval(args['content'])#字符串转列表
+
         i = 0
-        for row in range(0,len(args["content"])):
+        for row in range(0,len(register)):
             self.tbwgt_content.setRowCount(row + 1)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(args['content'][row]['order'])))
-            self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(args['content'][row]['name'])))
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(args['content'][row]['result'])))
-            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(args['content'][row]['city'])))
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[i][0])))
+            self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[i][1])))
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[i][2])))
+            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[i][3])))
             i += 1
 
         self.column = self.tbwgt_content.columnCount()
@@ -98,6 +101,8 @@ class mod_resultlist(QWidget,d):
         self.lbl_title.setText(args["r_list"])
         self.tbwgt_content.setColumnCount(5)  # 设定列数
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
+        
+        
         register = eval(args['content'])#字符串转列表
         i = 0
         for row in range(0,len(register)):
@@ -200,20 +205,20 @@ class mod_celebrate(QWidget,i):
 
 if __name__ == '__main__':
 
-    # args =  {
-    #     "result" :"盛装舞步预赛",
-    #     "data":
-    #         [
-    #             {"sport": "盛装舞步","event":"资格赛",
-    #              "order":"3","rank": "1","name":"廖杰","city":"山西","horse":"火龙驹","result":"343.33",
-    #              "E":"23","M":"123","C":"242","P":"234"}
-    #         ],
-    #     "content":
-    #         [   {"order":"1","name":"吉喆","result":"222","city":"山东"},
-    #             {"order":"2","name":"吉喆","result":"222","city":"山东"},
-    #             {"order":"3","name":"吉喆","result":"222","city":"山东"}
-    #         ]
-    # }
+    args =  {
+        "result" :"盛装舞步预赛",
+        "data":
+            [
+                {"sport": "盛装舞步","event":"资格赛",
+                 "order":"3","rank": "1","name":"廖杰","city":"山西","horse":"火龙驹","result":"343.33",
+                 "E":"23","M":"123","C":"242","P":"234"}
+            ],
+        "content":
+            [   {"order":"1","name":"吉喆","result":"222","city":"山东"},
+                {"order":"2","name":"吉喆","result":"222","city":"山东"},
+                {"order":"3","name":"吉喆","result":"222","city":"山东"}
+            ]
+    }
 
     app = QApplication(sys.argv)
     demo = mod_resultlist(args)

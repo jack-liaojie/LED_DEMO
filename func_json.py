@@ -54,7 +54,7 @@ def json_dict(args):
 		# (2)json.loads()函数是将json格式数据转换为字典（可以这么理解，json.loads()函数是将字符串转化为字典）
 		data = json.loads(args)
 		return data #返回dict对象
-	except WinError as e:
+	except json.decode.JSONDecodeError as e:
 		raise e
 	finally:
 		pass
