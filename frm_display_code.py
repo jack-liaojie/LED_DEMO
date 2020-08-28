@@ -114,6 +114,8 @@ class cod_display(QWidget,Ui_Form):
 
 				if (a == "welcome"):
 					self.tempform = mod_welcome(self.data_ini_args)
+				if (a == "step"):
+					self.tempform = mod_step(self.data_ini_args)
 				elif (a == "result"):
 					self.tempform = mod_result(self.data_ini_args)
 				elif (a == "schedule"):
@@ -122,14 +124,14 @@ class cod_display(QWidget,Ui_Form):
 					self.tempform = mod_startlist(self.data_ini_args)
 				elif (a == "r_list"):
 					self.tempform = mod_resultlist(self.data_ini_args)
-				elif (a == "ranklist"):
+				elif (a == 'k_list'):
 					self.tempform = mod_ranklist(self.data_ini_args)
 				elif (a == "judge"):
 					self.tempform = mod_judge(self.data_ini_args)
 				elif (a == "medal"):
-					self.tempform = mod_judge(self.data_ini_args)
+					self.tempform = mod_medal(self.data_ini_args)
 				elif (a == "celebrate"):
-					self.tempform = mod_judge(self.data_ini_args)
+					self.tempform = mod_celebrate(self.data_ini_args)
 					
 				self.ly_center.addWidget(self.tempform)
 

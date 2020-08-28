@@ -102,8 +102,6 @@ class cod_led(QMainWindow,Ui_MainWindow):
 			self.F_DisciplineLongName = self.tbv_data.item(row_num, 15).text()
 			self.F_SportID = self.tbv_data.item(row_num, 16).text()
 			self.F_SportLongName = self.tbv_data.item(row_num, 17).text()
-			for x in range(0,18):
-				print(str(x) + "--",self.tbv_data.item(row_num, x).text())
 			self.tbv_title.setColumnCount(6)  # 设定列数
 			self.tbv_title.setRowCount(1)
 			self.tbv_title.setItem(0, 0, QTableWidgetItem(self.F_MatchLongName))
@@ -174,15 +172,6 @@ class cod_led(QMainWindow,Ui_MainWindow):
 			self.close()
 			
 	def welcome(self):
-				# args =	{
-		# 		"schedule":{"title":"盛装舞步预赛"},
-		# 		"content":
-		# 			[
-		# 				{"time":"10:00","sport":"盛装舞步","event":"资格赛"},
-		# 				{"time":"11:00","sport":"盛装舞步","event":"资格赛"},
-		# 				{"time":"12:00","sport":"盛装舞步","event":"资格赛"}
-		# 			]
-		# 	}
 		args = ""
 
 		self.tbv_register.clear()
@@ -231,7 +220,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 		elif self.F_EventLongName != "" and self.rdo_ranklist.isChecked() == True:
 			args =	{
-					"ranklist":self.F_EventLongName,
+					"k_list":self.F_EventLongName,
 					"content":self.get_Proc('get_Proc_SCB_EQ_GetMedalList',[self.F_EventID,'chn'])
 				}
 

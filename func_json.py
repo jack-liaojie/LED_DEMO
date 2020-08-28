@@ -183,7 +183,7 @@ if __name__ == "__main__":
 	}
 	
 	args =	{
-		"resultlist" : {"title":"盛装舞步预赛"},
+		"r_list" : {"title":"盛装舞步预赛"},
 		"content":
 			[	{"order":"1","name":"吉喆","result":"222","city":"山东","sign":"Q"},
 		 		{"order":"2","name":"吉喆","result":"222","city":"山东","sign":"Q"},
