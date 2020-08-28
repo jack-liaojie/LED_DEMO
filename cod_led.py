@@ -60,7 +60,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 			args =	{
 						"result":self.F_EventLongName + self.F_MatchLongName,
 						"data":self.get_Proc('get_Proc_SCB_EQ_GetDRRiderResult',[self.F_MatchID,self.F_RegisterID,0,'chn']),
-						"content":re.sub(r"Decimal\(\'(\S*)000000\'\)",r"'\g<1>'", str(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList',[self.F_MatchID,'chn'])))
+						"content":strregex(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList',[self.F_MatchID,'chn']))
 					}#正则表达式Decimal('65.262000000')-->'65.262'
 
 		elif self.rdo_step.isChecked()==True:#步伐选择
@@ -70,7 +70,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 					}
 
 
-		self.txt_data.setText(strtojs_format(args))
+		self.txt_data.setText(dict_json(args))
 
 
 	def eventselect(self):
@@ -129,7 +129,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 	def load_config(self):
 		ini_path="./initialize/led.ini"
-		ini_args = read_file(ini_path)
+		ini_args = str_dict(read_file(ini_path))
 		self.udp_ip = ini_args['udp_ip']
 		self.udp_port = ini_args['udp_port']
 		self.udp_port = ini_args['udp_port']
@@ -167,7 +167,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 	def ok(self):
 		if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定发送!", QMessageBox.Cancel | QMessageBox.Ok):
-			self.senddata(self.txt_data.text())
+			self.senddata(self.txt_data.toPlainText())
 
 	def cancel(self):
 		if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定退出!", QMessageBox.Cancel | QMessageBox.Ok):
@@ -192,15 +192,22 @@ class cod_led(QMainWindow,Ui_MainWindow):
 					"welcome":self.F_SportLongName,
 					"content":self.F_EventLongName + self.F_MatchLongName
 				}
+
+		if self.F_MatchLongName != "" and self.rdo_celebrate.isChecked() == True:
+			args =	{
+					"celebrate":self.F_SportLongName,
+					"content":self.F_EventLongName + self.F_MatchLongName
+				}
+
 		elif self.F_MatchLongName != "" and self.rdo_schedule.isChecked() == True:
 			args =	{
-					"schedule":self.F_EventLongName + self.F_MatchLongName,
+					"schedule":"竞赛日程",
 					"content":self.get_Proc('get_Proc_SCB_EQ_GetSchedule',['all','chn'])
 				}
 
 		elif self.F_MatchLongName != "" and self.rdo_judge.isChecked() == True:
 			args =	{
-					"judge":self.F_EventLongName + self.F_MatchLongName,
+					"judge":self.F_EventLongName + self.F_MatchLongName + "竞赛裁判",
 					"content":self.get_Proc('get_Proc_SCB_EQ_GetJudgeList',[self.F_MatchID,'chn'])
 				}
 
@@ -212,7 +219,7 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 		elif self.F_MatchLongName != "" and self.rdo_startlist.isChecked() == True:
 			args =	{
-					"Startlist":self.F_EventLongName + self.F_MatchLongName,
+					"startlist":self.F_EventLongName + self.F_MatchLongName,
 					"content":self.get_Proc('get_Proc_SCB_EQ_GetStartList',[self.F_MatchID,'chn'])
 				}
 
@@ -241,20 +248,23 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 		elif self.F_MatchLongName != "" and self.rdo_resultlist.isChecked() == True:
 			args =	{
-					"resultlist":self.F_EventLongName + self.F_MatchLongName,
+					"r_list":self.F_EventLongName + self.F_MatchLongName,
 					# 通过正则表达式将decimal类型转为字符
 					# 例如：Decimal('65.262000000')转为'65.262'
-					"content":re.sub(r"Decimal\(\'(\S*)000000\'\)",r"'\g<1>'", str(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList',[self.F_MatchID,'chn'])))
+					"content":strregex(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList',[self.F_MatchID,'chn']))
 				}
 
-		self.txt_data.setText(strtojs_format(args))
+		self.txt_data.setText(dict_json(args))
 
 
 	def senddata(self,args):
 
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		# s.connect((self.udp_ip, int(self.udp_port)))
+		# s.send(str(args).encode('utf-8'))
+		# s.sendall(str(args).encode('utf-8'))
 		s.sendto(str(args).encode('utf-8'), (self.udp_ip, int(self.udp_port)))
-		s.close()
+		# s.close()
 
 	def set_eventinfo(self):
 		# 设置列数

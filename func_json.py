@@ -1,49 +1,63 @@
 import json
 import uuid
+import re
 from decimal import Decimal
 
 def generateUUID():
     id = uuid.uuid1()	# 还有uuid2、uuid3、uuid4、uuid5等其他方法
     return id
 
-def read_file(path):
-	try:
-		args={}
-		f = open(path,"r",encoding="utf-8")
-		data = f.read()
-		args = json.loads(data)#将文件中的字符串转换为dict对象
-		return args #返回dict对象
-	except IOError as e:
-		raise e
-	finally:
-		f.close()
-
 def write_file(path,args):
 	try:
 		f = open(path,"w",encoding="utf-8")
-		if type(args) == dict:
-			data = json.dumps(args, indent=4, separators=(",", ":"), ensure_ascii=False)#dict对象转换成格式化字符串
-		else:
-			data = args.replace("\'","\"")
-		f.write(data)#写入文件中
+		f.write(args)#写入文件中
 
 	except Exception as e:
 		raise e
 	finally:
 		f.close()
 
-def strtojs_format(args):
-	data = json.dumps(args, indent=4, separators=(",", ":"), ensure_ascii=False)#dict对象转换成格式化字符串 sort_keys=True,
-	return data
+def read_file(path):
+	try:
+		f = open(path,"r",encoding="utf-8")
+		data = f.read()
+		return data
+	except IOError as e:
+		raise e
+	finally:
+		f.close()
 
-def str_to_dict(args):
+def strregex(args):
+	# 通过正则表达式将decimal类型转为字符
+	# 例如：Decimal('65.262000000')转为'65.262'
+	args = str(args)
+	args = re.sub(r"Decimal\(\'(\S*)000000\'\)",r"'\g<1>'", args)
+	args = args.replace("\'","\"")
+	return args
+
+def str_dict(args):#返回的是的dict类型
 	data ={}
 	data = eval(args)
-	# args = json.loads(args)#将文件中的字符串转换为dict对象
 	return data #返回字典类型
 
-def dict_to_str(args):
+def dict_str(args):
 	return str(args)
+
+def dict_json(args):#返回的是字符串类型
+	#(1)json.dumps()函数是将一个Python数据类型列表进行json格式的编码（可以这么理解，json.dumps()函数是将字典转化为字符串）
+	data = json.dumps(args, indent=4, separators=(",", ":"), ensure_ascii=False)#dict对象转换成格式化字符串
+	return data
+
+def json_dict(args):
+	try:
+		data={}
+		# (2)json.loads()函数是将json格式数据转换为字典（可以这么理解，json.loads()函数是将字符串转化为字典）
+		data = json.loads(args)
+		return data #返回dict对象
+	except WinError as e:
+		raise e
+	finally:
+		pass
 
 
 if __name__ == "__main__":

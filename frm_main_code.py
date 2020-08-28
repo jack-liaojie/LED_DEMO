@@ -14,7 +14,7 @@ class cod_main(QWidget, Ui_Form):
 		super(cod_main, self).__init__()
 		self.setupUi(self)
 		self.table_params = table_params
-		self.path="./initialize/confige.ini"
+		self.path="./initialize/config.ini"
 		#加载本地数据
 		self.load_config()
 		self.btn_OK.clicked.connect(self.Ok)
@@ -37,7 +37,7 @@ class cod_main(QWidget, Ui_Form):
 		fileargs['center'] = self.read_table(self.tbwgt_center)
 		fileargs['top'] = self.read_table(self.tbwgt_top)
 		fileargs['bottom'] = self.read_table(self.tbwgt_bottom)
-		write_file(self.path,fileargs)
+		write_file(self.path,dict_str(fileargs))
 
 	def read_table(self,tablewidget):
 		'''读取配置数据'''
@@ -52,7 +52,7 @@ class cod_main(QWidget, Ui_Form):
 
 	def load_config(self):
 		"""加载配置文件"""
-		params = read_file(self.path)
+		params = str_dict(read_file(self.path))
 		self.get_dict(self.tbwgt_center,params['center'])
 		self.get_dict(self.tbwgt_top,params['top'])
 		self.get_dict(self.tbwgt_bottom,params['bottom'])
