@@ -37,7 +37,7 @@ class cod_main(QWidget, Ui_Form):
 		fileargs['center'] = self.read_table(self.tbwgt_center)
 		fileargs['top'] = self.read_table(self.tbwgt_top)
 		fileargs['bottom'] = self.read_table(self.tbwgt_bottom)
-		write_file(self.path,dict_str(fileargs))
+		write_file(self.path,dict_json(fileargs))
 
 	def read_table(self,tablewidget):
 		'''读取配置数据'''
@@ -52,7 +52,7 @@ class cod_main(QWidget, Ui_Form):
 
 	def load_config(self):
 		"""加载配置文件"""
-		params = str_dict(read_file(self.path))
+		params = json_dict(read_file(self.path))
 		self.get_dict(self.tbwgt_center,params['center'])
 		self.get_dict(self.tbwgt_top,params['top'])
 		self.get_dict(self.tbwgt_bottom,params['bottom'])

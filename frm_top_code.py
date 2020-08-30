@@ -11,9 +11,8 @@ class cod_top(QWidget,Ui_Form):
 	"""docstring for frm_Top"""
 	def __init__(self, arg):
 		super(cod_top, self).__init__()
-		self.arg = arg
+		self.lbl_title = arg
 		self.setupUi(self)
-		start_working(['datetime'],self.lbl_timer)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

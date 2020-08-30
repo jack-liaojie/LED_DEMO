@@ -22,39 +22,64 @@ class cod_display(QWidget,Ui_Form):
 		self.arg = arg
 		self.setupUi(self)
 		self.load_config()
+		self.lbl_timer.setVisible(False)
 		self.tempform = QWidget
 		self.setWindowFlags(Qt.FramelessWindowHint)
 
 	def load_config(self):
 		global udpconn
 		global datapath
-		
-		ini_path="./initialize/config.ini"
-		ini_args = str_dict(read_file(ini_path))
-		self.configpath = ini_args["center"]['configpath']
-		datapath = ini_args["center"]['datapath']
-		self.x = int(ini_args["center"]['x'])
-		self.y =  int(ini_args["center"]['y'])
-		self.width =  int(ini_args["center"]['width'])
-		self.height =  int(ini_args["center"]['height'])
-		self.setStyleSheet(ini_args["center"]['stylesheet'])
-		self.udp_ip = ini_args["center"]['udp_ip']
-		self.udp_port = ini_args["center"]['udp_port']
-		self.pic_path = ini_args["center"]['pic_path']
-		udpconn = (self.udp_ip,int(self.udp_port))
-		self.move(self.x,self.y)#窗体定位
-		self.resize(self.width,self.height) 		
-		'''设置窗体图片'''
-		painter = QPainter(self)
-		pixmap = QPixmap(self.pic_path)
-		painter.drawPixmap(self.rect(),pixmap)	
-		# 加入页眉和页脚
-		self.ly_top.addWidget(cod_top(""))
-		self.ly_bottom.addWidget(cod_bottom(""))
+		try:
+			
+			ini_path="./initialize/config.ini"
+			ini_args = str_dict(read_file(ini_path))
+			self.configpath = ini_args["center"]['modulepath']
+			datapath = ini_args["center"]['datapath']
+			self.x = int(ini_args["center"]['x'])
+			self.y =  int(ini_args["center"]['y'])
+			self.timer = int(ini_args["center"]['timer'])
+			self.width =  int(ini_args["center"]['width'])
+			self.height =  int(ini_args["center"]['height'])
+			self.setStyleSheet(ini_args["center"]['stylesheet'])
+			self.udp_ip = ini_args["center"]['udp_ip']
+			self.udp_port = ini_args["center"]['udp_port']
+			self.pic_path = ini_args["center"]['pic_path']
+			self.top_title = ini_args["top"]['title']
+			udpconn = (self.udp_ip,int(self.udp_port))
+			self.move(self.x,self.y)#窗体定位
+			self.resize(self.width,self.height) 		
+			'''设置窗体图片'''
+			painter = QPainter(self)
+			pixmap = QPixmap(self.pic_path)
+			painter.drawPixmap(self.rect(),pixmap)
+			# 加入页眉和页脚
+			# start_working(['fivetime','5'],self.lbl_timer)
+			start_working(['datetime'],self.lbl_datetime)
+			
+		except:
+			ini_path="./initialize/config.ini"
+			self.configpath = "./module/"
+			datapath = "./initialize/data.ini"
+			self.x = 0
+			self.y =  0
+			self.timer = 300
+			self.width =  1920
+			self.height =  1080
+			self.setStyleSheet("font-size:40pt;background-color:rgb(26, 36,56);")
+			self.udp_ip = "127.0.0.1"
+			self.udp_port = "8080"
+			self.pic_path = "./resource/"
+			udpconn = (self.udp_ip,int(self.udp_port))
+			self.move(self.x,self.y)#窗体定位
+			self.resize(self.width,self.height) 	
+		finally:
+			self.ly_top.addWidget(cod_top(self.top_title))
+			self.ly_bottom.addWidget(cod_bottom(""))
 
-		#开启UDP监控线程
-		self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
-	
+			#开启UDP监控线程
+			self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
+			
+
 	def start_udp(self,arg,path="./initialize/data.ini"):
 		global server
 		try:
@@ -90,6 +115,13 @@ class cod_display(QWidget,Ui_Form):
 			except Exception as e:
 				return
 
+		elif event.key() == Qt.Key_Control:
+			stop('fivetime')
+			self.lbl_timer.setText('00:00')
+
+		elif event.key() == Qt.Key_Return:
+			start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
+
 		elif event.key() == Qt.Key_Shift:
 			self.load_data(datapath)
 
@@ -97,6 +129,7 @@ class cod_display(QWidget,Ui_Form):
 	def load_data(self,data_path):
 		"""对UDP数据进行解析并控制屏幕操作"""
 		try:		
+			self.lbl_timer.setVisible(False)
 			self.data_ini_args = json_dict(read_file(data_path))
 			a = self.data_ini_args.keys()
 			a = list(a)[0]
@@ -117,6 +150,8 @@ class cod_display(QWidget,Ui_Form):
 				if (a == "step"):
 					self.tempform = mod_step(self.data_ini_args)
 				elif (a == "result"):
+					self.lbl_timer.setVisible(True)
+					# self.ly_top.setVisible(False)
 					self.tempform = mod_result(self.data_ini_args)
 				elif (a == "schedule"):
 					self.tempform = mod_schedule(self.data_ini_args)
@@ -133,7 +168,11 @@ class cod_display(QWidget,Ui_Form):
 				elif (a == "celebrate"):
 					self.tempform = mod_celebrate(self.data_ini_args)
 					
+				elif (a == "timerstart"):
+					start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
+					
 				self.ly_center.addWidget(self.tempform)
+				# self.ly_center.addWidget(self.lbl_timer)
 
 		except Exception as e:
 			raise e

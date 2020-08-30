@@ -77,7 +77,7 @@ class TimerThread(QThread):
 	def run(self): 
 		while self.flag == True:
 			self.trigger.emit()
-			time.sleep(0.99)
+			time.sleep(1)
 global f_thread
 global d_thread
 global f_lbltime
@@ -90,7 +90,7 @@ def start_working(arg,lblobject):
 		global f_thread
 		f_thread = TimerThread()
 		f_lbltime = lblobject
-		sec = int(arg[1]) if arg[1].isnumeric() else 300
+		sec = arg[1] if type(arg) == int else 300
 		f_thread.trigger.connect(five_working)
 		f_thread.start()
 
@@ -106,7 +106,7 @@ def start_working(arg,lblobject):
 
 def curr_working():
 	global d_lbltime
-	d = QDateTime.currentDateTime().toString("hh:mm:ss dddd")
+	d = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss dddd")
 	# d = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss dddd")
 	d_lbltime.setText(d)
 	# print(d)
@@ -121,19 +121,26 @@ def five_working():
 		# print(intotime(sec))
 
 def stop(arg):
-	if (arg == 'datetime'):
-		global d_thread
-		d_thread.flag = False
-	elif (arg == 'fivetime'):
-		global f_thread
-		f_thread.flag = False
-		global sec
-		sec = 300
-	
+	try:
+
+		if (arg == 'datetime'):
+			global d_thread
+			d_thread.flag = False
+		elif (arg == 'fivetime'):
+			global f_thread
+			f_thread.flag = False
+			global sec
+			sec = 300
+	except Exception as e:
+		return
+	finally:
+		return
+
 def intotime(sec):
 	m, s = divmod(sec, 60)
 	h, m = divmod(m, 60)
-	return ("%02d:%02d:%02d" % (h, m, s))
+	return ("%02d:%02d" % (m, s))
+	# return ("%02d:%02d:%02d" % (h, m, s))
 
 
 if __name__ == '__main__':

@@ -13,7 +13,8 @@ class cod_bottom(QWidget,Ui_Form):
 		super(cod_bottom, self).__init__()
 		self.arg = arg
 		self.setupUi(self)
-		start_working(['fivetime','5'],self.lbl_timer)
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

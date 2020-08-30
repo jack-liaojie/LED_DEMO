@@ -30,29 +30,101 @@ class mod_result(QWidget,b):
         self.setupUi(self)
         self.args = args
         self.lbl_title.setText(str(args['result']))
-        self.lbl_rank.setText(str(args['data'][0][0]))
-        self.lbl_name.setText(str(args['data'][0][1]))
-        self.lbl_city.setText(str(args['data'][0][2]))
-        self.lbl_horse.setText(str(args['data'][0][3]))
-        self.lbl_E.setText(str(args['data'][0][4]))
-        self.lbl_M.setText(str(args['data'][0][5]))
-        self.lbl_C.setText(str(args['data'][0][6]))
-        self.lbl_P.setText(str(args['data'][0][8]))
-        self.lbl_result.setText(str(args['data'][0][8]))
-        self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','单位'])  # 设置表头内容
+        self.lbl_order.setText(str(args['data'][0][7]))#序号
+        self.lbl_rank.setText(str(args['data'][0][24]))#当前场名次
+        self.lbl_name.setText(str(args['data'][0][8]))#姓名
+        self.lbl_city.setText(str(args['data'][0][6]))#队名
+        self.lbl_horse.setText(str(args['data'][0][9]))#马名
+        self.lbl_E.setText(str(args['data'][0][13]))#E成绩
+        self.lbl_M.setText(str(args['data'][0][16]))#M成绩
+        self.lbl_C.setText(str(args['data'][0][15]))#C成绩
+        self.lbl_result.setText(str(args['data'][0][23]))#当场成绩
+        self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','单位','成绩'])  # 设置表头内容
 
         register = eval(args['content'])#字符串转列表
 
         i = 0
         for row in range(0,len(register)):
             self.tbwgt_content.setRowCount(row + 1)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[i][0])))
-            self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[i][1])))
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[i][2])))
-            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[i][3])))
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[i][6])))
+            #单元格字体大于4字节，字体缩小
+            if len(str(register[i][1]))> 4 :
+                item = QTableWidgetItem(str(register[i][1]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(25)
+                item.setFont(font)
+                self.tbwgt_content.setItem(i, 1, item)
+            else :
+                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[i][1])))
+
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[i][3])))
+            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[i][7])))
+
+            #单元格字体大于4字节，字体缩小
+            if len(str(register[i][2]))> 4 :
+                item = QTableWidgetItem(str(register[i][2]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(25)
+                item.setFont(font)
+                self.tbwgt_content.setItem(i, 4, item)
+            else :
+                self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(register[i][2])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
+            
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+
+
+
+        i = 0
+        for row in range(0,len(register)):
+            self.tbwgt_content_2.setRowCount(row + 1)#设置行数
+            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(register[i][6])))
+            #单元格字体大于4字节，字体缩小
+            if len(str(register[i][1]))> 4 :
+                item = QTableWidgetItem(str(register[i][1]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(25)
+                item.setFont(font)
+                self.tbwgt_content_2.setItem(i, 1, item)
+            else :
+                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(register[i][1])))
+
+            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[i][3])))
+            self.tbwgt_content_2.setItem(i, 3, QTableWidgetItem(str(register[i][7])))
+            
+            #单元格字体大于4字节，字体缩小
+            if len(str(register[i][2]))> 4 :
+                item = QTableWidgetItem(str(register[i][2]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(25)
+                item.setFont(font)
+                self.tbwgt_content_2.setItem(i, 4, item)
+            else :
+                self.tbwgt_content_2.setItem(i, 4, QTableWidgetItem(str(register[i][2])))
+            i += 1
+
+            
+        #调整单元格自动适应文字大小
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+
+
+
 
 class mod_schedule(QWidget,a):
     def __init__(self, args):
@@ -71,8 +143,9 @@ class mod_schedule(QWidget,a):
             # self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(args['content'][i][2])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
-
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
 class mod_judge(QWidget,c):
     def __init__(self, args):
         super(mod_judge, self).__init__()
@@ -90,8 +163,9 @@ class mod_judge(QWidget,c):
             self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(args['content'][i][3])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
-        # self.tbwgt_content.resizeColumnsToContents()  # 与内容同宽
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
 
 class mod_resultlist(QWidget,d):
     def __init__(self, args):
@@ -113,8 +187,13 @@ class mod_resultlist(QWidget,d):
             self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[i][7])))
             self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(register[i][3])))
             i += 1
-
-        self.column = self.tbwgt_content.columnCount()
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
 
 class mod_ranklist(QWidget,g):
     def __init__(self, args):
@@ -135,7 +214,14 @@ class mod_ranklist(QWidget,g):
             self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(register[i][3])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
+ 
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
 
 class mod_medal(QWidget,h):
     def __init__(self, args):
@@ -156,7 +242,14 @@ class mod_medal(QWidget,h):
             self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(register[i][3])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
+ 
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
 
 
 
@@ -177,7 +270,12 @@ class mod_startlist(QWidget,e):
             self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(args['content'][i][5])))
             i += 1
 
-        self.column = self.tbwgt_content.columnCount()
+
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
 
 class mod_welcome(QWidget,f):
     def __init__(self, args):
@@ -221,6 +319,6 @@ if __name__ == '__main__':
     }
 
     app = QApplication(sys.argv)
-    demo = mod_resultlist(args)
+    demo = mod_result(args)
     demo.show()
     sys.exit(app.exec_())

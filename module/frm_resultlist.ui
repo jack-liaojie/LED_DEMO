@@ -99,6 +99,22 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Preferred</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>300</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QTableWidget" name="tbwgt_content">
        <property name="palette">
         <palette>
@@ -666,6 +682,12 @@
         <property name="text">
          <string>啊发顺丰</string>
         </property>
+        <property name="font">
+         <font>
+          <family>Agency FB</family>
+          <pointsize>48</pointsize>
+         </font>
+        </property>
        </item>
        <item row="0" column="1">
         <property name="text">
@@ -690,6 +712,18 @@
        <item row="1" column="0">
         <property name="text">
          <string>阿斯顿发</string>
+        </property>
+        <property name="textAlignment">
+         <set>AlignLeading|AlignTop</set>
+        </property>
+        <property name="foreground">
+         <brush brushstyle="NoBrush">
+          <color alpha="255">
+           <red>255</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
         </property>
        </item>
        <item row="1" column="1">

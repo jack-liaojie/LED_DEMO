@@ -54,7 +54,7 @@ def json_dict(args):
 		# (2)json.loads()函数是将json格式数据转换为字典（可以这么理解，json.loads()函数是将字符串转化为字典）
 		data = json.loads(args)
 		return data #返回dict对象
-	except json.decode.JSONDecodeError as e:
+	except :
 		raise e
 	finally:
 		pass
@@ -71,9 +71,10 @@ if __name__ == "__main__":
 		"center":
 				{
 			    "height": "1080",
+			    "timer":300,
 			    "modulepath": "./initialize/confige.ini",
 			    "pic_path": "E:/2020EQ/CODE/LED/resource/sward.jpg",
-			    "stylesheet": "font-size:24pt;background-color:rgb(255, 0,0);",
+			    "stylesheet": "font-size:30pt;background-color:rgb(26, 36,56);",
 			    "udp_ip": "127.0.0.1",
 			    "udp_port": "8080",
 			    "width": "1920",
@@ -88,7 +89,8 @@ if __name__ == "__main__":
 				}
 	}
 
-	path="./initialize/confige.ini"
+	path="./initialize/config.ini"
+	args = dict_json(args)
 	data = write_file(path,args)
 
 
@@ -132,18 +134,42 @@ if __name__ == "__main__":
 	}
 
 	args =	{
-		"result" :{"title":"盛装舞步预赛"},
-		"data":
-			[
-				{"sport": "盛装舞步","event":"资格赛",
-				 "order":"3","rank": "1","name":"廖杰","city":"山西","horse":"火龙驹","result":"343.33",
-				 "E":"23","M":"123","C":"242","P":"234"}
-			],
-		"content":
-			[	{"order":"1","name":"吉喆","result":"222","city":"山东"},
-		 		{"order":"2","name":"吉喆","result":"222","city":"山东"},
-		 		{"order":"3","name":"吉喆","result":"222","city":"山东"}
-		 	]
+    "result":"盛装舞步个人赛资格赛",
+    "data":[
+        [
+            1,
+            4958,
+            "盛装舞步个人赛",
+            "资格赛",
+            "盛装舞步个人赛-资格赛",
+            null,
+            "浙江队",
+            "1",
+            "贾海涛",
+            "Corrinne Solyst",
+            "10",
+            "10",
+            "",
+            "62.368",
+            "0.000",
+            "65.263",
+            "60.263",
+            "0.000",
+            "(9)",
+            "(1)",
+            "(9)",
+            "(12)",
+            "(1)",
+            "62.631",
+            "9",
+            "62.631",
+            "9",
+            "[Image]浙江队",
+            "贾海涛 / Corrinne Solyst",
+            "浙江队"
+        ]
+    ],
+    "content":"[(19, \"刘丽娜\", \"Don Dinero\", \"新疆队\", \"17\", \"17\", \"1\", \"70.087\", 1, \"Q\", \"70.087\", None, \"[Image]新疆队\", \"[Image]IRM_Q\", \"新疆队\", \"刘丽娜 / Don Dinero\")]"
 	}
 
 	args =	{
