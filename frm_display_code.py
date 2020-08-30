@@ -6,8 +6,6 @@ from cls_loadModule import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from frm_top_code import cod_top
-from frm_bottom_code import cod_bottom
 from module.frm_display import *
 from cls_thread import *
 
@@ -19,10 +17,10 @@ class cod_display(QWidget,Ui_Form):
 	def __init__(self, arg):
 		super(cod_display, self).__init__()
 		self.ini_path = ''
-		self.arg = arg
 		self.setupUi(self)
+		self.arg = arg
 		self.load_config()
-		self.lbl_timer.setVisible(False)
+		self.lbl_timer.setText("     ")
 		self.tempform = QWidget
 		self.setWindowFlags(Qt.FramelessWindowHint)
 
@@ -73,8 +71,7 @@ class cod_display(QWidget,Ui_Form):
 			self.move(self.x,self.y)#窗体定位
 			self.resize(self.width,self.height) 	
 		finally:
-			self.ly_top.addWidget(cod_top(self.top_title))
-			self.ly_bottom.addWidget(cod_bottom(""))
+			self.lbl_title.setText(self.top_title)
 
 			#开启UDP监控线程
 			self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
@@ -117,7 +114,7 @@ class cod_display(QWidget,Ui_Form):
 
 		elif event.key() == Qt.Key_Control:
 			stop('fivetime')
-			self.lbl_timer.setText('00:00')
+			self.lbl_timer.setText('05:00')
 
 		elif event.key() == Qt.Key_Return:
 			start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
@@ -129,7 +126,7 @@ class cod_display(QWidget,Ui_Form):
 	def load_data(self,data_path):
 		"""对UDP数据进行解析并控制屏幕操作"""
 		try:		
-			self.lbl_timer.setVisible(False)
+			self.lbl_timer.setText("     ")
 			self.data_ini_args = json_dict(read_file(data_path))
 			a = self.data_ini_args.keys()
 			a = list(a)[0]
@@ -150,8 +147,7 @@ class cod_display(QWidget,Ui_Form):
 				if (a == "step"):
 					self.tempform = mod_step(self.data_ini_args)
 				elif (a == "result"):
-					self.lbl_timer.setVisible(True)
-					# self.ly_top.setVisible(False)
+					self.lbl_timer.setText('05:00')
 					self.tempform = mod_result(self.data_ini_args)
 				elif (a == "schedule"):
 					self.tempform = mod_schedule(self.data_ini_args)
@@ -172,7 +168,6 @@ class cod_display(QWidget,Ui_Form):
 					start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
 					
 				self.ly_center.addWidget(self.tempform)
-				# self.ly_center.addWidget(self.lbl_timer)
 
 		except Exception as e:
 			raise e

@@ -164,12 +164,12 @@ class cod_led(QMainWindow,Ui_MainWindow):
 
 
 	def ok(self):
-		if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定发送!", QMessageBox.Cancel | QMessageBox.Ok):
-			self.senddata(self.txt_data.toPlainText())
+		# if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定发送!", QMessageBox.Cancel | QMessageBox.Ok):
+		self.senddata(self.txt_data.toPlainText())
 
 	def cancel(self):
-		if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定退出!", QMessageBox.Cancel | QMessageBox.Ok):
-			self.close()
+		# if QMessageBox.Ok == QMessageBox.information(self, "提示", "确定退出!", QMessageBox.Cancel | QMessageBox.Ok):
+		self.close()
 			
 	def welcome(self):
 		args = ""

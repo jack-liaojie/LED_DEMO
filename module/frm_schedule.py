@@ -46,6 +46,8 @@ class Ui_Form(object):
         self.lbl_title.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.lbl_title.setObjectName("lbl_title")
         self.verticalLayout.addWidget(self.lbl_title)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.tbwgt_content = QtWidgets.QTableWidget(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -107,7 +109,8 @@ class Ui_Form(object):
         self.tbwgt_content.horizontalHeader().setDefaultSectionSize(200)
         self.tbwgt_content.verticalHeader().setVisible(False)
         self.tbwgt_content.verticalHeader().setDefaultSectionSize(72)
-        self.verticalLayout.addWidget(self.tbwgt_content)
+        self.horizontalLayout.addWidget(self.tbwgt_content)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

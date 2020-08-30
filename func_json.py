@@ -55,7 +55,7 @@ def json_dict(args):
 		data = json.loads(args)
 		return data #返回dict对象
 	except :
-		raise e
+		pass
 	finally:
 		pass
 
