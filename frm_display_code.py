@@ -42,6 +42,7 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_ip = ini_args["center"]['udp_ip']
 			self.udp_port = ini_args["center"]['udp_port']
 			self.pic_path = ini_args["center"]['pic_path']
+			self.scrolltime = int(ini_args["center"]['scrolltime']) if ini_args["center"]['scrolltime'].isnumeric() else 10000
 			self.top_title = ini_args["top"]['title']
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.move(self.x,self.y)#窗体定位
@@ -67,6 +68,7 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_ip = "127.0.0.1"
 			self.udp_port = "8080"
 			self.pic_path = "./resource/"
+			self.scrolltime = 10000
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.move(self.x,self.y)#窗体定位
 			self.resize(self.width,self.height) 	
@@ -124,6 +126,8 @@ class cod_display(QWidget,Ui_Form):
 
 		elif event.key() == Qt.Key_End:
 			self.tempform.starttimer()
+				
+				
 
 		elif event.key() == Qt.Key_Down:
 			self.tempform.endtimer()
@@ -153,19 +157,19 @@ class cod_display(QWidget,Ui_Form):
 					self.tempform = mod_step(self.data_ini_args)
 				elif (a == "result"):
 					self.lbl_timer.setText('05:00')
-					self.tempform = mod_result(self.data_ini_args)
+					self.tempform = mod_result(self.data_ini_args,self.scrolltime)
 				elif (a == "schedule"):
 					self.tempform = mod_schedule(self.data_ini_args)
 				elif (a == "startlist"):
-					self.tempform = mod_startlist(self.data_ini_args)
+					self.tempform = mod_startlist(self.data_ini_args,self.scrolltime)
 				elif (a == "r_list"):
-					self.tempform = mod_resultlist(self.data_ini_args)
+					self.tempform = mod_resultlist(self.data_ini_args,self.scrolltime)
 				elif (a == 'k_list'):
-					self.tempform = mod_ranklist(self.data_ini_args)
+					self.tempform = mod_ranklist(self.data_ini_args,self.scrolltime)
 				elif (a == "judge"):
 					self.tempform = mod_judge(self.data_ini_args)
 				elif (a == "medal"):
-					self.tempform = mod_medal(self.data_ini_args)
+					self.tempform = mod_medal(self.data_ini_args,self.scrolltime)
 				elif (a == "celebrate"):
 					self.tempform = mod_celebrate(self.data_ini_args)
 					
