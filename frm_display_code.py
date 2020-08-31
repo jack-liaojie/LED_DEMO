@@ -122,6 +122,11 @@ class cod_display(QWidget,Ui_Form):
 		elif event.key() == Qt.Key_Shift:
 			self.load_data(datapath)
 
+		elif event.key() == Qt.Key_End:
+			self.tempform.starttimer()
+
+		elif event.key() == Qt.Key_Down:
+			self.tempform.endtimer()
 
 	def load_data(self,data_path):
 		"""对UDP数据进行解析并控制屏幕操作"""

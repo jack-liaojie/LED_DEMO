@@ -41,27 +41,27 @@ class mod_result(QWidget,b):
         self.lbl_result.setText(str(args['data'][0][23]))#当场成绩
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','单位','成绩'])  # 设置表头内容
 
-        register = eval(args['content'])#字符串转列表
+        self.register = eval(args['content'])#字符串转列表
 
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(0,len(self.register)):#row代表的是数据data的行数
             self.tbwgt_content.setRowCount(i + 2)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[row][6])))#名次
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))#名次
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content.setItem(i, 1, item)
             else :
-                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[row][1])))#姓名
+                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))#姓名
 
-            # self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[row][3])))#单位
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[row][7])))#成绩
+            # self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))#单位
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[row][7])))#成绩
             #单元格字体大于4字节，字体缩小
-            # item = QTableWidgetItem(str(register[row][2]))#马名
+            # item = QTableWidgetItem(str(self.register[row][2]))#马名
             # font = QFont()
             # font.setFamily("微软雅黑")
             # font.setPointSize(25)
@@ -85,24 +85,24 @@ class mod_result(QWidget,b):
 
 
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(0,len(self.register)):#row代表的是数据data的行数
             self.tbwgt_content_2.setRowCount(i + 2)#设置行数
-            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(register[row][6])))
+            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content_2.setItem(i, 1, item)
             else :
-                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
+                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
 
-            # self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[row][3])))
-            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[row][7])))
+            # self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))
+            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(self.register[row][7])))
             #单元格字体大于4字节，字体缩小
-            # item = QTableWidgetItem(str(register[row][2]))
+            # item = QTableWidgetItem(str(self.register[row][2]))
             # font = QFont()
             # font.setFamily("微软雅黑")
             # font.setPointSize(25)
@@ -174,33 +174,53 @@ class mod_resultlist(QWidget,d):
     def __init__(self, args):
         super(mod_resultlist, self).__init__()
         self.setupUi(self)
-        self.args = args
         self.lbl_title.setText(args["r_list"])
         self.tbwgt_content.setColumnCount(5)  # 设定列数
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
 
+        self.register = eval(args['content'])#字符串转列表
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.loaddata)
+        self.rownum = 0 
+        self.loaddata()
+        self.timer.start(1000)
 
-        register = eval(args['content'])#字符串转列表
+    def endtimer(self): 
+        self.timer.stop()
 
+    def starttimer(self): 
+        self.timer.start(1000)
+
+    def loaddata(self):
+
+        row = self.rownum
+        self.tbwgt_content.clear()
+        self.tbwgt_content_2.clear()
+        
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(row,row+5):#row代表的是数据data的行数
+
+            if row>= len(self.register) : #判断数据显示是否到头
+                self.rownum = 0 
+                return
+
             self.tbwgt_content.setRowCount(i + 2)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[row][6])))
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content.setItem(i, 1, item)
             else :
-                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
+                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
 
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[row][3])))
-            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[row][7])))
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))
+            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(self.register[row][7])))
             #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
+            item = QTableWidgetItem(str(self.register[row][2]))
             font = QFont()
             font.setFamily("微软雅黑")
             font.setPointSize(25)
@@ -213,6 +233,7 @@ class mod_resultlist(QWidget,d):
             i += 1
             self.tbwgt_content.setItem(i, 1, item)
             i += 1
+        row += 1
         #调整单元格自动适应文字大小
         self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -224,24 +245,29 @@ class mod_resultlist(QWidget,d):
 
 
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(row,row+5):#row代表的是数据data的行数
+            
+            if row>= len(self.register) : #判断数据显示是否到头
+                self.rownum = 0 
+                return
+
             self.tbwgt_content_2.setRowCount(i + 2)#设置行数
-            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(register[row][6])))
+            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content_2.setItem(i, 1, item)
             else :
-                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
+                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
 
-            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[row][3])))
-            self.tbwgt_content_2.setItem(i, 3, QTableWidgetItem(str(register[row][7])))
+            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))
+            self.tbwgt_content_2.setItem(i, 3, QTableWidgetItem(str(self.register[row][7])))
             #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
+            item = QTableWidgetItem(str(self.register[row][2]))
             font = QFont()
             font.setFamily("微软雅黑")
             font.setPointSize(25)
@@ -254,6 +280,8 @@ class mod_resultlist(QWidget,d):
             i += 1
             self.tbwgt_content_2.setItem(i, 1, item)
             i += 1
+            row += 1
+            
         #调整单元格自动适应文字大小
         self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
@@ -261,6 +289,126 @@ class mod_resultlist(QWidget,d):
         self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
         self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
         # self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
+        self.rownum = row
+
+
+
+class mod_startlist(QWidget,e):
+    def __init__(self, args):
+        super(mod_startlist, self).__init__()
+        self.setupUi(self)
+        self.args = args
+        self.lbl_title.setText(args['startlist'])
+        self.tbwgt_content.setColumnCount(5)  # 设定列数
+        self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','马名','单位'])  # 设置表头内容
+        self.register = args['content']
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.loaddata)
+        self.rownum = 0 
+        self.loaddata()
+        self.timer.start(1000)
+
+    def endtimer(self): 
+        self.timer.stop()
+
+    def starttimer(self): 
+        self.timer.start(1000)
+
+    def loaddata(self):
+
+        row = self.rownum
+        self.tbwgt_content.clear()
+        self.tbwgt_content_2.clear()
+        
+        i = 0#i代表的是表格行数
+        for row in range(row,row+5):#row代表的是数据data的行数
+
+            if row>= len(self.register) : #判断数据显示是否到头
+                self.rownum = 0 
+                return
+
+
+            self.tbwgt_content.setRowCount(i + 2)#设置行数
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[row][0])))
+            #单元格字体大于4字节，字体缩小
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(30)
+                item.setFont(font)
+                self.tbwgt_content.setItem(i, 1, item)
+            else :
+                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
+
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[row][5])))
+            #单元格字体大于4字节，字体缩小
+            item = QTableWidgetItem(str(self.register[row][2]))
+            font = QFont()
+            font.setFamily("微软雅黑")
+            font.setPointSize(25)
+            font.setBold(True)
+            item.setFont(font)
+            item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
+            brush = QBrush(QColor(255, 255, 0))
+            brush.setStyle(Qt.NoBrush)
+            item.setForeground(brush)
+            i += 1
+            self.tbwgt_content.setItem(i, 1, item)
+            i += 1
+        row += 1
+        #调整单元格自动适应文字大小
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+
+
+        i = 0#i代表的是表格行数
+        for row in range(row,row+5):#row代表的是数据data的行数
+            
+            if row>= len(self.register) : #判断数据显示是否到头
+                self.rownum = 0 
+                return
+
+            self.tbwgt_content_2.setRowCount(i + 2)#设置行数
+            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(self.register[row][0])))
+            #单元格字体大于4字节，字体缩小
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
+                font = QFont()
+                font.setFamily("微软雅黑")
+                font.setPointSize(30)
+                item.setFont(font)
+                self.tbwgt_content_2.setItem(i, 1, item)
+            else :
+                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
+
+            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(self.register[row][5])))
+            #单元格字体大于4字节，字体缩小
+            item = QTableWidgetItem(str(self.register[row][2]))
+            font = QFont()
+            font.setFamily("微软雅黑")
+            font.setPointSize(25)
+            font.setBold(True)
+            item.setFont(font)
+            item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
+            brush = QBrush(QColor(255, 255, 0))
+            brush.setStyle(Qt.NoBrush)
+            item.setForeground(brush)
+            i += 1
+            self.tbwgt_content_2.setItem(i, 1, item)
+            i += 1
+
+            row += 1
+
+        #调整单元格自动适应文字大小
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
+
+        self.rownum = row
 
 
 
@@ -272,27 +420,27 @@ class mod_ranklist(QWidget,g):
         self.lbl_title.setText(args["k_list"])
         self.tbwgt_content.setColumnCount(5)  # 设定列数
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
-        register = eval(args['content'])#字符串转列表
+        self.register = eval(args['content'])#字符串转列表
 
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(0,len(self.register)):#row代表的是数据data的行数
             self.tbwgt_content.setRowCount(i + 2)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[row][6])))
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content.setItem(i, 1, item)
             else :
-                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
+                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
 
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[row][3])))
-            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[row][7])))
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))
+            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(self.register[row][7])))
             #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
+            item = QTableWidgetItem(str(self.register[row][2]))
             font = QFont()
             font.setFamily("微软雅黑")
             font.setPointSize(25)
@@ -316,24 +464,24 @@ class mod_ranklist(QWidget,g):
 
 
         i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
+        for row in range(0,len(self.register)):#row代表的是数据data的行数
             self.tbwgt_content_2.setRowCount(i + 2)#设置行数
-            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(register[row][6])))
+            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(self.register[row][6])))
             #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
+            if len(str(self.register[row][1]))> 4 :
+                item = QTableWidgetItem(str(self.register[row][1]))
                 font = QFont()
                 font.setFamily("微软雅黑")
                 font.setPointSize(30)
                 item.setFont(font)
                 self.tbwgt_content_2.setItem(i, 1, item)
             else :
-                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
+                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
 
-            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[row][3])))
-            self.tbwgt_content_2.setItem(i, 3, QTableWidgetItem(str(register[row][7])))
+            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(self.register[row][3])))
+            self.tbwgt_content_2.setItem(i, 3, QTableWidgetItem(str(self.register[row][7])))
             #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
+            item = QTableWidgetItem(str(self.register[row][2]))
             font = QFont()
             font.setFamily("微软雅黑")
             font.setPointSize(25)
@@ -363,15 +511,15 @@ class mod_medal(QWidget,h):
         self.lbl_title.setText(args["medal"])
         self.tbwgt_content.setColumnCount(5)  # 设定列数
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
-        register = args['content']#字符串转列表
+        self.register = args['content']#字符串转列表
         i = 0
-        for row in range(0,len(register)):
+        for row in range(0,len(self.register)):
             self.tbwgt_content.setRowCount(row + 1)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[i][6])))
-            self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[i][1])))
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[i][2])))
-            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(register[i][7])))
-            self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(register[i][3])))
+            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[i][6])))
+            self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[i][1])))
+            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(self.register[i][2])))
+            self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(self.register[i][7])))
+            self.tbwgt_content.setItem(i, 4, QTableWidgetItem(str(self.register[i][3])))
             i += 1
 
  
@@ -382,92 +530,6 @@ class mod_medal(QWidget,h):
         self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
         self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
         self.tbwgt_content.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeToContents)
-
-
-
-class mod_startlist(QWidget,e):
-    def __init__(self, args):
-        super(mod_startlist, self).__init__()
-        self.setupUi(self)
-        self.args = args
-        self.lbl_title.setText(args['startlist'])
-        self.tbwgt_content.setColumnCount(5)  # 设定列数
-        self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','马名','单位'])  # 设置表头内容
-
-        register = args['content']
-
-        i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
-            self.tbwgt_content.setRowCount(i + 2)#设置行数
-            self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(register[row][0])))
-            #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
-                font = QFont()
-                font.setFamily("微软雅黑")
-                font.setPointSize(30)
-                item.setFont(font)
-                self.tbwgt_content.setItem(i, 1, item)
-            else :
-                self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
-
-            self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(register[row][5])))
-            #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
-            font = QFont()
-            font.setFamily("微软雅黑")
-            font.setPointSize(25)
-            font.setBold(True)
-            item.setFont(font)
-            item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
-            brush = QBrush(QColor(255, 255, 0))
-            brush.setStyle(Qt.NoBrush)
-            item.setForeground(brush)
-            i += 1
-            self.tbwgt_content.setItem(i, 1, item)
-            i += 1
-        #调整单元格自动适应文字大小
-        self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-
-
-        i = 0#i代表的是表格行数
-        for row in range(0,len(register)):#row代表的是数据data的行数
-            self.tbwgt_content_2.setRowCount(i + 2)#设置行数
-            self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(register[row][0])))
-            #单元格字体大于4字节，字体缩小
-            if len(str(register[row][1]))> 4 :
-                item = QTableWidgetItem(str(register[row][1]))
-                font = QFont()
-                font.setFamily("微软雅黑")
-                font.setPointSize(30)
-                item.setFont(font)
-                self.tbwgt_content_2.setItem(i, 1, item)
-            else :
-                self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(register[row][1])))
-
-            self.tbwgt_content_2.setItem(i, 2, QTableWidgetItem(str(register[row][5])))
-            #单元格字体大于4字节，字体缩小
-            item = QTableWidgetItem(str(register[row][2]))
-            font = QFont()
-            font.setFamily("微软雅黑")
-            font.setPointSize(25)
-            font.setBold(True)
-            item.setFont(font)
-            item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
-            brush = QBrush(QColor(255, 255, 0))
-            brush.setStyle(Qt.NoBrush)
-            item.setForeground(brush)
-            i += 1
-            self.tbwgt_content_2.setItem(i, 1, item)
-            i += 1
-        #调整单元格自动适应文字大小
-        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
-        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-        self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
 
 

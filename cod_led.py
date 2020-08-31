@@ -221,7 +221,8 @@ class cod_led(QMainWindow,Ui_MainWindow):
 		elif self.F_EventLongName != "" and self.rdo_ranklist.isChecked() == True:
 			args =	{
 					"k_list":self.F_EventLongName,
-					"content":self.get_Proc('get_Proc_SCB_EQ_GetMedalList',[self.F_EventID,'chn'])
+					"content":strregex(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList',[self.F_MatchID,'chn']))
+					# "content":self.get_Proc('get_Proc_SCB_EQ_GetMedalList',[self.F_EventID,'chn'])
 				}
 
 		elif self.F_MatchLongName != "" and self.rdo_result.isChecked() == True:
