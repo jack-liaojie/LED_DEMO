@@ -42,6 +42,37 @@ class cod_led(QMainWindow,Ui_MainWindow):
 		self.rdo_ranklist.clicked.connect(self.welcome)
 		self.rdo_medal.clicked.connect(self.welcome)
 		self.rdo_celebrate.clicked.connect(self.welcome)
+		self.ckb_five.clicked.connect(self.fivestart)
+		self.ckb_twenty.clicked.connect(self.twentystart)
+		self.ckb_scrolling.clicked.connect(self.scrolling)
+	
+	def scrolling(self):
+		if self.ckb_scrolling.isChecked :self.ckb_scrolling.isChecked =False
+		args =	{
+					"scrolling":"scrolling"
+				}
+		x = dict_json(args)
+		self.txt_data.setText(x)
+		self.senddata(x)
+
+	def fivestart(self):
+		if self.ckb_twenty.isChecked :self.ckb_twenty.isChecked =False
+		args =	{
+					"fivestart":"fivestart"
+				}
+		x = dict_json(args)
+		self.txt_data.setText(x)
+		self.senddata(x)
+
+	def twentystart(self):
+		if self.ckb_five.isChecked :self.ckb_five.isChecked =False
+
+		args =	{
+					"twentystart":"twentystart"
+				}
+		x = dict_json(args)
+		self.txt_data.setText(x)
+		self.senddata(x)
 
 	def registerselect(self):
 		"""成绩运动员选择和步伐选择"""
@@ -297,6 +328,152 @@ class cod_led(QMainWindow,Ui_MainWindow):
 		self.column = tablewidget.columnCount()
 		# tablewidget.resizeRowsToContents()  # 设置行列高宽与内容匹配
 		tablewidget.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+
+
+#------------------------------------------------------------------------------------UDP控制系统
+import datetime
+import uuid
+def generateUUID():
+    id = uuid.uuid1()	# 还有uuid2、uuid3、uuid4、uuid5等其他方法
+    return id
+
+
+class mobilemessage(object):
+	"""docstring for mobilemessage"""
+	def __init__(self, arg):
+		super(mobilemessage, self).__init__()
+		self.arg = arg
+		self.receive(self.arg)
+
+	def receive(self,arg):
+		# a = {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Welcome",
+		#   "MessageID": "b981cbdd-341a-4275-bdc5-e2dcf4f0bd40",
+		#   "Timestamp": "2020-08-31 20:21:59.059"
+		# }
+		# judge:{
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Judge",
+		#   "MessageID": "dbb5011d-7642-47a4-9f60-a28c55e37f6b",
+		#   "Timestamp": "2020-08-31 20:21:59.054"
+		# }
+		# {
+		#   "RequestMessageID": "a4253f2d-7820-489f-bf8e-f11bfc308c36",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "JudgeResponse",
+		#   "MessageID": "0f0e72f0-09d9-4133-9a23-21ae9e348aaa",
+		#   "Timestamp": "2020-08-31 20:45:09.559"
+		# }
+ 
+
+		if (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg["MessageType"] == "Welcome"):
+			response = {}
+			response["RequestMessageID"]=self.arg["MessageID"]
+			response["MessageType"]="WelcomeResponse"
+			response["Timestamp"]= datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%3f')[:-3]  # 2019-01-28 11:09:01.529
+			response["MessageID"]= generateUUID()
+			response["Message"]= "欢迎屏成功"
+			response["Status"]= "Success"
+			sendmessage(response)
+
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+		elif (self.arg['MessageType'] == "Judge"):
+			pass
+			
+	def sendmessage(self,arg):
+		server.sendto(arg.encode('utf-8'), addr)
+		
+		# self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
+
+	def start_udp(self,arg,path="./initialize/data.ini"):
+		global server
+		try:
+			u_thread = UDPThread()
+			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			# 绑定 客户端口和地址:
+			server.bind(arg)
+
+			u_thread.sinOut.connect(self.load_data)
+			u_thread.start()
+			
+		except IOError as identifier:
+			u_thread.finished
+		finally:
+			self.udp_stop
+
+	def udp_stop():
+		global server
+		global datapath
+		u_thread.flag = False
+		server.close()
+		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+			
+
+class UDPThread(QThread):
+	"""线程类用于接收UDP（手机端或控制电脑的操作指令）"""
+	sinOut = pyqtSignal(str)
+
+	def __init__(self):
+		super(UDPThread, self).__init__()
+		self.flag = True
+	
+	def __del__(self):
+		self.flag = False
+		self.wait()
+
+	def run(self): 
+		global server
+		global datapath
+		global udpconn
+
+		while self.flag == True:
+			try:
+				data, addr = server.recvfrom(10240) #1024是接收字节 # resultlist 是关键字出现就报错
+				# data = server.recv(10024) #1024是接收字节
+				sx = str(data.decode('utf-8'))
+				server.sendto("ok".encode('utf-8'), addr)
+				server.close()
+			except WindowsError as identifier:
+				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
+				server.close()
+				server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				# 绑定 客户端口和地址:
+				server.bind(udpconn)
+			finally:
+				write_file(datapath,sx) #先将数据存储到本地
+				time.sleep(0.99)
+				self.sinOut.emit(sx)#发送数据到处理程序
 
 
 

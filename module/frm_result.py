@@ -12,7 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Form(object):
     def setupUi(self, Form):
-        Form.setObjectName("Form")
+        Form.setObjectName("ResultForm")
         Form.resize(1295, 792)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(79, 79, 118))

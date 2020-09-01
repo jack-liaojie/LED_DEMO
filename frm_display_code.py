@@ -16,17 +16,18 @@ class cod_display(QWidget,Ui_Form):
 	"""docstring for cod_display"""
 	def __init__(self, arg):
 		super(cod_display, self).__init__()
-		self.ini_path = ''
 		self.setupUi(self)
 		self.arg = arg
-		self.load_config()
+		self.ini_path = ''
 		self.lbl_timer.setText("     ")
 		self.tempform = QWidget
+		self.load_config()
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.fiveflag = True
-		self.countdownflag = True
+		self.scrollflag = True
 
 	def load_config(self):
+		"""加载ini文件"""
 		global udpconn
 		global datapath
 		try:
@@ -84,6 +85,7 @@ class cod_display(QWidget,Ui_Form):
 			
 
 	def start_udp(self,arg,path="./initialize/data.ini"):
+		"""启动线程监听udp指令"""
 		global server
 		try:
 			u_thread = UDPThread()
@@ -95,11 +97,12 @@ class cod_display(QWidget,Ui_Form):
 			u_thread.start()
 			
 		except IOError as identifier:
-			u_thread.finished
+			self.stop_udp
 		finally:
-			self.udp_stop
+			pass
 
-	def udp_stop():
+	def stop_udp():
+		"""udp指令线程停止"""
 		global server
 		global datapath
 		u_thread.flag = False
@@ -108,82 +111,121 @@ class cod_display(QWidget,Ui_Form):
 
 		
 	def keyPressEvent(self,event):
-		'''退出窗体快捷键escape'''
+		'''窗体快捷键'''
+		global datapath
 		try:
 			if event.key() == Qt.Key_Escape:
 				self.close()
 				self.arg.show()
 
 			elif event.key() == Qt.Key_Return:#5分钟正计时
-				if self.fiveflag == True:
-					self.fiveflag = False
-					start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
-				else :
-					self.fiveflag = True
-					stop('fivetime')
-					self.lbl_timer.setText('00:00')
+				self.fivestart()
 
 			elif event.key() == Qt.Key_Shift:#20秒倒计时
-				if self.countdownflag == True:
-					self.countdownflag = False
-					self.tempform.starttimer(self.counttime)
-				else :
-					self.countdownflag = True
-					self.tempform.endtimer()
+				self.twentystart()
 
 			elif event.key() == Qt.Key_Space:
-				self.load_data(datapath)
+
+				self.load_data(read_file(datapath))#通过本地数据进行加载操作
 
 		except :
 			return
 		finally:
 			self.key = ""
 
-	def load_data(self,data_path):
-		"""对UDP数据进行解析并控制屏幕操作"""
+	def scrolling(self):
+		"""翻屏显示启动"""
+		if self.scrollflag == True and (isinstance(self.tempform,mod_resultlist) or isinstance(self.tempform,mod_startlist) 
+		or isinstance(self.tempform,mod_ranklist) or isinstance(self.tempform,mod_medal)):
+			self.scrollflag = False
+			self.tempform.starttimer(self.scrolltime)
+
+		elif self.scrollflag == False and (isinstance(self.tempform,mod_resultlist) or isinstance(self.tempform,mod_startlist) 
+		or isinstance(self.tempform,mod_ranklist) or isinstance(self.tempform,mod_medal)):
+			self.scrollflag = True
+			self.tempform.endtimer()
+
+	def fivestart(self):
+		"""正计时5分钟启动"""
+		if self.fiveflag == True:
+			self.fiveflag = False
+			start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
+		else :
+			self.fiveflag = True
+			stop('fivetime')
+			self.lbl_timer.setText('00:00')
+
+	def twentystart(self):
+		"""倒计时20秒启动"""
+		if isinstance(self.tempform,mod_result):#判断是否是成绩处理模块
+			self.tempform.starttimer(self.counttime)
+
+	def load_data(self,sx):
+		"""对UDP数据进行解析并控制屏幕操作，是本地数据操作和在线数据操作的统一入口"""
 		try:		
-			self.lbl_timer.setText("     ")
-			self.data_ini_args = json_dict(read_file(data_path))
+			self.data_ini_args = json_dict(sx)
 			a = self.data_ini_args.keys()
 			a = list(a)[0]
 
 			if (a == "C8kPeuWjMxOqm4Ca"):
 				pass
 			
+			elif (a == "scrolling"):
+				self.scrolling()
+
+			elif (a == "twentystart"):
+				self.twentystart()
+
+			elif (a == "fivestart"):
+				self.fivestart()
+
 			else:
 
 				# 从ly_center卸载widget
 				if (self.ly_center.itemAt(0)): 
 					for i in reversed(range(self.ly_center.count())): 
-						self.ly_center.itemAt(i).widget().deleteLater()
+						self.ly_center.itemAt(i).widget().deleteLater()#两种方法都可以清除主窗体内的挂件
 						# ly_center.itemAt(i).widget().setParent(None)
 
 				if (a == "welcome"):
 					self.tempform = mod_welcome(self.data_ini_args)
+					self.ly_center.addWidget(self.tempform)
+
 				if (a == "step"):
 					self.tempform = mod_step(self.data_ini_args)
+					self.ly_center.addWidget(self.tempform)
+
 				elif (a == "result"):
 					self.lbl_timer.setText('00:00')
 					self.tempform = mod_result(self.data_ini_args,self.counttime)
+					self.ly_center.addWidget(self.tempform)
+
 				elif (a == "schedule"):
 					self.tempform = mod_schedule(self.data_ini_args)
+					self.ly_center.addWidget(self.tempform)
+
 				elif (a == "startlist"):
 					self.tempform = mod_startlist(self.data_ini_args,self.scrolltime)
+					self.ly_center.addWidget(self.tempform)
+
 				elif (a == "r_list"):
 					self.tempform = mod_resultlist(self.data_ini_args,self.scrolltime)
+					self.ly_center.addWidget(self.tempform)
 				elif (a == 'k_list'):
 					self.tempform = mod_ranklist(self.data_ini_args,self.scrolltime)
+					self.ly_center.addWidget(self.tempform)
+
 				elif (a == "judge"):
 					self.tempform = mod_judge(self.data_ini_args)
+					self.ly_center.addWidget(self.tempform)
 				elif (a == "medal"):
 					self.tempform = mod_medal(self.data_ini_args,self.scrolltime)
+					self.ly_center.addWidget(self.tempform)
 				elif (a == "celebrate"):
 					self.tempform = mod_celebrate(self.data_ini_args)
+					self.ly_center.addWidget(self.tempform)
+				
 					
-				elif (a == "timerstart"):
-					start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
-					
-				self.ly_center.addWidget(self.tempform)
 
 		except Exception as e:
 			raise e
@@ -191,6 +233,7 @@ class cod_display(QWidget,Ui_Form):
 			return
 
 class UDPThread(QThread):
+	"""线程类用于接收UDP（控制电脑的操作指令）"""
 	sinOut = pyqtSignal(str)
 
 	def __init__(self):
@@ -211,8 +254,8 @@ class UDPThread(QThread):
 				data, addr = server.recvfrom(10240) #1024是接收字节 # resultlist 是关键字出现就报错
 				# data = server.recv(10024) #1024是接收字节
 				sx = str(data.decode('utf-8'))
-				server.sendto("ok".encode('utf-8'), addr)
-				server.close()
+				# server.sendto("ok".encode('utf-8'), addr)
+				# server.close()
 			except WindowsError as identifier:
 				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
 				server.close()
@@ -220,13 +263,9 @@ class UDPThread(QThread):
 				# 绑定 客户端口和地址:
 				server.bind(udpconn)
 			finally:
-				write_file(datapath,sx)
+				write_file(datapath,sx) #先将数据存储到本地
 				time.sleep(0.99)
-				self.sinOut.emit(datapath)
-
-
-
-
+				self.sinOut.emit(sx)#发送数据到处理程序
 
 
 if __name__ == '__main__':
