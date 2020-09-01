@@ -267,6 +267,9 @@
        <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>30</number>
+       </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
         <number>72</number>
        </attribute>

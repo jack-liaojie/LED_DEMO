@@ -41,19 +41,34 @@ class mod_result(QWidget,b):
         self.lbl_C.setText(str(args['data'][0][15]))#C成绩
         self.lbl_result.setText(str(args['data'][0][23]))#当场成绩
         self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','单位','成绩'])  # 设置表头内容
-
+        self.lbl_counttimer.setText("  ")
         self.register = eval(args['content'])#字符串转列表
         self.timer = QTimer()
-        self.timer.timeout.connect(self.loaddata)
+        self.timer.timeout.connect(self.ReverseTime)
         self.rownum = 0 
+        self.temptime = 0
         self.loaddata()
-        self.timer.start(scrolltime)
+
+    def showtimer(self):
+        self.lbl_counttimer.setText(str(self.scrolltime))
 
     def endtimer(self): 
         self.timer.stop()
+        self.scrolltime = self.temptime
+        self.lbl_counttimer.setText("  ")
 
-    def starttimer(self): 
-        self.timer.start(self.scrolltime)
+    def starttimer(self,arg): 
+        self.showtimer()
+        self.scrolltime = arg
+        self.temptime = self.scrolltime
+        self.timer.start(1000)
+
+    def ReverseTime(self):
+        if self.scrolltime == -1 :
+            self.endtimer()
+        else :
+            self.lbl_counttimer.setText('{:0>2s}'.format(str(self.scrolltime)))
+            self.scrolltime -= 1
 
     def loaddata(self):
 

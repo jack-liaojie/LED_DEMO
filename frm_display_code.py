@@ -23,6 +23,8 @@ class cod_display(QWidget,Ui_Form):
 		self.lbl_timer.setText("     ")
 		self.tempform = QWidget
 		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.fiveflag = True
+		self.countdownflag = True
 
 	def load_config(self):
 		global udpconn
@@ -43,6 +45,7 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_port = ini_args["center"]['udp_port']
 			self.pic_path = ini_args["center"]['pic_path']
 			self.scrolltime = int(ini_args["center"]['scrolltime']) if ini_args["center"]['scrolltime'].isnumeric() else 10000
+			self.counttime = int(ini_args["center"]['counttime']) if ini_args["center"]['counttime'].isnumeric() else 20
 			self.top_title = ini_args["top"]['title']
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.move(self.x,self.y)#窗体定位
@@ -69,6 +72,7 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_port = "8080"
 			self.pic_path = "./resource/"
 			self.scrolltime = 10000
+			self.counttime = 20
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.move(self.x,self.y)#窗体定位
 			self.resize(self.width,self.height) 	
@@ -105,32 +109,35 @@ class cod_display(QWidget,Ui_Form):
 		
 	def keyPressEvent(self,event):
 		'''退出窗体快捷键escape'''
-		self.key = ""
-
-		if event.key() == Qt.Key_Escape:
-			try:
+		try:
+			if event.key() == Qt.Key_Escape:
 				self.close()
 				self.arg.show()
-			except Exception as e:
-				return
 
-		elif event.key() == Qt.Key_Control:
-			stop('fivetime')
-			self.lbl_timer.setText('05:00')
+			elif event.key() == Qt.Key_Return:#5分钟正计时
+				if self.fiveflag == True:
+					self.fiveflag = False
+					start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
+				else :
+					self.fiveflag = True
+					stop('fivetime')
+					self.lbl_timer.setText('00:00')
 
-		elif event.key() == Qt.Key_Return:
-			start_working(['fivetime',self.timer if self.timer>0 else 300],self.lbl_timer)
+			elif event.key() == Qt.Key_Shift:#20秒倒计时
+				if self.countdownflag == True:
+					self.countdownflag = False
+					self.tempform.starttimer(self.counttime)
+				else :
+					self.countdownflag = True
+					self.tempform.endtimer()
 
-		elif event.key() == Qt.Key_Shift:
-			self.load_data(datapath)
+			elif event.key() == Qt.Key_Space:
+				self.load_data(datapath)
 
-		elif event.key() == Qt.Key_End:
-			self.tempform.starttimer()
-				
-				
-
-		elif event.key() == Qt.Key_Down:
-			self.tempform.endtimer()
+		except :
+			return
+		finally:
+			self.key = ""
 
 	def load_data(self,data_path):
 		"""对UDP数据进行解析并控制屏幕操作"""
@@ -156,8 +163,8 @@ class cod_display(QWidget,Ui_Form):
 				if (a == "step"):
 					self.tempform = mod_step(self.data_ini_args)
 				elif (a == "result"):
-					self.lbl_timer.setText('05:00')
-					self.tempform = mod_result(self.data_ini_args,self.scrolltime)
+					self.lbl_timer.setText('00:00')
+					self.tempform = mod_result(self.data_ini_args,self.counttime)
 				elif (a == "schedule"):
 					self.tempform = mod_schedule(self.data_ini_args)
 				elif (a == "startlist"):
@@ -207,7 +214,7 @@ class UDPThread(QThread):
 				server.sendto("ok".encode('utf-8'), addr)
 				server.close()
 			except WindowsError as identifier:
-				sx = str(data.decode('utf-8'))
+				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
 				server.close()
 				server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 				# 绑定 客户端口和地址:

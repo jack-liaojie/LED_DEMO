@@ -71,7 +71,6 @@ class TimerThread(QThread):
 		self.flag = True
 	
 	def __del__(self):
-		self.flag = False
 		self.wait()
 
 	def run(self): 
@@ -82,15 +81,18 @@ global f_thread
 global d_thread
 global f_lbltime
 global d_lbltime
+global i
 def start_working(arg,lblobject):
 	"""lblobject需要传入QLabel对象"""
 	global sec
+	global i
 	if (arg[0] == 'fivetime'):
 		global f_lbltime
 		global f_thread
 		f_thread = TimerThread()
 		f_lbltime = lblobject
 		sec = arg[1] if type(arg) == int else 300
+		i = 0
 		f_thread.trigger.connect(five_working)
 		f_thread.start()
 
@@ -113,12 +115,13 @@ def curr_working():
 
 def five_working():
 	global sec
-	sec -= 1
-	if (sec == -1): 
+	global i
+	i += 1
+	if (i == sec + 1): 
+		i = 0
 		stop("fivetime")
 	else :
-		f_lbltime.setText(intotime(sec)) #在lbl对象上显示数字
-		# print(intotime(sec))
+		f_lbltime.setText(intotime(i)) #在lbl对象上显示数字
 
 def stop(arg):
 	try:
@@ -126,11 +129,14 @@ def stop(arg):
 		if (arg == 'datetime'):
 			global d_thread
 			d_thread.flag = False
+			d_thread.quit()
+			d_thread.terminate()
+
 		elif (arg == 'fivetime'):
 			global f_thread
 			f_thread.flag = False
-			global sec
-			sec = 300
+			f_thread.quit()
+			f_thread.terminate()
 	except Exception as e:
 		return
 	finally:
