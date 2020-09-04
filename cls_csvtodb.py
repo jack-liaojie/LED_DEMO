@@ -63,7 +63,7 @@ class get_Results(object):
         super().__init__()
         self.description = []
         self.conn = {"server": '127.0.0.1', "user": 'sa',
-                     "password": '111', "database": 'db_demo'}
+                     "password": '111', "database": 'n_eq'}
 
     def get_sport(param):
         return f"exec Proc_GetSports @LanguageCode={param[0]}"
@@ -233,10 +233,10 @@ class get_Results(object):
         @Field20 = N'{param[20]}',
         @Result= @Result output 
         select @Result"""
-
+# proc_UpdateRegister2DB，Proc_InitialDownload_UpdateRegister2DB
     def UpdateRegister2DB(param):
         return f"""DECLARE @Result int 
-        exec Proc_InitialDownload_UpdateRegister2DB
+        exec proc_UpdateRegister2DB
         @DisciplineCode = N'{param[0]}',
         @Result = @Result output
                 select @Result"""
@@ -388,7 +388,6 @@ class doProdure(object):
 
         x = get_Results()
         y = x.do('IntiTempRegisterTable', ["eq"])  # 初始化临时表人员和报项信息导入成功
-        print(y)
         params = InputCSV.readfile("equestrain.csv")
         for param in params:
             param.insert(0, "eq")  # 插入代码在头一个单词
@@ -403,7 +402,6 @@ class doProdure(object):
         params = InputCSV.readfile("equestrain.csv")  # 将人员和报项信息导入到数据库中的临时表
         for param in params:
             param.insert(0, "eq")
-            print(param)
             y = x.do('InsertUnOfficials2TempTable', param)
         y = x.do('UpdateUnOfficials2DB', ['eq'])  # 将临时表中的非竞赛官员信息导入更新到数据库中
         print(y)

@@ -38,6 +38,9 @@ class mod_result(QWidget,b):
 		self.lbl_E.setText(str(args['data'][0][13]))#E成绩
 		self.lbl_M.setText(str(args['data'][0][16]))#M成绩
 		self.lbl_C.setText(str(args['data'][0][15]))#C成绩
+		self.lbl_E_rank.setText(str(args['data'][0][18]))#E名次
+		self.lbl_M_rank.setText(str(args['data'][0][21]))#M名次
+		self.lbl_C_rank.setText(str(args['data'][0][20]))#C名次
 		self.lbl_result.setText(str(args['data'][0][23]))#当场成绩
 		self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','单位','成绩'])  # 设置表头内容
 		self.lbl_counttimer.setText("  ")

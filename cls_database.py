@@ -293,9 +293,9 @@ if __name__ == '__main__':
     # y = x.do_field('get_Proc_EQ_GetMatchResultList', ['1','1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchResultList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchRegisterList', ['1','chn'])
-    # y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','4958','0','chn'])
+    y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','4958','0','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
-    y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
 
     print(y)
     # print(y['results'])

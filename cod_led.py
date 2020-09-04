@@ -347,31 +347,23 @@ class mobilemessage(object):
 		self.receive(self.arg)
 
 	def receive(self,arg):
-		# a = {
-		#   "Key": "C8kPeuWjMxOqm4Ca",
-		#   "ClientID": "client1",
-		#   "MessageType": "Welcome",
-		#   "MessageID": "b981cbdd-341a-4275-bdc5-e2dcf4f0bd40",
-		#   "Timestamp": "2020-08-31 20:21:59.059"
-		# }
-		# judge:{
-		#   "Key": "C8kPeuWjMxOqm4Ca",
-		#   "ClientID": "client1",
-		#   "MessageType": "Judge",
-		#   "MessageID": "dbb5011d-7642-47a4-9f60-a28c55e37f6b",
-		#   "Timestamp": "2020-08-31 20:21:59.054"
-		# }
-		# {
-		#   "RequestMessageID": "a4253f2d-7820-489f-bf8e-f11bfc308c36",
-		#   "Status": "Success",
-		#   "Message": "XXX成功",
-		#   "MessageType": "JudgeResponse",
-		#   "MessageID": "0f0e72f0-09d9-4133-9a23-21ae9e348aaa",
-		#   "Timestamp": "2020-08-31 20:45:09.559"
-		# }
- 
 
 		if (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg["MessageType"] == "Welcome"):
+			# a = {
+			#   "Key": "C8kPeuWjMxOqm4Ca",
+			#   "ClientID": "client1",
+			#   "MessageType": "Welcome",
+			#   "MessageID": "b981cbdd-341a-4275-bdc5-e2dcf4f0bd40",
+			#   "Timestamp": "2020-08-31 20:21:59.059"
+			# }
+			# {
+			#   "RequestMessageID": "a5f1a2c3-0c73-4906-95f1-8ba229675b4a",
+			#   "Status": "Success",
+			#   "Message": "XXX成功",
+			#   "MessageType": "CelebrateResponse",
+			#   "MessageID": "79192a32-c6b9-44f4-8982-87c7283680b8",
+			#   "Timestamp": "2020-09-01 13:26:05.973"
+			# }
 			response = {}
 			response["RequestMessageID"]=self.arg["MessageID"]
 			response["MessageType"]="WelcomeResponse"
@@ -381,36 +373,433 @@ class mobilemessage(object):
 			response["Status"]= "Success"
 			sendmessage(response)
 
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Judge"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Judge",
+		#   "MessageID": "8a3a979a-9194-40f0-a372-15f9dc248411",
+		#   "Timestamp": "2020-09-01 13:26:11.806"
+		# }
+		# {
+		#   "RequestMessageID": "1f37b3ae-a91d-434d-b96a-9e3d63174085",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "JudgeResponse",
+		#   "MessageID": "822ba200-67bb-4fee-acf1-f4f36cb12954",
+		#   "Timestamp": "2020-09-01 13:26:06.128"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "HeartBeat"):#心跳
+		# {
+		#   "Data": {
+		#     "TimerInfos": {
+		#       "1": {
+		#         "TimerNumber": 1,
+		#         "IsIncrease": true,
+		#         "IsRunning": false,
+		#         "IsDisplay": true,
+		#         "TotalTime": "00:05"
+		#       },
+		#       "2": {
+		#         "TimerNumber": 1,
+		#         "IsIncrease": false,
+		#         "IsRunning": false,
+		#         "IsDisplay": true,
+		#         "TotalTime": "00:05"
+		#       }
+		#     },
+		#     "Title": "盛装舞步个人赛预赛",
+		#     "CurrentScreen": "StartList"
+		#   },
+		#   "RequestMessageID": "6fe9a19f-aaf5-4220-adca-358995b2eebb",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "HeartBeatResponse",
+		#   "MessageID": "195fe6e4-c257-43aa-bbb2-f92aaa162205",
+		#   "Timestamp": "2020-09-01 13:26:06.080"
+		# }
+
+		# {
+		# "Data": {
+		# "Battery": 88,
+		# "ReceivePort": 4000,
+		# "Version": "1.0"
+		# },
+		# "ClientID": "client1",
+		# "MessageType": "HeartBeat",
+		# "MessageID": "80b15a9a-7693-4f29-86df-67e982417591",
+		# "Timestamp": "2020-09-01 13:26:11.820"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Celebrate"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Celebrate",
+		#   "MessageID": "c569558e-8373-403e-bf06-22586b709eea",
+		#   "Timestamp": "2020-09-01 13:26:11.817"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "MatchNext"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "MatchNext",
+		#   "MessageID": "8b796e33-da9e-47b7-9678-aa41f6e6478a",
+		#   "Timestamp": "2020-09-01 13:26:11.826"
+		# }
+
+		# {
+		#   "Data": {
+		#     "Title": "盛装舞步个人赛预赛"
+		#   },
+		#   "RequestMessageID": "57a53646-2057-4296-bebc-200219cdf7c9",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "MatchNextResponse",
+		#   "MessageID": "78a64be8-ef48-4d89-b582-2888eafdb535",
+		#   "Timestamp": "2020-09-01 13:26:06.131"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Medal"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Medal",
+		#   "MessageID": "34fe5672-483a-4cb3-86cd-ce81ab408c87",
+		#   "Timestamp": "2020-09-01 13:26:11.808"
+		# }
+		# {
+		#   "RequestMessageID": "5adb26ed-b903-4560-a8e6-6c96e1128287",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "MedalResponse",
+		#   "MessageID": "db5a3b1e-32d4-4bd1-bd97-cbb0f35b8498",
+		#   "Timestamp": "2020-09-01 13:26:06.137"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "MatchPrevious"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "MatchPrevious",
+		#   "MessageID": "886bc405-9a75-478b-a201-da63e1dc473d",
+		#   "Timestamp": "2020-09-01 13:26:11.841"
+		# }
+		# {
+		#   "Data": {
+		#     "Title": "盛装舞步个人赛预赛"
+		#   },
+		#   "RequestMessageID": "c147bfa5-793e-4797-aec5-9ffc0c3423f5",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "MatchPreviousResponse",
+		#   "MessageID": "62efaf0a-6f94-4360-bd86-ed850cc285eb",
+		#   "Timestamp": "2020-09-01 13:26:06.135"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "RankList"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "RankList",
+		#   "MessageID": "ca472bd6-22af-4e64-9aa7-4a6e18d8a6cc",
+		#   "Timestamp": "2020-09-01 13:26:11.813"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Result"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Result",
+		#   "MessageID": "c6d11c3b-1dde-43fa-8fea-dc449391ffc6",
+		#   "Timestamp": "2020-09-01 13:26:11.810"
+		# }
+		# {
+		#   "RequestMessageID": "db287f37-094b-4e56-94d3-f482680ae0a0",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "ResultResponse",
+		#   "MessageID": "86db966e-b087-4724-889f-396e8541cd1f",
+		#   "Timestamp": "2020-09-01 13:26:06.143"
+		# }
+
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "ResultList"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "ResultList",
+		#   "MessageID": "05f940e4-179e-4925-806b-99909355160d",
+		#   "Timestamp": "2020-09-01 13:26:11.832"
+		# }
+		# {
+		#   "RequestMessageID": "1a91b2c3-ecc0-4751-b0cc-a203afda91a2",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "ResultListResponse",
+		#   "MessageID": "45b91f3e-5f7e-4442-b346-3d40132433b8",
+		#   "Timestamp": "2020-09-01 13:26:06.141"
+		# }
 			pass
 			
-		elif (self.arg['MessageType'] == "Judge"):
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Schedule"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Schedule",
+		#   "MessageID": "db55fc49-9c1e-4289-b872-c782c2e81a84",
+		#   "Timestamp": "2020-09-01 13:26:11.815"
+		# }
+		# {
+		#   "RequestMessageID": "7fc71213-ebeb-4550-9453-aabeb97a3f34",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "ScheduleResponse",
+		#   "MessageID": "58b554ad-94fb-41b7-b49c-f48b9254cd6b",
+		#   "Timestamp": "2020-09-01 13:26:06.145"
+		# }
 			pass
-			
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "StartList"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "StartList",
+		#   "MessageID": "a0e78c76-3227-4161-825b-51c0334f45f8",
+		#   "Timestamp": "2020-09-01 13:26:11.827"
+		# }
+		# {
+		#   "RequestMessageID": "cc11c006-55af-4a9f-8b74-6d4e4f6929d9",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "StartListResponse",
+		#   "MessageID": "557031fd-1a09-464a-9864-0bf7874bb6b9",
+		#   "Timestamp": "2020-09-01 13:26:06.147"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "Step"):
+		# {
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "Step",
+		#   "MessageID": "73823223-f028-4c9c-b66f-9e7c118309c4",
+		#   "Timestamp": "2020-09-01 13:26:11.713"
+		# }
+		# {
+		#   "RequestMessageID": "48a42d3f-dca0-4c5b-b686-f550860bbf3a",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "StepResponse",
+		#   "MessageID": "28d627b5-c960-459a-9d4b-edd9c5b44f40",
+		#   "Timestamp": "2020-09-01 13:26:06.149"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerHide"):
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerHide",
+		#   "MessageID": "7f7ed859-1ff4-47de-adcd-259c082e8197",
+		#   "Timestamp": "2020-09-01 13:26:11.830"
+		# }
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "RequestMessageID": "3fce1ac0-385f-4764-8c61-4fcb6b0b0a75",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "TimerHideResponse",
+		#   "MessageID": "39bcbfbd-8b13-47a7-a6c1-f2ab5ad1aefe",
+		#   "Timestamp": "2020-09-01 13:26:06.154"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerDisplay"):
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerDisplay",
+		#   "MessageID": "e1843fa3-4162-49f9-8c8b-ecb1e1fb5a08",
+		#   "Timestamp": "2020-09-01 13:26:11.839"
+		# }
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "RequestMessageID": "b55427a8-c6f5-4911-a752-60ab13061553",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "TimerDisplayResponse",
+		#   "MessageID": "63b01b47-de58-4297-b2aa-13803df9f8da",
+		#   "Timestamp": "2020-09-01 13:26:06.152"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerPause"):
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerPause",
+		#   "MessageID": "78bf00a0-b0eb-40a4-8426-dd2e747899ae",
+		#   "Timestamp": "2020-09-01 13:26:11.834"
+		# }
+		# {
+		#   "RequestMessageID": "640e8318-b29c-4e50-8320-ddb1e1628037",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "TimerPauseResponse",
+		#   "MessageID": "28790179-6f3a-4de9-8f32-edfb36fd64a3",
+		#   "Timestamp": "2020-09-01 13:26:06.160"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerPauseForAppResponse"):
+		# {
+		#   "RequestMessageID": "5f2a4bed-851c-4eb7-81cc-af7c46a67018",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerPauseForAppResponse",
+		#   "MessageID": "5a323631-b467-4a08-81e8-9d4aab8d1bd9",
+		#   "Timestamp": "2020-09-01 13:26:11.843"
+		# }
+		# {
+		#   "Data": {
+		#     "CurrentTime": "00:03:56.246",
+		#     "TimerNumber": 1
+		#   },
+		#   "MessageType": "TimerPauseForApp",
+		#   "MessageID": "c7ecd33e-f0d4-456b-87c7-91787ad77934",
+		#   "Timestamp": "2020-09-01 13:26:06.157"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerReset"):
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerReset",
+		#   "MessageID": "cee6099f-7b05-4c23-bae8-6adef3f458b9",
+		#   "Timestamp": "2020-09-01 13:26:11.836"
+		# }
+		# {
+		#   "RequestMessageID": "fba47535-e407-45a5-a4f2-6b654ade42f9",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "TimerResetResponse",
+		#   "MessageID": "d992d57e-e228-430d-b5f8-34a9addb6c9d",
+		#   "Timestamp": "2020-09-01 13:26:06.163"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerResetForAppResponse"):
+		# {
+		#   "RequestMessageID": "349d1ea7-27d6-4b24-bdc4-ff27ec0b5d67",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerResetForAppResponse",
+		#   "MessageID": "921fa705-ba7f-400a-ad87-2e7acbeaf628",
+		#   "Timestamp": "2020-09-01 13:26:11.846"
+		# }
+
+		# {
+		#   "Data": {
+		#     "CurrentTime": "00:05",
+		#     "TimerNumber": 1
+		#   },
+		#   "MessageType": "TimerResetForApp",
+		#   "MessageID": "6844fa41-0c15-47d6-8837-3474de2b4d12",
+		#   "Timestamp": "2020-09-01 13:26:06.161"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerStart"):
+		# {
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerStart",
+		#   "MessageID": "ef58fbf7-cc94-46ee-b408-801606dc0365",
+		#   "Timestamp": "2020-09-01 13:26:11.837"
+		# }
+		# {
+		#   "RequestMessageID": "5b7c1259-12af-41ad-8a64-de981b4e3772",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "MessageType": "TimerStartResponse",
+		#   "MessageID": "d6607e6d-2571-453b-a152-42ff2ba1b4bd",
+		#   "Timestamp": "2020-09-01 13:26:06.169"
+		# }
+			pass
+						
+		elif (self.arg["Key"] == "C8kPeuWjMxOqm4Ca" and self.arg['MessageType'] == "TimerStartForAppResponse"):
+		# {
+		#   "RequestMessageID": "54957d69-d424-480c-a614-38ccba273fba",
+		#   "Status": "Success",
+		#   "Message": "XXX成功",
+		#   "Data": {
+		#     "TimerNumber": 1
+		#   },
+		#   "Key": "C8kPeuWjMxOqm4Ca",
+		#   "ClientID": "client1",
+		#   "MessageType": "TimerStartForAppResponse",
+		#   "MessageID": "c637ff42-5afb-49d7-bf21-1ae58c5dd802",
+		#   "Timestamp": "2020-09-01 13:26:11.848"
+		# }
+
+		# {
+		#   "Data": {
+		#     "CurrentTime": "00:04:26.246",
+		#     "TimerNumber": 1,
+		#     "IsIncrease": true,
+		#     "IsRunning": false,
+		#     "IsDisplay": true,
+		#     "TotalTime": "00:05"
+		#   },
+		#   "MessageType": "TimerStartForApp",
+		#   "MessageID": "70376b6e-2860-4681-b0ed-372a53913c65",
+		#   "Timestamp": "2020-09-01 13:26:06.166"
+		# }
+
+			pass
+						
+	
 	def sendmessage(self,arg):
 		server.sendto(arg.encode('utf-8'), addr)
 		

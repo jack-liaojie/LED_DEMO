@@ -3,7 +3,7 @@ import socket
 import json
 from func_json import *
 from cls_loadModule import *
-from PyQt5.QtCore import *
+from PyQt5.QtCore import QThread
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from module.frm_display import *
@@ -22,6 +22,7 @@ class cod_display(QWidget,Ui_Form):
 		self.lbl_timer.setText("     ")
 		self.tempform = QWidget
 		self.load_config()
+		print("9.==========")
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.fiveflag = True
 		self.scrollflag = True
@@ -55,8 +56,8 @@ class cod_display(QWidget,Ui_Form):
 			painter = QPainter(self)
 			pixmap = QPixmap(self.pic_path)
 			painter.drawPixmap(self.rect(),pixmap)
+			self.u_thread = UDPThread()#很简单的一个坑，把线程的声明放到类的初始化函数下就ok了。
 			# 加入页眉和页脚
-			# start_working(['fivetime','5'],self.lbl_timer)
 			start_working(['datetime'],self.lbl_datetime)
 			
 		except:
@@ -77,9 +78,9 @@ class cod_display(QWidget,Ui_Form):
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.move(self.x,self.y)#窗体定位
 			self.resize(self.width,self.height) 	
+
 		finally:
 			self.lbl_title.setText(self.top_title)
-
 			#开启UDP监控线程
 			self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
 			
@@ -88,16 +89,23 @@ class cod_display(QWidget,Ui_Form):
 		"""启动线程监听udp指令"""
 		global server
 		try:
-			u_thread = UDPThread()
 			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			# server.setblocking(0)#非阻塞模式
+
 			# 绑定 客户端口和地址:
 			server.bind(arg)
 
-			u_thread.sinOut.connect(self.load_data)
-			u_thread.start()
+			self.u_thread.sinOut.connect(self.load_data)
+			self.u_thread.start()
 			
-		except IOError as identifier:
-			self.stop_udp
+		except OSError as e:
+			server.close()
+			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			# 绑定 客户端口和地址:
+			server.bind(arg)	
+
+		except RuntimeError as e:
+			raise e
 		finally:
 			pass
 
@@ -105,7 +113,7 @@ class cod_display(QWidget,Ui_Form):
 		"""udp指令线程停止"""
 		global server
 		global datapath
-		u_thread.flag = False
+		self.u_thread.flag = False
 		server.close()
 		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -114,7 +122,7 @@ class cod_display(QWidget,Ui_Form):
 		'''窗体快捷键'''
 		global datapath
 		try:
-			if event.key() == Qt.Key_Escape:
+			if event.key() == Qt.Key_A:#Qt.Key_Escape
 				self.close()
 				self.arg.show()
 
@@ -129,7 +137,7 @@ class cod_display(QWidget,Ui_Form):
 				self.load_data(read_file(datapath))#通过本地数据进行加载操作
 
 		except :
-			return
+			pass
 		finally:
 			self.key = ""
 
@@ -153,7 +161,7 @@ class cod_display(QWidget,Ui_Form):
 		else :
 			self.fiveflag = True
 			stop('fivetime')
-			self.lbl_timer.setText('00:00')
+			self.lbl_timer.setText('     ')
 
 	def twentystart(self):
 		"""倒计时20秒启动"""
@@ -225,8 +233,6 @@ class cod_display(QWidget,Ui_Form):
 					self.tempform = mod_celebrate(self.data_ini_args)
 					self.ly_center.addWidget(self.tempform)
 				
-					
-
 		except Exception as e:
 			raise e
 		finally:
@@ -236,12 +242,12 @@ class UDPThread(QThread):
 	"""线程类用于接收UDP（控制电脑的操作指令）"""
 	sinOut = pyqtSignal(str)
 
-	def __init__(self):
-		super(UDPThread, self).__init__()
-		self.flag = True
+	def __init__(self,parent=None):
+		super(UDPThread, self).__init__(parent)
+		self.udpflag = True
 	
 	def __del__(self):
-		self.flag = False
+		self.udpflag = False
 		self.wait()
 
 	def run(self): 
@@ -249,14 +255,15 @@ class UDPThread(QThread):
 		global datapath
 		global udpconn
 
-		while self.flag == True:
+		while self.udpflag == True:
 			try:
+
 				data, addr = server.recvfrom(10240) #1024是接收字节 # resultlist 是关键字出现就报错
 				# data = server.recv(10024) #1024是接收字节
 				sx = str(data.decode('utf-8'))
 				# server.sendto("ok".encode('utf-8'), addr)
 				# server.close()
-			except WindowsError as identifier:
+			except :
 				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
 				server.close()
 				server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
