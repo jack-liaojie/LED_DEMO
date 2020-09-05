@@ -18,6 +18,7 @@ class TimerThread(QThread):
 		self.flag = True
 	
 	def __del__(self):
+		self.quit()
 		self.wait()
 
 	def run(self): 
@@ -75,13 +76,10 @@ def stop(arg):
 			global d_thread
 			d_thread.flag = False
 			d_thread.quit()
-			d_thread.terminate()
-
 		elif (arg == 'fivetime'):
 			global f_thread
 			f_thread.flag = False
 			f_thread.quit()
-			f_thread.terminate()
 	except Exception as e:
 		return
 	finally:

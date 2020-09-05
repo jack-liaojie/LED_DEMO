@@ -1,4 +1,6 @@
+import sip
 import sys
+import struct
 import socket
 import json
 from func_json import *
@@ -14,27 +16,24 @@ global udpconn
 global datapath
 class cod_display(QWidget,Ui_Form):
 	"""docstring for cod_display"""
-	def __init__(self, arg):
+	def __init__(self, arg,path):
 		super(cod_display, self).__init__()
 		self.setupUi(self)
 		self.arg = arg
-		self.ini_path = ''
+		self.ini_path = path 
 		self.lbl_timer.setText("     ")
 		self.tempform = QWidget
 		self.load_config()
-		print("9.==========")
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.fiveflag = True
 		self.scrollflag = True
-
 	def load_config(self):
 		"""加载ini文件"""
 		global udpconn
 		global datapath
+
 		try:
-			
-			ini_path="./initialize/config.ini"
-			ini_args = str_dict(read_file(ini_path))
+			ini_args = str_dict(read_file(self.ini_path))
 			self.configpath = ini_args["center"]['modulepath']
 			datapath = ini_args["center"]['datapath']
 			self.x = int(ini_args["center"]['x'])
@@ -56,12 +55,13 @@ class cod_display(QWidget,Ui_Form):
 			painter = QPainter(self)
 			pixmap = QPixmap(self.pic_path)
 			painter.drawPixmap(self.rect(),pixmap)
+
 			self.u_thread = UDPThread()#很简单的一个坑，把线程的声明放到类的初始化函数下就ok了。
-			# 加入页眉和页脚
 			start_working(['datetime'],self.lbl_datetime)
+
 			
 		except:
-			ini_path="./initialize/config.ini"
+			self.ini_path="./initialize/config.ini"
 			self.configpath = "./module/"
 			datapath = "./initialize/data.ini"
 			self.x = 0
@@ -88,8 +88,13 @@ class cod_display(QWidget,Ui_Form):
 	def start_udp(self,arg,path="./initialize/data.ini"):
 		"""启动线程监听udp指令"""
 		global server
+
 		try:
 			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许地址重用。
+			# server.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack("ii", 1, 0))
+			#如果要已经处于连接状态的soket在调用closesocket后强制关闭，不经TIME_WAIT的过程：
+
 			# server.setblocking(0)#非阻塞模式
 
 			# 绑定 客户端口和地址:
@@ -113,9 +118,9 @@ class cod_display(QWidget,Ui_Form):
 		"""udp指令线程停止"""
 		global server
 		global datapath
-		self.u_thread.flag = False
-		server.close()
-		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		self.u_thread.finished()
+		server.shutdown(2)#关闭整个通道
+		# server.close()
 
 		
 	def keyPressEvent(self,event):
@@ -123,7 +128,12 @@ class cod_display(QWidget,Ui_Form):
 		global datapath
 		try:
 			if event.key() == Qt.Key_A:#Qt.Key_Escape
-				self.close()
+				self.stop_udp
+				stop("datetime")
+				stop("fivetime")
+				self.hide()
+				# sip.delete(self)#删除自身窗体
+				# self.close()
 				self.arg.show()
 
 			elif event.key() == Qt.Key_Return:#5分钟正计时
@@ -172,6 +182,7 @@ class cod_display(QWidget,Ui_Form):
 		"""对UDP数据进行解析并控制屏幕操作，是本地数据操作和在线数据操作的统一入口"""
 		try:		
 			self.data_ini_args = json_dict(sx)
+
 			a = self.data_ini_args.keys()
 			a = list(a)[0]
 
@@ -263,20 +274,25 @@ class UDPThread(QThread):
 				sx = str(data.decode('utf-8'))
 				# server.sendto("ok".encode('utf-8'), addr)
 				# server.close()
-			except :
-				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
-				server.close()
+			except Exception as e:
+
+				sx = str(data.decode('utf-8'))
+				write_file(datapath,sx) #先将数据存储到本地
+				self.sinOut.emit(sx)#发送数据到处理程序
+				server.shutdown(2)#关闭整个通道
+				# server.close()
 				server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				# server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许端口重用。
 				# 绑定 客户端口和地址:
 				server.bind(udpconn)
 			finally:
 				write_file(datapath,sx) #先将数据存储到本地
-				time.sleep(0.99)
 				self.sinOut.emit(sx)#发送数据到处理程序
+				
 
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
-	example = cod_display("hello")
+	example = cod_display("hello","./initialize/config.ini")
 	example.show()
 	sys.exit(app.exec_())
