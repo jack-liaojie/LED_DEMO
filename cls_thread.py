@@ -75,13 +75,17 @@ def stop(arg):
 		if (arg == 'datetime'):
 			global d_thread
 			d_thread.flag = False
-			d_thread.quit()
+			# d_thread.quit()
+			d_thread.terminate()
+			d_thread.wait()
 		elif (arg == 'fivetime'):
 			global f_thread
 			f_thread.flag = False
-			f_thread.quit()
+			# f_thread.quit()
+			f_thread.terminate()
+			f_thread.wait()
 	except Exception as e:
-		return
+		pass
 	finally:
 		return
 

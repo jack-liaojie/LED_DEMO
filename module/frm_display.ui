@@ -245,7 +245,7 @@
         <property name="font">
          <font>
           <family>微软雅黑</family>
-          <pointsize>30</pointsize>
+          <pointsize>20</pointsize>
           <weight>9</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -253,7 +253,7 @@
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(255, 255, 255);
-font: 75 30pt &quot;微软雅黑&quot;;</string>
+font: 75 20pt &quot;微软雅黑&quot;;</string>
         </property>
         <property name="text">
          <string>2020年</string>

@@ -29,8 +29,8 @@ class cod_main(QWidget, Ui_Form):
 		try:
 			self.save_dictfile()
 			self.close()
-			if isinstance(self.y,cod_display) == False :
-				self.y=cod_display(self,self.path)	
+			# if isinstance(self.y,cod_display) == False :
+			self.y=cod_display(self,self.path)	
 			self.y.show()
 
 		except Exception as e:

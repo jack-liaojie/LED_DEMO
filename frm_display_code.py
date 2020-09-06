@@ -120,6 +120,7 @@ class cod_display(QWidget,Ui_Form):
 		global datapath
 		self.u_thread.finished()
 		server.shutdown(2)#关闭整个通道
+		sip.delete(self)#删除自身窗体
 		# server.close()
 
 		
@@ -131,10 +132,9 @@ class cod_display(QWidget,Ui_Form):
 				self.stop_udp
 				stop("datetime")
 				stop("fivetime")
-				self.hide()
-				# sip.delete(self)#删除自身窗体
-				# self.close()
-				self.arg.show()
+				self.close()
+				# self.hide()
+				# self.arg.show()
 
 			elif event.key() == Qt.Key_Return:#5分钟正计时
 				self.fivestart()
@@ -220,9 +220,9 @@ class cod_display(QWidget,Ui_Form):
 					self.ly_center.addWidget(self.tempform)
 
 				elif (a == "schedule"):
-					self.tempform = mod_schedule(self.data_ini_args)
+					self.tempform = mod_schedule(self.data_ini_args,self.scrolltime)
 					self.ly_center.addWidget(self.tempform)
-
+					
 				elif (a == "startlist"):
 					self.tempform = mod_startlist(self.data_ini_args,self.scrolltime)
 					self.ly_center.addWidget(self.tempform)
@@ -230,6 +230,7 @@ class cod_display(QWidget,Ui_Form):
 				elif (a == "r_list"):
 					self.tempform = mod_resultlist(self.data_ini_args,self.scrolltime)
 					self.ly_center.addWidget(self.tempform)
+
 				elif (a == 'k_list'):
 					self.tempform = mod_ranklist(self.data_ini_args,self.scrolltime)
 					self.ly_center.addWidget(self.tempform)

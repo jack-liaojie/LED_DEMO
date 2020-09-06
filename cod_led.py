@@ -801,19 +801,21 @@ class mobilemessage(object):
 						
 	
 	def sendmessage(self,arg):
+		self.clsnew = cod_led("")
 		server.sendto(arg.encode('utf-8'), addr)
 		
 		# self.start_udp((self.udp_ip,int(self.udp_port)),datapath)
 
-	def start_udp(self,arg,path="./initialize/data.ini"):
+	def start_udp(self,arg):
 		global server
 		try:
 			u_thread = UDPThread()
 			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许地址重用。
 			# 绑定 客户端口和地址:
 			server.bind(arg)
 
-			u_thread.sinOut.connect(self.load_data)
+			u_thread.sinOut.connect(self.sendmessage)
 			u_thread.start()
 			
 		except IOError as identifier:
@@ -827,18 +829,18 @@ class mobilemessage(object):
 		u_thread.flag = False
 		server.close()
 		server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-			
 
+			
 class UDPThread(QThread):
-	"""线程类用于接收UDP（手机端或控制电脑的操作指令）"""
+	"""线程类用于接收UDP（控制电脑的操作指令）"""
 	sinOut = pyqtSignal(str)
 
-	def __init__(self):
-		super(UDPThread, self).__init__()
-		self.flag = True
+	def __init__(self,parent=None):
+		super(UDPThread, self).__init__(parent)
+		self.udpflag = True
 	
 	def __del__(self):
-		self.flag = False
+		self.udpflag = False
 		self.wait()
 
 	def run(self): 
@@ -846,22 +848,25 @@ class UDPThread(QThread):
 		global datapath
 		global udpconn
 
-		while self.flag == True:
+		while self.udpflag == True:
 			try:
+
 				data, addr = server.recvfrom(10240) #1024是接收字节 # resultlist 是关键字出现就报错
 				# data = server.recv(10024) #1024是接收字节
 				sx = str(data.decode('utf-8'))
-				server.sendto("ok".encode('utf-8'), addr)
-				server.close()
-			except WindowsError as identifier:
-				sx = str(data.decode('utf-8'))#读出发送的json字符串数据
-				server.close()
+				# server.sendto("ok".encode('utf-8'), addr)
+				# server.close()
+			except Exception as e:
+
+				sx = str(data.decode('utf-8'))
+				self.sinOut.emit(sx)#发送数据到处理程序
+				server.shutdown(2)#关闭整个通道
+				# server.close()
 				server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许端口重用。
 				# 绑定 客户端口和地址:
 				server.bind(udpconn)
 			finally:
-				write_file(datapath,sx) #先将数据存储到本地
-				time.sleep(0.99)
 				self.sinOut.emit(sx)#发送数据到处理程序
 
 

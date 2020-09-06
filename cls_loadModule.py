@@ -58,7 +58,7 @@ class mod_result(QWidget,b):
 	def endtimer(self): 
 		self.timer.stop()
 		self.scrolltime = self.temptime
-		self.lbl_counttimer.setText("  ")
+		self.lbl_counttimer.setText("    ")
 
 	def starttimer(self,arg): 
 		self.scrolltime = arg
@@ -149,7 +149,7 @@ class mod_result(QWidget,b):
 
 
 class mod_schedule(QWidget,a):
-	def __init__(self, args):
+	def __init__(self, args,scrolltime):
 		super(mod_schedule, self).__init__()
 		self.setupUi(self)
 		self.args = args
@@ -157,20 +157,67 @@ class mod_schedule(QWidget,a):
 		self.tbwgt_content.clear()
 		self.tbwgt_content.setColumnCount(6)  # 设定列数
 		self.tbwgt_content.setHorizontalHeaderLabels(['时间','比赛','赛段'])  # 设置表头内容
-		i = 1
-		for row in range(0,len(args["content"])):
-			self.tbwgt_content.setRowCount(row + 2)#设置行数
-			self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(args['content'][row][0])))
-			self.tbwgt_content.setItem(i, 3, QTableWidgetItem(str(args['content'][row][1])))
-			# self.tbwgt_content.setItem(i, 2, QTableWidgetItem(str(args['content'][i][2])))
-			i += 1
+		self.scrolltime= scrolltime
+		self.register = args['content']
+		self.timer = QTimer()
+		self.timer.timeout.connect(self.loaddata)
+		self.rownum = 0 
+		self.loaddata()
+		self.timer.start(self.scrolltime)
 
+	def endtimer(self): 
+		self.timer.stop()
+
+	def starttimer(self,args): 
+		self.timer.start(args)
+
+	def loaddata(self):
+
+		row = self.rownum
+		if row>= len(self.register) : #判断数据显示是否到头,重新加载不空屏显示。
+			row = 0 
+
+		self.tbwgt_content.clear()
+		self.tbwgt_content_2.clear()
+		
+		i = 0#i代表的是表格行数
+		for row in range(row,row+5):#row代表的是数据data的行数
+
+			if row>= len(self.register) : #判断数据显示是否到头
+				self.rownum = 0 
+				return
+
+			self.tbwgt_content.setRowCount(i + 2)#设置行数
+			self.tbwgt_content.setItem(i, 0, QTableWidgetItem(str(self.register[row][0])))
+			self.tbwgt_content.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
+
+			i += 1
+		row += 1
 		#调整单元格自动适应文字大小
 		self.tbwgt_content.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+		self.tbwgt_content.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
 		self.tbwgt_content.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
-		self.tbwgt_content.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeToContents)
-		self.tbwgt_content.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeToContents)
-		
+
+		i = 0#i代表的是表格行数
+		for row in range(row,row+5):#row代表的是数据data的行数
+			
+			if row>= len(self.register) : #判断数据显示是否到头
+				self.rownum = 0 
+				return
+
+			self.tbwgt_content_2.setRowCount(i + 2)#设置行数
+			self.tbwgt_content_2.setItem(i, 0, QTableWidgetItem(str(self.register[row][0])))
+			self.tbwgt_content_2.setItem(i, 1, QTableWidgetItem(str(self.register[row][1])))
+			i += 1
+			row += 1
+			
+		#调整单元格自动适应文字大小
+		self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+		self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
+		self.tbwgt_content_2.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+
+		self.rownum = row
+
 class mod_judge(QWidget,c):
 	def __init__(self, args):
 		super(mod_judge, self).__init__()
@@ -198,7 +245,7 @@ class mod_resultlist(QWidget,d):
 	def __init__(self, args,scrolltime):
 		super(mod_resultlist, self).__init__()
 		self.setupUi(self)
-		self.lbl_title.setText(args["r_list"])
+		self.lbl_title.setText(args["r_list"]+ "成绩公告")
 		self.tbwgt_content.setColumnCount(5)  # 设定列数
 		self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
 		self.scrolltime= scrolltime
@@ -219,6 +266,9 @@ class mod_resultlist(QWidget,d):
 	def loaddata(self):
 
 		row = self.rownum
+		if row>= len(self.register) : #判断数据显示是否到头,重新加载不空屏显示。
+			row = 0 
+
 		self.tbwgt_content.clear()
 		self.tbwgt_content_2.clear()
 		
@@ -323,7 +373,7 @@ class mod_startlist(QWidget,e):
 		super(mod_startlist, self).__init__()
 		self.setupUi(self)
 		self.args = args
-		self.lbl_title.setText(args['startlist'])
+		self.lbl_title.setText(args['startlist']+ "秩序单")
 		self.tbwgt_content.setColumnCount(5)  # 设定列数
 		self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','马名','单位'])  # 设置表头内容
 		self.register = args['content']
@@ -343,6 +393,9 @@ class mod_startlist(QWidget,e):
 	def loaddata(self):
 
 		row = self.rownum
+		if row>= len(self.register) : #判断数据显示是否到头,重新加载不空屏显示。
+			row = 0 
+
 		self.tbwgt_content.clear()
 		self.tbwgt_content_2.clear()
 		
@@ -443,7 +496,7 @@ class mod_ranklist(QWidget,g):
 		super(mod_ranklist, self).__init__()
 		self.setupUi(self)
 		self.args = args
-		self.lbl_title.setText(args["k_list"])
+		self.lbl_title.setText(args["k_list"] + "名次公告")
 		self.tbwgt_content.setColumnCount(5)  # 设定列数
 		self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
 		self.scrolltime= scrolltime
@@ -463,6 +516,9 @@ class mod_ranklist(QWidget,g):
 	def loaddata(self):
 
 		row = self.rownum
+		if row>= len(self.register) : #判断数据显示是否到头,重新加载不空屏显示。
+			row = 0 
+
 		self.tbwgt_content.clear()
 		self.tbwgt_content_2.clear()
 		
@@ -567,7 +623,7 @@ class mod_medal(QWidget,h):
 		self.setupUi(self)
 		self.args = args
 		self.scrolltime = scrolltime
-		self.lbl_title.setText(args["medal"])
+		self.lbl_title.setText(args["medal"]+ "奖牌公告")
 		self.tbwgt_content.setColumnCount(5)  # 设定列数
 		self.tbwgt_content.setHorizontalHeaderLabels(['名次','姓名','成绩','马名','单位'])  # 设置表头内容
 
@@ -587,6 +643,9 @@ class mod_medal(QWidget,h):
 	def loaddata(self):
 
 		row = self.rownum
+		if row>= len(self.register) : #判断数据显示是否到头,重新加载不空屏显示。
+			row = 0 
+
 		self.tbwgt_content.clear()
 		
 		i = 0#i代表的是表格行数
