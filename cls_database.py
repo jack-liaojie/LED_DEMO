@@ -90,11 +90,11 @@ class get_Results(object):
                     @EventID='{param[0]}',
                     @LanguageCode='{param[1]}'
                     """
-    def get_Proc_Report_EQ_GetCompetitionSchedule(param):
+    def get_Proc_LED_EQ_GetCompetitionSchedule(param):
         # 返回竞赛日程表
-        return f"""exec Proc_Report_EQ_GetCompetitionSchedule
+        return f"""exec Proc_LED_EQ_GetCompetitionSchedule
                     @DisciplineID='{param[0]}',
-                    @@DateTime='{param[1]}',
+                    @DateTime='{param[1]}',
                     @LanguageCode='{param[2]}'
                     """
 
@@ -189,6 +189,23 @@ class get_Results(object):
                     @MatchID='{param[0]}',
                     @LanguageCode='{param[1]}'
                 """
+    def get_Proc_EQ_InitialDownload_InsertRiderHorse2DB(param):
+        return f"""exec Proc_EQ_InitialDownload_InsertRiderHorse2DB
+                """
+    def get_Proc_InitialDownload_Insert2sheet(param):
+        return f"""DECLARE @Result int exec Proc_InitialDownload_Insert2sheet
+                    @Field1='{param[0]}',
+                    @Field2='{param[1]}',
+                    @Field3='{param[2]}',
+                    @Field4='{param[3]}',
+                    @Field5='{param[4]}',
+                    @Field6='{param[5]}',
+                    @Field7='{param[6]}',
+                    @Field8='{param[7]}',
+                    @Field9='{param[8]}',
+                    @Field10='{param[9]}',
+                    @Result=@Result output
+                    select @Result"""
     def get_default(param):
         pass
 
@@ -216,6 +233,9 @@ class get_Results(object):
         'get_Proc_AutoSwitch_SearchMatches': get_Proc_AutoSwitch_SearchMatches,
         'get_Proc_EQ_GetMatchResultList': get_Proc_EQ_GetMatchResultList,
         "get_Proc_EQ_GetMatchResultDetailList":get_Proc_EQ_GetMatchResultDetailList,
+        "get_Proc_EQ_InitialDownload_InsertRiderHorse2DB":get_Proc_EQ_InitialDownload_InsertRiderHorse2DB,
+        "get_Proc_InitialDownload_Insert2sheet":get_Proc_InitialDownload_Insert2sheet,
+        "get_Proc_LED_EQ_GetCompetitionSchedule":get_Proc_LED_EQ_GetCompetitionSchedule,
         "get_default": get_default
     }
 
@@ -268,6 +288,10 @@ class get_Results(object):
         return (self.results)
         # return strtojs_format(self.results)
 
+    def exesql(self, operation):
+        with open_db(self.conn['server'], self.conn['user'], self.conn['password'], self.conn['database']) as db:
+            db.execute(operation)
+
 
 if __name__ == '__main__':
     args = {"dbserver":".","dbport":"1433","dbuser":"sa","dbpwd":"111","dbdatabase":"bj_eq"}
@@ -293,9 +317,12 @@ if __name__ == '__main__':
     # y = x.do_field('get_Proc_EQ_GetMatchResultList', ['1','1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchResultList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchRegisterList', ['1','chn'])
-    y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','4958','0','chn'])
+    y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','7966','0','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
-
-    print(y)
-    # print(y['results'])
+    # y = x.do_field('get_Proc_EQ_InitialDownload_InsertRiderHorse2DB',[''])
+    # y = x.do_field('get_Proc_InitialDownload_Insert2sheet',['1','法国','个人','廖杰','','Corrinne Solyst','10','','',''])
+    # y = x.do_field('get_Proc_LED_EQ_GetCompetitionSchedule',[1, 'ALL', 'CHN', 1])
+    # x.exesql('truncate table Sheet1$')
+    
+    print(y['results'])

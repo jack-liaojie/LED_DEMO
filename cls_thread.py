@@ -30,6 +30,8 @@ global d_thread
 global f_lbltime
 global d_lbltime
 global i
+global sec
+
 def start_working(arg,lblobject):
 	"""lblobject需要传入QLabel对象"""
 	global sec
@@ -39,8 +41,11 @@ def start_working(arg,lblobject):
 		global f_thread
 		f_thread = TimerThread()
 		f_lbltime = lblobject
-		sec = arg[1] if type(arg) == int else 300
-		i = 0
+		if type(arg[1]) == int :
+			i = 0
+		else:
+			i = sec
+
 		f_thread.trigger.connect(five_working)
 		f_thread.start()
 
@@ -63,23 +68,23 @@ def five_working():
 	global sec
 	global i
 	i += 1
-	if (i == sec + 1): 
-		i = 0
-		stop("fivetime")
-	else :
-		f_lbltime.setText(intotime(i)) #在lbl对象上显示数字
+	f_lbltime.setText(intotime(i)) #在lbl对象上显示数字
+	sec = i
 
-def stop(arg):
+def stop_working(arg):
 	try:
 
 		if (arg == 'datetime'):
 			global d_thread
+			global sec
+
 			d_thread.flag = False
 			# d_thread.quit()
 			d_thread.terminate()
 			d_thread.wait()
 		elif (arg == 'fivetime'):
 			global f_thread
+			global five_interupttime
 			f_thread.flag = False
 			# f_thread.quit()
 			f_thread.terminate()

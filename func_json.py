@@ -1,11 +1,42 @@
 import json
 import uuid
 import re
+import csv
 from decimal import Decimal
 
+class ImportCSV(object):
+	"""docstring for ClassName"""
+
+	def __init__(self, arg):
+		super(ImportCSV, self).__init__()
+		self.arg = arg
+# 2
+
+	def readcsvfile(filename):
+		try:
+			rows = []
+			with open(filename, 'r', encoding='utf-8') as f:
+				reader = csv.reader(f)
+				# print(type(reader))
+				for row in reader:
+					rows.append(row)
+			return rows
+		except Exception as e:
+			raise e
+		finally:
+			pass
+		
+
+	def writecsvfile(filename, params):
+		with open(filename, 'w', encoding='utf-8',newline='') as f:
+			csv_writer = csv.writer(f)
+			for row in params:
+				csv_writer.writerow(row)
+		f.close()
+
 def generateUUID():
-    id = uuid.uuid1()	# 还有uuid2、uuid3、uuid4、uuid5等其他方法
-    return id
+	id = uuid.uuid1()	# 还有uuid2、uuid3、uuid4、uuid5等其他方法
+	return id
 
 def write_file(path,args):
 	try:
@@ -70,16 +101,16 @@ if __name__ == "__main__":
 				},
 		"center":
 				{
-			    "height": "1080",
-			    "timer":300,
-			    "modulepath": "./initialize/confige.ini",
-			    "pic_path": "E:/2020EQ/CODE/LED/resource/sward.jpg",
-			    "stylesheet": "font-size:30pt;background-color:rgb(26, 36,56);",
-			    "udp_ip": "127.0.0.1",
-			    "udp_port": "8080",
-			    "width": "1920",
-			    "x": "0",
-			    "y": "0"
+				"height": "1080",
+				"timer":300,
+				"modulepath": "./initialize/confige.ini",
+				"pic_path": "E:/2020EQ/CODE/LED/resource/sward.jpg",
+				"stylesheet": "font-size:30pt;background-color:rgb(26, 36,56);",
+				"udp_ip": "127.0.0.1",
+				"udp_port": "8080",
+				"width": "1920",
+				"x": "0",
+				"y": "0"
 				},
 		"bottom":
 				{
@@ -100,24 +131,24 @@ if __name__ == "__main__":
 	}
 
 	args =	{
-		    "schedule":"盛装舞步个人赛资格赛",
-		    "content":[
-		        [
-		            "09:00",
-		            "盛装舞步个人赛-资格赛",
-		            "盛装舞步个人赛-资格赛"
-		        ],
-		        [
-		            "09:00",
-		            "盛装舞步个人赛-预赛",
-		            "盛装舞步个人赛-预赛"
-		        ],
-		        [
-		            "09:00",
-		            "盛装舞步个人赛-决赛",
-		            "盛装舞步个人赛-决赛"
-		        ]
-		    ]
+			"schedule":"盛装舞步个人赛资格赛",
+			"content":[
+				[
+					"09:00",
+					"盛装舞步个人赛-资格赛",
+					"盛装舞步个人赛-资格赛"
+				],
+				[
+					"09:00",
+					"盛装舞步个人赛-预赛",
+					"盛装舞步个人赛-预赛"
+				],
+				[
+					"09:00",
+					"盛装舞步个人赛-决赛",
+					"盛装舞步个人赛-决赛"
+				]
+			]
 		}
 
 	args =	{
@@ -134,42 +165,42 @@ if __name__ == "__main__":
 	}
 
 	args =	{
-    "result":"盛装舞步个人赛资格赛",
-    "data":[
-        [
-            1,
-            4958,
-            "盛装舞步个人赛",
-            "资格赛",
-            "盛装舞步个人赛-资格赛",
-            null,
-            "浙江队",
-            "1",
-            "贾海涛",
-            "Corrinne Solyst",
-            "10",
-            "10",
-            "",
-            "62.368",
-            "0.000",
-            "65.263",
-            "60.263",
-            "0.000",
-            "(9)",
-            "(1)",
-            "(9)",
-            "(12)",
-            "(1)",
-            "62.631",
-            "9",
-            "62.631",
-            "9",
-            "[Image]浙江队",
-            "贾海涛 / Corrinne Solyst",
-            "浙江队"
-        ]
-    ],
-    "content":"[(19, \"刘丽娜\", \"Don Dinero\", \"新疆队\", \"17\", \"17\", \"1\", \"70.087\", 1, \"Q\", \"70.087\", None, \"[Image]新疆队\", \"[Image]IRM_Q\", \"新疆队\", \"刘丽娜 / Don Dinero\")]"
+	"result":"盛装舞步个人赛资格赛",
+	"data":[
+		[
+			1,
+			4958,
+			"盛装舞步个人赛",
+			"资格赛",
+			"盛装舞步个人赛-资格赛",
+			null,
+			"浙江队",
+			"1",
+			"贾海涛",
+			"Corrinne Solyst",
+			"10",
+			"10",
+			"",
+			"62.368",
+			"0.000",
+			"65.263",
+			"60.263",
+			"0.000",
+			"(9)",
+			"(1)",
+			"(9)",
+			"(12)",
+			"(1)",
+			"62.631",
+			"9",
+			"62.631",
+			"9",
+			"[Image]浙江队",
+			"贾海涛 / Corrinne Solyst",
+			"浙江队"
+		]
+	],
+	"content":"[(19, \"刘丽娜\", \"Don Dinero\", \"新疆队\", \"17\", \"17\", \"1\", \"70.087\", 1, \"Q\", \"70.087\", None, \"[Image]新疆队\", \"[Image]IRM_Q\", \"新疆队\", \"刘丽娜 / Don Dinero\")]"
 	}
 
 	args =	{

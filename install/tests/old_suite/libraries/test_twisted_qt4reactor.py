@@ -44,7 +44,7 @@ def main():
     reactor.addSystemEventTrigger('after', 'shutdown', app.quit)
 
     # Shutdown twisted when window is closed.
-    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"), reactor.stop)
+    app.connect(app, QtCore.SIGNAL("lastWindowClosed()"), reactor.stop_working)
 
     # Do not block test to finish.
     reactor.runReturn()
