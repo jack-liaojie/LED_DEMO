@@ -23,7 +23,7 @@ class cod_display(QWidget,Ui_Form):
 		self.arg = arg
 		self.ini_path = path
 		self.tempform = QWidget
-		self.fivetime = 300#设置默认计时时间
+		self.fivetime = 0#设置默认计时时间
 		self.fiveflag = True
 		self.twentyflag = True
 		self.twentypauseflag = False
@@ -34,6 +34,9 @@ class cod_display(QWidget,Ui_Form):
 		self.clear_led()
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.lbl_date.setText(QDate.currentDate().toString("yyyy-MM-dd dddd"))
+		self.fivetimer = QTimer()
+		self.fivetimer.setInterval(1000)
+		self.fivetimer.timeout.connect(self.goTime)
 		self.twentytimer = QTimer()
 		self.twentytimer.timeout.connect(self.ReverseTime)
 	#清屏
@@ -58,7 +61,7 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_port = ini_args["center"]['udp_port']
 			udpconn = (self.udp_ip,int(self.udp_port))
 			self.u_thread = UDPThread()#很简单的一个坑，把线程的声明放到类的初始化函数下就ok了。
-			start_working(['datetime'],self.lbl_datetime)
+			start_working(self.lbl_datetime)
 		except:
 			pass
 		finally:
@@ -151,32 +154,40 @@ class cod_display(QWidget,Ui_Form):
 
 	def fivestart(self,timenum,fiveflag):
 		"""正计时5分钟启动"""
-		self.fivetime = timenum
-		if fiveflag == '1' and self.fivepauseflag == False:#开始
-			start_working(['fivetime',timenum],self.lbl_fivetimer)
+
+		if fiveflag == '1' and self.fivepauseflag == False:  # 开始
+			if self.fivetimer.isActive():return
+			self.fivetime = 0
+			self.fivetimer.start()
+			return
 		elif  fiveflag == '1' and self.fivepauseflag == True:#开始
-			start_working(['fivetime',"True"],self.lbl_fivetimer)
+
+			self.fivetimer.start()
+			return
 		elif fiveflag == '0':#暂停
 			self.fivepauseflag = True
-			stop_working('fivetime')
+			self.fivetimer.stop()
+			return
 		elif fiveflag == '2':#复位
-			stop_working('fivetime')
 			self.lbl_fivetimer.setText("00:00")
+			self.fivetimer.stop()
 			self.fivepauseflag = False
+			return
 		elif fiveflag == '3':#清屏
-			stop_working('fivetime')
 			self.lbl_fivetimer.setText("")
+			self.fivetimer.stop()
 			self.fivepauseflag = False
+			return
 
 	def twentystart(self,timenum,twentyflag):
 		"""倒计时20秒启动"""
 		if twentyflag == '1' and self.twentypauseflag == False:#开始
-			self.scrolltime = timenum
+			if self.twentytimer.isActive():return
+			self.twentytime = timenum
 			self.twentytimer.start(1000)
 			return
 		elif  twentyflag == '1' and self.twentypauseflag == True:#开始
 			self.twentytimer.start(1000)
-
 			return
 		elif twentyflag == '0' :#暂停
 			self.twentypauseflag = True
@@ -198,8 +209,14 @@ class cod_display(QWidget,Ui_Form):
 
 		#倒计时钟显示
 	def ReverseTime(self):
-		self.lbl_twentytimer.setText('{:0>2s}'.format(str(self.scrolltime)))
-		self.scrolltime -= 1
+		self.lbl_twentytimer.setText('{:0>2s}'.format(str(self.twentytime)))
+		self.twentytime -= 1
+
+	def goTime(self):
+		m, s = divmod(self.fivetime, 60)
+		h, m = divmod(m, 60)
+		self.lbl_fivetimer.setText("%02d:%02d" % (m, s))
+		self.fivetime += 1
 
 	"""对UDP数据进行解析并控制屏幕操作，是本地数据操作和在线数据操作的统一入口"""
 	def load_data(self,sx):

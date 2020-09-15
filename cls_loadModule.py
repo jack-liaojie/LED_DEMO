@@ -318,7 +318,7 @@ class mod_resultlist(QWidget,d):
 			font.setBold(True)
 			item.setFont(font)
 			# item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
-			brush = QBrush(QColor(255, 255, 0))
+			brush = QBrush(QColor(255, 206, 0))
 			brush.setStyle(Qt.NoBrush)
 			item.setForeground(brush)
 			self.tbwgt_content.setItem(i, 3, item)
@@ -399,7 +399,7 @@ class mod_startlist(QWidget,e):
 			font.setBold(True)
 			item.setFont(font)
 			# item.setTextAlignment(4)#Qt.AlignLeading|Qt.AlignTop
-			brush = QBrush(QColor(255, 255, 0))
+			brush = QBrush(QColor(255, 206, 0))
 			brush.setStyle(Qt.NoBrush)
 			item.setForeground(brush)
 			# i += 1
@@ -478,7 +478,7 @@ class mod_ranklist(QWidget,g):
 			font.setBold(True)
 			item.setFont(font)
 			item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
-			brush = QBrush(QColor(255, 255, 0))
+			brush = QBrush(QColor(255, 206, 0))
 			brush.setStyle(Qt.NoBrush)
 			item.setForeground(brush)
 			i += 1
@@ -525,7 +525,7 @@ class mod_ranklist(QWidget,g):
 			font.setBold(True)
 			item.setFont(font)
 			item.setTextAlignment(Qt.AlignLeading|Qt.AlignTop)
-			brush = QBrush(QColor(255, 255, 0))
+			brush = QBrush(QColor(255, 206, 0))
 			brush.setStyle(Qt.NoBrush)
 			item.setForeground(brush)
 			i += 1

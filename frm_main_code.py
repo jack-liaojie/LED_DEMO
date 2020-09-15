@@ -29,8 +29,7 @@ class cod_main(QWidget, Ui_Form):
 		try:
 			self.save_dictfile()
 			self.close()
-			# if isinstance(self.y,cod_display) == False :
-			self.y=cod_display(self,self.path)	
+			self.y=cod_display(self,self.path)
 			self.y.show()
 
 		except Exception as e:
@@ -42,8 +41,6 @@ class cod_main(QWidget, Ui_Form):
 		'''保存设置数据'''
 		fileargs ={}
 		fileargs['center'] = self.read_table(self.tbwgt_center)
-		fileargs['top'] = self.read_table(self.tbwgt_top)
-		fileargs['bottom'] = self.read_table(self.tbwgt_bottom)
 		write_file(self.path,dict_json(fileargs))
 
 	def read_table(self,tablewidget):
@@ -61,9 +58,7 @@ class cod_main(QWidget, Ui_Form):
 		"""加载配置文件"""
 		params = json_dict(read_file(self.path))
 		self.get_dict(self.tbwgt_center,params['center'])
-		self.get_dict(self.tbwgt_top,params['top'])
-		self.get_dict(self.tbwgt_bottom,params['bottom'])
-	
+
 	def get_dict(self,tablewidget,tag):
 		# 加载数据到表格
 		tablewidget.setColumnCount(2)  # 设定列数
