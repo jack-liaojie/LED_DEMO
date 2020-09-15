@@ -147,7 +147,10 @@
       </font>
      </property>
      <property name="text">
-      <string>Welcome to Equestrain festival</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../../database/吉吉/SCB/app/images/zxs.png</pixmap>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

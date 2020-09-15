@@ -29,8 +29,11 @@ class cod_display(QWidget,Ui_Form):
 		self.twentypauseflag = False
 		self.fivepauseflag = False
 		self.twentytime = 20#设置默认计时时间
+		self.listtime = 10000#设置默认列表滚屏时间
 		self.load_config()
+		self.clear_led()
 		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.lbl_date.setText(QDate.currentDate().toString("yyyy-MM-dd dddd"))
 		self.twentytimer = QTimer()
 		self.twentytimer.timeout.connect(self.ReverseTime)
 	#清屏
@@ -227,6 +230,8 @@ class cod_display(QWidget,Ui_Form):
 				# ly_center.itemAt(i).widget().setParent(None)
 
 				if (a == "welcome"):
+					self.lbl_title.setText(self.data_ini_args['welcome'])
+					self.lbl_title_2.setText(self.data_ini_args['content'])
 					self.tempform = mod_welcome(self.data_ini_args)
 					self.ly_center.addWidget(self.tempform)
 
@@ -235,40 +240,39 @@ class cod_display(QWidget,Ui_Form):
 					self.ly_center.addWidget(self.tempform)
 
 				elif (a == "result"):
-					self.lbl_fivetimer.setText('00:00')
 					self.lbl_title_2.setText(self.data_ini_args['result'])
-					self.tempform = mod_result(self.data_ini_args,self.counttime)
+					self.tempform = mod_result(self.data_ini_args)
 					self.ly_center.addWidget(self.tempform)
 
 				elif (a == "schedule"):
-					self.lbl_title_2.setText(args['schedule'])
-					self.tempform = mod_schedule(self.data_ini_args,self.scrolltime)
+					self.lbl_title_2.setText(self.data_ini_args['schedule'])
+					self.tempform = mod_schedule(self.data_ini_args,self.listtime)
 					self.ly_center.addWidget(self.tempform)
 
 				elif (a == "startlist"):
-					self.lbl_title_2.setText(args['startlist']+ "秩序单")
-					self.tempform = mod_startlist(self.data_ini_args,self.scrolltime)
+					self.lbl_title_2.setText(self.data_ini_args['startlist']+ "秩序单")
+					self.tempform = mod_startlist(self.data_ini_args,self.listtime)
 					self.ly_center.addWidget(self.tempform)
 
 				elif (a == "r_list"):
-					self.tempform = mod_resultlist(self.data_ini_args,self.scrolltime)
+					self.tempform = mod_resultlist(self.data_ini_args,self.listtime)
 					self.ly_center.addWidget(self.tempform)
-					self.lbl_title_2.setText(args['r_list'] + "成绩公告")
+					self.lbl_title_2.setText(self.data_ini_args['r_list'] + "成绩公告")
 
 				elif (a == 'k_list'):
-					self.tempform = mod_ranklist(self.data_ini_args,self.scrolltime)
+					self.tempform = mod_ranklist(self.data_ini_args,self.listtime)
 					self.ly_center.addWidget(self.tempform)
-					self.lbl_title_2.setText(args['k_list'] + "名次公告")
+					self.lbl_title_2.setText(self.data_ini_args['k_list'] + "名次公告")
 
 				elif (a == "judge"):
+					self.lbl_title_2.setText(self.data_ini_args['judge'])
 					self.tempform = mod_judge(self.data_ini_args)
 					self.ly_center.addWidget(self.tempform)
-					self.lbl_title_2.setText(args['judge'])
 
 				elif (a == "medal"):
 					self.tempform = mod_medal(self.data_ini_args)
 					self.ly_center.addWidget(self.tempform)
-					self.lbl_title_2.setText(args['medal']+ "奖牌榜")
+					self.lbl_title_2.setText(self.data_ini_args['medal']+ "奖牌榜")
 
 				elif (a == "celebrate"):
 					self.tempform = mod_celebrate(self.data_ini_args)

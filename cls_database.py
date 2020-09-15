@@ -294,7 +294,7 @@ class get_Results(object):
 
 
 if __name__ == '__main__':
-    args = {"dbserver":".","dbport":"1433","dbuser":"sa","dbpwd":"111","dbdatabase":"bj_eq"}
+    args = {"dbserver":".","dbport":"1433","dbuser":"sa","dbpwd":"111","dbdatabase":"bb_eq"}
     x = get_Results(args)
     # y = x.do_field('get_venuelist', ['1'])
     # y = x.do_field('get_Proc_EQ_GetIPadScoreList', ['1','1324','2','chn'])
@@ -317,12 +317,12 @@ if __name__ == '__main__':
     # y = x.do_field('get_Proc_EQ_GetMatchResultList', ['1','1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchResultList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchRegisterList', ['1','chn'])
-    y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','7966','0','chn'])
-    # y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
+    # y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','7966','0','chn'])
+    y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
     # y = x.do_field('get_Proc_EQ_InitialDownload_InsertRiderHorse2DB',[''])
     # y = x.do_field('get_Proc_InitialDownload_Insert2sheet',['1','法国','个人','廖杰','','Corrinne Solyst','10','','',''])
     # y = x.do_field('get_Proc_LED_EQ_GetCompetitionSchedule',[1, 'ALL', 'CHN', 1])
     # x.exesql('truncate table Sheet1$')
     
-    print(y['results'])
+    print(y)

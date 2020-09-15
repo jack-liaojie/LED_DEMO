@@ -61,7 +61,7 @@ def start_working(arg,lblobject):
 
 def curr_working():
 	global d_lbltime
-	d = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss dddd")
+	d = QDateTime.currentDateTime().toString("hh:mm:ss")
 	d_lbltime.setText(d)
 
 def five_working():

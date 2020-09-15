@@ -59,6 +59,8 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(38)
         self.lbl_title.setFont(font)
+        self.lbl_title.setText("")
+        self.lbl_title.setPixmap(QtGui.QPixmap("E:\\2020EQ\\CODE\\LED\\module\\../../database/吉吉/SCB/app/images/zxs.png"))
         self.lbl_title.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_title.setObjectName("lbl_title")
         self.verticalLayout.addWidget(self.lbl_title)
@@ -89,5 +91,4 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.lbl_title.setText(_translate("Form", "Welcome to Equestrain festival"))
         self.lbl_content.setText(_translate("Form", "Welcome to Equestrain festival"))

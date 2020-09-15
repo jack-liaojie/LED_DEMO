@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
-    <height>480</height>
+    <width>1920</width>
+    <height>758</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -87,23 +87,13 @@
     <number>0</number>
    </property>
    <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Preferred</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="QLabel" name="lbl_title">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="palette">
       <palette>
        <active>
@@ -147,62 +137,19 @@
       </font>
      </property>
      <property name="text">
-      <string>Welcome to Equestrain festival</string>
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../resource/banner.jpg</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="lbl_content">
-     <property name="palette">
-      <palette>
-       <active>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </active>
-       <inactive>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </inactive>
-       <disabled>
-        <colorrole role="WindowText">
-         <brush brushstyle="SolidPattern">
-          <color alpha="255">
-           <red>120</red>
-           <green>120</green>
-           <blue>120</blue>
-          </color>
-         </brush>
-        </colorrole>
-       </disabled>
-      </palette>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>30</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Welcome to Equestrain festival</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="wordWrap">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -212,7 +159,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Preferred</enum>
+      <enum>QSizePolicy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

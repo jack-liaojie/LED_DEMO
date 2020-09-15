@@ -71,6 +71,9 @@
    <property name="leftMargin">
     <number>0</number>
    </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
    <property name="rightMargin">
     <number>0</number>
    </property>
@@ -103,11 +106,11 @@
      <property name="lineWidth">
       <number>0</number>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
        <number>0</number>
       </property>
-      <property name="leftMargin">
+      <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
@@ -116,13 +119,283 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <layout class="QGridLayout" name="ly_top" rowstretch="10,10,10,10" columnstretch="10,10,10">
-        <property name="spacing">
-         <number>0</number>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="1" column="2" rowspan="2">
+       <widget class="QLabel" name="lbl_twentytimer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <item row="2" column="2">
-         <widget class="QLabel" name="lbl_twentytimer">
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>120</red>
+              <green>120</green>
+              <blue>120</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>60</pointsize>
+          <weight>9</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 75 60pt &quot;微软雅黑&quot;;</string>
+        </property>
+        <property name="text">
+         <string>00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lbl_title">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>120</red>
+              <green>120</green>
+              <blue>120</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>40</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>adf</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="lbl_fivetimer">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Text">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="ButtonText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="128">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Text">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="ButtonText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="128">
+              <red>231</red>
+              <green>234</green>
+              <blue>213</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="Text">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="ButtonText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+           <colorrole role="PlaceholderText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="128">
+              <red>255</red>
+              <green>255</green>
+              <blue>255</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255,255, 255);
+font: 75 70pt &quot;微软雅黑&quot;;</string>
+        </property>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" rowspan="3">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="lbl_date">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -135,9 +408,36 @@
              <colorrole role="WindowText">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
                 <red>255</red>
                 <green>255</green>
-                <blue>0</blue>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
                </color>
               </brush>
              </colorrole>
@@ -146,9 +446,36 @@
              <colorrole role="WindowText">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
                 <red>255</red>
                 <green>255</green>
-                <blue>0</blue>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
                </color>
               </brush>
              </colorrole>
@@ -157,9 +484,186 @@
              <colorrole role="WindowText">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>120</red>
-                <green>120</green>
-                <blue>120</blue>
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>30</pointsize>
+            <weight>9</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 255, 255);
+font: 75 30pt &quot;微软雅黑&quot;;</string>
+          </property>
+          <property name="text">
+           <string>2020年</string>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_datetime">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>231</red>
+                <green>234</green>
+                <blue>213</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="WindowText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Text">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="ButtonText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="PlaceholderText">
+              <brush brushstyle="SolidPattern">
+               <color alpha="128">
+                <red>255</red>
+                <green>255</green>
+                <blue>255</blue>
                </color>
               </brush>
              </colorrole>
@@ -176,227 +680,8 @@
            </font>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 75 50pt &quot;微软雅黑&quot;;</string>
-          </property>
-          <property name="text">
-           <string>00</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>189</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLabel" name="lbl_title_2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>120</red>
-                <green>120</green>
-                <blue>120</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>36</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignHCenter|Qt::AlignTop</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_datetime">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>20</pointsize>
-            <weight>9</weight>
-            <italic>false</italic>
-            <bold>false</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
            <string notr="true">color: rgb(255, 255, 255);
-font: 75 20pt &quot;微软雅黑&quot;;</string>
+font: 75 50pt &quot;微软雅黑&quot;;</string>
           </property>
           <property name="text">
            <string>2020年</string>
@@ -405,216 +690,87 @@ font: 75 20pt &quot;微软雅黑&quot;;</string>
            <bool>true</bool>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignHCenter|Qt::AlignTop</set>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="lbl_title">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>0</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>120</red>
-                <green>120</green>
-                <blue>120</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
           </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>40</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
           </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="lbl_fivetimer">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="palette">
-           <palette>
-            <active>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="WindowText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Text">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="ButtonText">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="PlaceholderText">
-              <brush brushstyle="NoBrush">
-               <color alpha="128">
-                <red>255</red>
-                <green>255</green>
-                <blue>255</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
-           </palette>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">color: rgb(255,255, 255);
-font: 75 70pt &quot;微软雅黑&quot;;</string>
-          </property>
-          <property name="text">
-           <string>00:00</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lbl_title_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="palette">
+         <palette>
+          <active>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </active>
+          <inactive>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>255</red>
+              <green>206</green>
+              <blue>0</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </inactive>
+          <disabled>
+           <colorrole role="WindowText">
+            <brush brushstyle="SolidPattern">
+             <color alpha="255">
+              <red>120</red>
+              <green>120</green>
+              <blue>120</blue>
+             </color>
+            </brush>
+           </colorrole>
+          </disabled>
+         </palette>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>36</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>asfd</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignHCenter|Qt::AlignTop</set>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -641,6 +797,9 @@ font: 75 70pt &quot;微软雅黑&quot;;</string>
        <number>0</number>
       </property>
       <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
@@ -683,6 +842,21 @@ font: 75 70pt &quot;微软雅黑&quot;;</string>
       <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QLabel" name="lbl_ico_left">
         <property name="sizePolicy">
@@ -718,10 +892,28 @@ font: 75 70pt &quot;微软雅黑&quot;;</string>
       <item>
        <widget class="QLabel" name="lbl_ico">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>500</width>
+          <height>180</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>1</width>
+          <height>1</height>
+         </size>
         </property>
         <property name="lineWidth">
          <number>0</number>
@@ -730,7 +922,7 @@ font: 75 70pt &quot;微软雅黑&quot;;</string>
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../resource/longines.jpg</pixmap>
+         <pixmap>../resource/HORIZON(BEIJING) Digital Technology Limited(LOGO).png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>

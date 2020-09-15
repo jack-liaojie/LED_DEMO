@@ -31,6 +31,9 @@
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QTableWidget" name="tbwgt_content">
        <property name="sizePolicy">
@@ -194,6 +197,9 @@
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>true</bool>
        </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>100</number>
+       </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
         <number>200</number>
        </attribute>
@@ -204,7 +210,7 @@
         <number>30</number>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>72</number>
+        <number>30</number>
        </attribute>
        <row/>
        <row/>

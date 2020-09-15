@@ -194,17 +194,20 @@
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>true</bool>
        </attribute>
-       <attribute name="horizontalHeaderDefaultSectionSize">
+       <attribute name="horizontalHeaderMinimumSectionSize">
         <number>200</number>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>400</number>
        </attribute>
        <attribute name="verticalHeaderVisible">
         <bool>false</bool>
        </attribute>
        <attribute name="verticalHeaderMinimumSectionSize">
-        <number>30</number>
+        <number>100</number>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>72</number>
+        <number>200</number>
        </attribute>
        <row/>
        <row/>
