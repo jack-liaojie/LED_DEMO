@@ -63,7 +63,7 @@ class Ui_Form(object):
         font.setPointSize(38)
         self.lbl_title.setFont(font)
         self.lbl_title.setText("")
-        self.lbl_title.setPixmap(QtGui.QPixmap("E:\\2020EQ\\CODE\\LED\\module\\../resource/banner.jpg"))
+        self.lbl_title.setPixmap(QtGui.QPixmap("./resource/banner.jpg"))
         self.lbl_title.setScaledContents(False)
         self.lbl_title.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_title.setWordWrap(False)

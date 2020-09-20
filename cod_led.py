@@ -20,7 +20,8 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		super(cod_led, self).__init__()
 		self.ini_path = ''
 		self.arg = arg
-
+		self.addr = ("127.0.0.1",4000)#初始化给app的发送地址
+		self.ReceivePort = 4000#初始化给app的端口
 		self.F_MatchLongName, self.F_StatusLongName, self.F_MatchID, self.F_PhaseID, \
 		self.F_MatchStatusID, self.F_MatchDate, self.F_StartTime, self.F_EndTime, self.f_order, \
 		self.F_PhaseID, self.F_PhaseLongName, self.F_StatusID, self.F_EventID, self.F_EventLongName, \
@@ -52,11 +53,13 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		self.rd_five_start.clicked.connect(lambda: self.rdo_five_clicked(self.rd_five_start))
 		self.rd_five_stop.clicked.connect(lambda: self.rdo_five_clicked(self.rd_five_stop))
 		self.rd_five_clear.clicked.connect(lambda: self.rdo_five_clicked(self.rd_five_clear))
+		self.rd_five_show.clicked.connect(lambda: self.rdo_five_clicked(self.rd_five_show))
 		self.rd_five_reset.clicked.connect(lambda: self.rdo_five_clicked(self.rd_five_reset))
 
 		self.rd_twenty_start.clicked.connect(lambda: self.rdo_twenty_clicked(self.rd_twenty_start))
 		self.rd_twenty_stop.clicked.connect(lambda: self.rdo_twenty_clicked(self.rd_twenty_stop))
 		self.rd_twenty_clear.clicked.connect(lambda: self.rdo_twenty_clicked(self.rd_twenty_clear))
+		self.rd_twenty_show.clicked.connect(lambda: self.rdo_twenty_clicked(self.rd_twenty_show))
 		self.rd_twenty_reset.clicked.connect(lambda: self.rdo_twenty_clicked(self.rd_twenty_reset))
 
 		self.rd_scrolling_start.clicked.connect(lambda: self.rdo_scrolling_clicked(self.rd_scrolling_start))
@@ -102,16 +105,23 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			self.stop_udp()
 
 	def rdo_five_clicked(self, btn):
+
+		self.addr = list(self.addr)  # 将元组转为列表
+		self.addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+		self.addr = tuple(self.addr)  # 将列表转换为元组
+
 		if btn.text() == "复位":
 			args = {
 				"fivestart": "fivestart",
 				"time": self.txt_fivetime.text(),
+				"mobile": self.addr,
 				"status": "2"
 			}
 		if btn.text() == "开始":
 			args = {
 				"fivestart": "fivestart",
 				"time": self.txt_fivetime.text(),
+				"mobile": self.addr,
 				"status": "1"
 			}
 
@@ -119,30 +129,49 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			args = {
 				"fivestart": "fivestart",
 				"time": self.txt_fivetime.text(),
+				"mobile": self.addr,
 				"status": "0"
 			}
 		if btn.text() == "清屏":
-			args = {
-				"fivestart": "fivestart",
-				"time": self.txt_fivetime.text(),
-				"status": "3"
-			}
+			if btn.isChecked():
+				args = {
+					"fivestart": "fivestart",
+					"time": self.txt_fivetime.text(),
+					"mobile": self.addr,
+					"status": "3"
+				}
+		if btn.text() == "显示":
+			if btn.isChecked():
+				args = {
+					"fivestart": "fivestart",
+					"time": self.txt_fivetime.text(),
+					"mobile": self.addr,
+					"status": "4"
+				}
+
 
 		x = dict_json(args)
 		self.txt_data.setText(x)
 		self.senddata(self.txt_data.toPlainText())
 
 	def rdo_twenty_clicked(self, btn):
+
+		self.addr = list(self.addr)  # 将元组转为列表
+		self.addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+		self.addr = tuple(self.addr)  # 将列表转换为元组
+
 		if btn.text() == "复位":
 			args = {
 				"twentystart": "twentystart",
 				"time": self.txt_twentytime.text(),
+				"mobile": self.addr,
 				"status": "2"
 			}
 		if btn.text() == "开始":
 			args = {
 				"twentystart": "twentystart",
 				"time": self.txt_twentytime.text(),
+				"mobile": self.addr,
 				"status": "1"
 			}
 
@@ -150,14 +179,25 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			args = {
 				"twentystart": "twentystart",
 				"time": self.txt_twentytime.text(),
+				"mobile": self.addr,
 				"status": "0"
 			}
 		if btn.text() == "清屏":
-			args = {
-				"twentystart": "twentystart",
-				"time": self.txt_twentytime.text(),
-				"status": "3"
-			}
+			if btn.isChecked():
+				args = {
+					"twentystart": "twentystart",
+					"time": self.txt_twentytime.text(),
+					"mobile": self.addr,
+					"status": "3"
+				}
+		if btn.text() == "显示":
+			if btn.isChecked():
+				args = {
+					"twentystart": "twentystart",
+					"time": self.txt_twentytime.text(),
+					"mobile": self.addr,
+					"status": "4"
+				}
 
 		x = dict_json(args)
 		self.txt_data.setText(x)
@@ -225,7 +265,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 
 			params = rows
 
-			self.read_SQLresults(self.tbv_result, 'get_Proc_EQ_InitialDownload_InsertRiderHorse2DB', [''])
+			self.read_SQLresults(self.tbv_result, 'get_Proc_EQ_InitialDownload_InsertRiderHorse2DB_LJ', [''])
 
 		except Exception as e:
 			if QMessageBox.Ok == QMessageBox.information(self, "提示", e, QMessageBox.Cancel | QMessageBox.Ok):
@@ -510,6 +550,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		# s.send(str(args).encode('utf-8'))
 		# s.sendall(str(args).encode('utf-8'))
 		s.sendto(str(args).encode('utf-8'), (self.udp_ip, int(self.udp_port)))
+		# s.sendto(str(args).encode('utf-8'), (self.udp_ip, int(self.udp_port)))
 		s.close()
 
 	def set_eventinfo(self):
@@ -564,7 +605,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		id = uuid.uuid1()  # 还有uuid2、uuid3、uuid4、uuid5等其他方法
 		return id
 
-	def do_message(self, arg):
+	def do_message(self, arg,addr):
 		#{{双括号在f字符表达式中标明显示{
 		if (arg['MessageType'] == "HeartBeat"):  # 心跳
 			RequestMessageID = str(arg['MessageID'])
@@ -1189,16 +1230,22 @@ class cod_led(QMainWindow, Ui_MainWindow):
 							}}"""
 
 			#向大屏幕发指令
+			addr = list(addr)  # 将元组转为列表
+			addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+			addr = tuple(addr)  # 将列表转换为元组
+
 			if arg['Data']['TimerNumber']==1:
 				args = {
 					"fivestart": "fivestart",
 					"time": self.txt_fivetime.text(),
+					"mobile":addr,
 					"status": "3"
 				}
 			elif arg['Data']['TimerNumber']==2:
 				args = {
 					"twentystart": "twentystart",
 					"time": self.txt_twentytime.text(),
+					"mobile":addr,
 					"status": "3"
 				}
 			x = dict_json(args)
@@ -1244,23 +1291,29 @@ class cod_led(QMainWindow, Ui_MainWindow):
 								  "RequestMessageID":"{RequestMessageID}",
 								  "Status": "{Status}",
 								  "Message": "{Message}",
-								  "MessageType": "TimerDisplay",
+								  "MessageType": "TimerDisplayResponse",
 								  "MessageID": "{MessageID}",
 								  "Timestamp": "{Timestamp}"
 							}}"""
 
 			# 向大屏幕发指令
+			addr = list(addr)  # 将元组转为列表
+			addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+			addr = tuple(addr)  # 将列表转换为元组
+
 			if arg['Data']['TimerNumber'] == 1:
 				args = {
 					"fivestart": "fivestart",
 					"time": self.txt_fivetime.text(),
-					"status": "1"
+					"mobile": addr,
+					"status": "4"
 				}
 			elif arg['Data']['TimerNumber'] == 2:
 				args = {
 					"twentystart": "twentystart",
 					"time": self.txt_twentytime.text(),
-					"status": "1"
+					"mobile": addr,
+					"status": "4"
 				}
 			x = dict_json(args)
 			self.txt_data.setText(x)
@@ -1307,16 +1360,23 @@ class cod_led(QMainWindow, Ui_MainWindow):
 							}}"""
 
 			# 向大屏幕发指令
+			addr = list(addr)  # 将元组转为列表
+			addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+			addr = tuple(addr)  # 将列表转换为元组
+
+
 			if arg['Data']['TimerNumber'] == 1:
 				args = {
 					"fivestart": "fivestart",
 					"time": self.txt_fivetime.text(),
+					"mobile":addr,
 					"status": "0"
 				}
 			elif arg['Data']['TimerNumber'] == 2:
 				args = {
 					"twentystart": "twentystart",
 					"time": self.txt_twentytime.text(),
+					"mobile":addr,
 					"status": "0"
 				}
 			x = dict_json(args)
@@ -1389,16 +1449,22 @@ class cod_led(QMainWindow, Ui_MainWindow):
 							}}"""
 
 			# 向大屏幕发指令
+			addr = list(addr)#将元组转为列表
+			addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+			addr=tuple(addr)#将列表转换为元组
+
 			if arg['Data']['TimerNumber'] == 1:
 				args = {
 					"fivestart": "fivestart",
 					"time": self.txt_fivetime.text(),
+					"mobile":addr,
 					"status": "2"
 				}
 			elif arg['Data']['TimerNumber'] == 2:
 				args = {
 					"twentystart": "twentystart",
 					"time": self.txt_twentytime.text(),
+					"mobile":addr,
 					"status": "2"
 				}
 			x = dict_json(args)
@@ -1406,8 +1472,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			self.senddata(self.txt_data.toPlainText())  # 向LED发送数据
 
 			return responestr, self.ReceivePort
-
-
 
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "TimerStart"):
 			# {
@@ -1448,16 +1512,22 @@ class cod_led(QMainWindow, Ui_MainWindow):
 							}}"""
 
 			# 向大屏幕发指令
+			addr = list(addr)  # 将元组转为列表
+			addr[1] = self.ReceivePort  # 将手机端接收端口给大屏幕
+			addr = tuple(addr)  # 将列表转换为元组
+
 			if arg['Data']['TimerNumber'] == 1:
 				args = {
 					"fivestart": "fivestart",
 					"time": self.txt_fivetime.text(),
+					"mobile":addr,
 					"status": "1"
 				}
 			elif arg['Data']['TimerNumber'] == 2:
 				args = {
 					"twentystart": "twentystart",
 					"time": self.txt_twentytime.text(),
+					"mobile":addr,
 					"status": "1"
 				}
 			x = dict_json(args)
@@ -1491,6 +1561,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			#   "Timestamp": "2020-09-01 13:26:06.161"
 			# }
 			pass
+
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "TimerStartForAppResponse"):
 			# {
 			#   "RequestMessageID": "54957d69-d424-480c-a614-38ccba273fba",
@@ -1523,13 +1594,23 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			pass
 
 	def receive_message(self, args, addr):
-		x,port = self.do_message(json_dict(args))
-		re_addr = tuple([addr[0],port])
+		try:
+			self.addr = addr
+			x,port = self.do_message(json_dict(args),addr)#接收处理数据
 
-		re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		re.sendto(x.encode('utf-8'), re_addr)
+			#广播式发送数据
+			# re_addr = tuple([addr[0],port])
+			re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+			# re.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-		re.close()
+			re_addr = tuple(['255.255.255.255',port])
+			re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)#广播式发送数据设置
+			re.sendto(x.encode('utf-8'), re_addr)
+
+			re.close()
+		except Exception as e:
+			print(e)
+			pass
 
 	def start_udp(self, arg):
 		global server
@@ -1545,7 +1626,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		except:
 			self.r_thread.finished
 		finally:
-			self.stop_udp
+			pass
 
 	def stop_udp(self):
 		global server

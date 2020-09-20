@@ -60,6 +60,12 @@ class cod_display(QWidget,Ui_Form):
 			self.udp_ip = ini_args["center"]['udp_ip']
 			self.udp_port = ini_args["center"]['udp_port']
 			udpconn = (self.udp_ip,int(self.udp_port))
+			self.data_ini_args  = {
+					"twentystart": "twentystart",
+					"time": "",
+					"mobile": ("127.0.0.1",4000),
+					"status": "4"
+				}#通过键盘操作时钟时，给一个初始化参数
 			self.u_thread = UDPThread()#很简单的一个坑，把线程的声明放到类的初始化函数下就ok了。
 			start_working(self.lbl_datetime)
 		except:
@@ -120,7 +126,7 @@ class cod_display(QWidget,Ui_Form):
 			elif event.key() == Qt.Key_Return:#5分钟正计时
 				if self.fiveflag:
 					self.fiveflag = False
-					self.fivestart(self.fivetime,'1')
+					self.fivestart(self.fivetime,'1',self.data_ini_args['mobile'])
 				else:
 					self.fiveflag = True
 					self.fivestart(self.fivetime,'0')
@@ -128,7 +134,7 @@ class cod_display(QWidget,Ui_Form):
 			elif event.key() == Qt.Key_Shift:#20秒倒计时
 				if self.twentyflag:
 					self.twentyflag = False
-					self.twentystart(self.twentytime,'1')
+					self.twentystart(self.twentytime,'1',self.data_ini_args['mobile'])
 				else:
 					self.twentyflag = True
 					self.twentystart(self.twentytime,'0')
@@ -152,71 +158,291 @@ class cod_display(QWidget,Ui_Form):
 									or isinstance(self.tempform,mod_ranklist) ):
 			self.tempform.endtimer()
 
-	def fivestart(self,timenum,fiveflag):
+
+	#UDP控制系统
+	def generateUUID(self):
+		id = uuid.uuid1()  # 还有uuid2、uuid3、uuid4、uuid5等其他方法
+		return id
+
+
+	def sendmessage_tomobile(self,args,addr):
+		# if isinstance(addr,list):addr = tuple(addr)
+		re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # 广播式发送数据设置
+
+		addr = tuple(['255.255.255.255', addr[1]])
+		re.sendto(args.encode('utf-8'), addr)
+		re.close()
+
+	def fivestart(self,timenum,fiveflag,addr=("127.0.0.1",4000)):
 		"""正计时5分钟启动"""
+		timenum = self.format_time(self.fivetime)
+		self.datetime = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")
+		MessageID = str(self.generateUUID())
 
 		if fiveflag == '1' and self.fivepauseflag == False:  # 开始
-			if self.fivetimer.isActive():return
+			if self.fivetimer.isActive():return#如果正在运行时钟，则返回防止归零
 			self.fivetime = 0
 			self.fivetimer.start()
+
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 1,
+						"IsIncrease": true,
+						"IsRunning": true,
+						"IsDisplay": true,
+						"TotalTime": "23:00"
+					  }},
+					  "MessageType": "TimerStartForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+			self.sendmessage_tomobile(args,addr)
 			return
+
 		elif  fiveflag == '1' and self.fivepauseflag == True:#开始
 
 			self.fivetimer.start()
+			args = f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 1,
+						"IsIncrease": true,
+						"IsRunning": true,
+						"IsDisplay": true,
+						"TotalTime": "23:00"
+					  }},
+					  "MessageType": "TimerStartForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+
+			self.sendmessage_tomobile(args, addr)
 			return
 		elif fiveflag == '0':#暂停
 			self.fivepauseflag = True
 			self.fivetimer.stop()
+			args = f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 1
+					  }},
+					"MessageType": "TimerPauseForApp",
+					"MessageID": "{MessageID}",
+					"Timestamp": "{self.datetime}"
+					}}
+					"""
+
+			self.sendmessage_tomobile(args, addr)
+
 			return
 		elif fiveflag == '2':#复位
 			self.lbl_fivetimer.setText("00:00")
 			self.fivetimer.stop()
+			self.fivetime = 0
+
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "00:00",
+						"TimerNumber": 1
+					  }},
+					  "MessageType": "TimerResetForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+
+			self.sendmessage_tomobile(args,addr)
+
 			self.fivepauseflag = False
 			return
 		elif fiveflag == '3':#清屏
 			self.lbl_fivetimer.setText("")
 			self.fivetimer.stop()
+			self.fivetime = 0
+			args = f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "00:00",
+						"TimerNumber": 1
+					  }},
+					  "MessageType": "TimerResetForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+					"""
+
+			self.sendmessage_tomobile(args, addr)
+
+			self.fivepauseflag = False
+			return
+		elif fiveflag == '4':#显示
+			if self.fivetimer.isActive():return
+			self.lbl_fivetimer.setText("00:00")
+			self.fivetimer.stop()
+			self.fivetime = 0
 			self.fivepauseflag = False
 			return
 
-	def twentystart(self,timenum,twentyflag):
+	def twentystart(self,timenum,twentyflag,addr=("127.0.0.1",4000)):
 		"""倒计时20秒启动"""
+		self.datetime = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")
+		MessageID = str(self.generateUUID())
+
 		if twentyflag == '1' and self.twentypauseflag == False:#开始
 			if self.twentytimer.isActive():return
 			self.twentytime = timenum
+
+			timenum = self.format_time(self.twentytime)
+
 			self.twentytimer.start(1000)
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime":"{timenum}",
+						"TimerNumber": 2,
+						"IsIncrease": true,
+						"IsRunning": true,
+						"IsDisplay": true,
+						"TotalTime": "00:00"
+					  }},
+					  "MessageType": "TimerStartForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+
+			self.sendmessage_tomobile(args,addr)
 			return
-		elif  twentyflag == '1' and self.twentypauseflag == True:#开始
+
+		elif  twentyflag == '1' and self.twentypauseflag == True:#继续
+			timenum = self.format_time(self.twentytime)
+
 			self.twentytimer.start(1000)
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 2,
+						"IsIncrease": true,
+						"IsRunning": true,
+						"IsDisplay": true,
+						"TotalTime": "00:00"
+					  }},
+					  "MessageType": "TimerStartForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+
+			self.sendmessage_tomobile(args,addr)
 			return
 		elif twentyflag == '0' :#暂停
 			self.twentypauseflag = True
 			self.twentytimer.stop()
+			timenum = self.format_time(self.twentytime)
+
+			args = f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 2
+					  }},
+					"MessageType": "TimerPauseForApp",
+					"MessageID": "{MessageID}",
+					"Timestamp": "{self.datetime}"
+					}}
+					"""
+			self.sendmessage_tomobile(args, addr)
 
 			return
 		elif twentyflag == '2' :
 			self.twentytimer.stop()#复位
+			self.twentytime = timenum
 			self.lbl_twentytimer.setText(str(timenum))
+
+			timenum = self.format_time(self.twentytime)
+
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime": "{timenum}",
+						"TimerNumber": 2
+					  }},
+					  "MessageType": "TimerResetForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+			self.sendmessage_tomobile(args,addr)
 
 			self.twentypauseflag = False
 			return
 		elif twentyflag == '3' :
 			self.twentytimer.stop()#清屏
 			self.lbl_twentytimer.setText("")
+			self.twentytime = timenum
+			timenum = self.format_time(self.twentytime)
 			self.twentypauseflag = False
+			args =f"""
+					{{
+					  "Data": {{
+						"CurrentTime":"{timenum}",
+						"TimerNumber": 2
+					  }},
+					  "MessageType": "TimerResetForApp",
+					  "MessageID": "{MessageID}",
+					  "Timestamp": "{self.datetime}"
+					}}
+				"""
+			self.sendmessage_tomobile(args,addr)
+
+			return
+		elif twentyflag == '4' :
+			if self.twentytimer.isActive(): return
+			self.twentytimer.stop()#显示
+			self.lbl_twentytimer.setText(str(timenum))
+
+			timenum = self.format_time(timenum)
+
+			args = f"""
+								{{
+								  "Data": {{
+									"CurrentTime": "{timenum}",
+									"TimerNumber": 2
+								  }},
+								  "MessageType": "TimerResetForApp",
+								  "MessageID": "{MessageID}",
+								  "Timestamp": "{self.datetime}"
+								}}
+							"""
+			self.sendmessage_tomobile(args, addr)
 
 			return
 
-		#倒计时钟显示
+	def format_time(self, timenum):
+		m, s = divmod(timenum, 60)
+		h, m = divmod(m, 60)
+		timenum = "00:%02d:%02d.000" % (m, s)
+		return timenum
+
+	#倒计时钟显示
 	def ReverseTime(self):
-		self.lbl_twentytimer.setText('{:0>2s}'.format(str(self.twentytime)))
 		self.twentytime -= 1
+		self.lbl_twentytimer.setText('{:0>2s}'.format(str(self.twentytime)))
 
 	def goTime(self):
+		self.fivetime += 1
 		m, s = divmod(self.fivetime, 60)
 		h, m = divmod(m, 60)
 		self.lbl_fivetimer.setText("%02d:%02d" % (m, s))
-		self.fivetime += 1
 
 	"""对UDP数据进行解析并控制屏幕操作，是本地数据操作和在线数据操作的统一入口"""
 	def load_data(self,sx):
@@ -233,10 +459,10 @@ class cod_display(QWidget,Ui_Form):
 				self.scrollingstart(int(self.data_ini_args['time']), self.data_ini_args['status'])
 
 			elif (a == "twentystart"):
-				self.twentystart(int(self.data_ini_args['time']),self.data_ini_args['status'])
+				self.twentystart(int(self.data_ini_args['time']),self.data_ini_args['status'],self.data_ini_args['mobile'])
 
 			elif (a == "fivestart"):
-				self.fivestart(int(self.data_ini_args['time']),self.data_ini_args['status'])
+				self.fivestart(int(self.data_ini_args['time']),self.data_ini_args['status'],self.data_ini_args['mobile'])
 
 			else:
 
