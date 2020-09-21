@@ -624,16 +624,16 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			      "1": {{
 			        "TimerNumber": 1,
 			        "IsIncrease": true,
-			        "IsRunning": false,
+			        "IsRunning": true,
 			        "IsDisplay": true,
-			        "TotalTime": "00:05"
+			        "TotalTime": "23:00"
 			      }},
 			      "2": {{
 			        "TimerNumber": 2,
 			        "IsIncrease": false,
-			        "IsRunning": false,
+			        "IsRunning": true,
 			        "IsDisplay": true,
-			        "TotalTime": "00:05"
+			        "TotalTime": "00:00"
 			      }}
 			    }},
 			    "Title": "{self.matchtitle}",
@@ -893,6 +893,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			}}"""
 
 			return responestr, self.ReceivePort
+
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "MatchPrevious"):
 			# {
 			#   "Key": "C8kPeuWjMxOqm4Ca",
@@ -1186,7 +1187,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 								  "Timestamp": "{Timestamp}"
 								}}"""
 			return responestr, self.ReceivePort
-
 
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "TimerHide"):
 			# {
@@ -1597,7 +1597,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		try:
 			self.addr = addr
 			x,port = self.do_message(json_dict(args),addr)#接收处理数据
-
 			#广播式发送数据
 			# re_addr = tuple([addr[0],port])
 			re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -1606,7 +1605,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			re_addr = tuple(['255.255.255.255',port])
 			re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)#广播式发送数据设置
 			re.sendto(x.encode('utf-8'), re_addr)
-
 			re.close()
 		except Exception as e:
 			print(e)

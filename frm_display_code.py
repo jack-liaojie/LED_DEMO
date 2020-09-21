@@ -164,13 +164,12 @@ class cod_display(QWidget,Ui_Form):
 		id = uuid.uuid1()  # 还有uuid2、uuid3、uuid4、uuid5等其他方法
 		return id
 
-
 	def sendmessage_tomobile(self,args,addr):
 		# if isinstance(addr,list):addr = tuple(addr)
 		re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # 广播式发送数据设置
 
-		addr = tuple(['255.255.255.255', addr[1]])
+		addr = tuple('255.255.255.255', addr[1])
 		re.sendto(args.encode('utf-8'), addr)
 		re.close()
 
@@ -300,15 +299,15 @@ class cod_display(QWidget,Ui_Form):
 			if self.twentytimer.isActive():return
 			self.twentytime = timenum
 
-			timenum = self.format_time(self.twentytime)
-
+			timenum = self.format_time(timenum+1)
 			self.twentytimer.start(1000)
+
 			args =f"""
 					{{
 					  "Data": {{
 						"CurrentTime":"{timenum}",
 						"TimerNumber": 2,
-						"IsIncrease": true,
+						"IsIncrease": false,
 						"IsRunning": true,
 						"IsDisplay": true,
 						"TotalTime": "00:00"
@@ -331,7 +330,7 @@ class cod_display(QWidget,Ui_Form):
 					  "Data": {{
 						"CurrentTime": "{timenum}",
 						"TimerNumber": 2,
-						"IsIncrease": true,
+						"IsIncrease": false,
 						"IsRunning": true,
 						"IsDisplay": true,
 						"TotalTime": "00:00"
@@ -347,8 +346,9 @@ class cod_display(QWidget,Ui_Form):
 		elif twentyflag == '0' :#暂停
 			self.twentypauseflag = True
 			self.twentytimer.stop()
+			print(self.twentytime)
 			timenum = self.format_time(self.twentytime)
-
+			print(timenum)
 			args = f"""
 					{{
 					  "Data": {{
@@ -427,10 +427,22 @@ class cod_display(QWidget,Ui_Form):
 
 			return
 
-	def format_time(self, timenum):
-		m, s = divmod(timenum, 60)
-		h, m = divmod(m, 60)
-		timenum = "00:%02d:%02d.000" % (m, s)
+	# def format_time(self, timenum):
+	# 	m, s = divmod(timenum, 60)
+	# 	h, m = divmod(m, 60)
+	# 	timenum = "00:%02d:%02d.000" % (m, s)
+	# 	return timenum
+
+	def format_time(self,timenum):
+		if timenum < 0:
+			timenum = abs(timenum)
+			m, s = divmod(timenum, 60)
+			h, m = divmod(m, 60)
+			timenum = "-00:%02d:%02d.000" % (m, s)
+		else:
+			m, s = divmod(timenum, 60)
+			h, m = divmod(m, 60)
+			timenum = "00:%02d:%02d.000" % (m, s)
 		return timenum
 
 	#倒计时钟显示
