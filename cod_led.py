@@ -20,6 +20,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		super(cod_led, self).__init__()
 		self.ini_path = ''
 		self.arg = arg
+		self.curr_ridernum = 1
 		self.addr = ("127.0.0.1",4000)#初始化给app的发送地址
 		self.ReceivePort = 4000#初始化给app的端口
 		self.F_MatchLongName, self.F_StatusLongName, self.F_MatchID, self.F_PhaseID, \
@@ -405,6 +406,51 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			self.tbv_title.setItem(0, 5, QTableWidgetItem(self.F_SportLongName))
 			self.tbv_title.resizeRowsToContents()  # 设置行列高宽与内容匹配
 
+	#手机端控制大屏成绩显示
+	def app_show_result(self,flag,row_num=1):
+
+		if row_num<0:
+			return
+		try:
+			# pass('27-黄伟力', '黄伟力', '飞燕', '四川队', 5, 5, None, 4984, '[Image]四川队', 'Horse: 飞燕')
+			self.F_RegisterName = self.tbv_register.item(row_num, 1).text()
+			self.F_HorseName = self.tbv_register.item(row_num, 2).text()
+			self.F_DelegationName = self.tbv_register.item(row_num, 3).text()
+			self.F_RegisterBib = self.tbv_register.item(row_num, 4).text()
+			self.F_HorseBib = self.tbv_register.item(row_num, 5).text()
+			self.F_CurIRM = self.tbv_register.item(row_num, 6).text()
+			self.F_RegisterID = self.tbv_register.item(row_num, 7).text()
+			# [(1, 7966, '盛装舞步个人赛', '资格赛', '盛装舞步个人赛-资格赛', None, '浙江队', '1', '廖杰', 'Corrinne Solyst', '10', '10', '',
+			#   '0.000', '0.000', '0.000', '0.000', '0.000', '(1)', '(1)', '(1)', '(1)', '(1)', None, '1', None, '1',
+			#   '[Image]浙江队', '廖杰 / Corrinne Solyst', '浙江队')]
+			data = self.get_Proc('get_Proc_SCB_EQ_GetDRRiderResult', [self.F_MatchID, self.F_RegisterID, 0, 'chn'])
+			x = list(data[0])
+			if x[13] == '0.000' and x[15] == '0.000' and x[16] == '0.000':
+				x[13] = ''
+				x[15] = ''
+				x[16] = ''
+				x[18] = ''
+				x[19] = ''
+				x[20] = ''
+				x[21] = ''
+				x[22] = ''
+				x[23] = '     '
+				x[24] = ''
+				x[26] = ''
+
+			y = []
+			y.append(tuple(x))
+			args = {
+				"result": self.F_EventLongName + self.F_MatchLongName,
+				"data": y,
+				"content": strregex(self.get_Proc('get_Proc_SCB_EQ_GetMatchResultList', [self.F_MatchID, 'chn']))
+			}  # 正则表达式Decimal('65.262000000')-->'65.262'
+
+			self.txt_data.setText(dict_json(args))
+		except:
+			self.curr_ridernum = 1
+			pass
+
 	# 执行存储过程
 	def get_Proc(self, proname, params):
 
@@ -546,10 +592,12 @@ class cod_led(QMainWindow, Ui_MainWindow):
 	def senddata(self, args):
 
 		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+		network = '<broadcast>'
+		s.sendto(str(args).encode('utf-8'), (network,  int(self.udp_port)))
 		# s.connect((self.udp_ip, int(self.udp_port)))
 		# s.send(str(args).encode('utf-8'))
 		# s.sendall(str(args).encode('utf-8'))
-		s.sendto(str(args).encode('utf-8'), (self.udp_ip, int(self.udp_port)))
 		# s.sendto(str(args).encode('utf-8'), (self.udp_ip, int(self.udp_port)))
 		s.close()
 
@@ -606,7 +654,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		return id
 
 	def do_message(self, arg,addr):
-		#{{双括号在f字符表达式中标明显示{
 		if (arg['MessageType'] == "HeartBeat"):  # 心跳
 			RequestMessageID = str(arg['MessageID'])
 			MessageID = str(self.generateUUID())
@@ -812,6 +859,50 @@ class cod_led(QMainWindow, Ui_MainWindow):
 
 			return responestr, self.ReceivePort#向手机端返回信息
 
+		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "MatchPrevious"):
+			# {
+			#   "Key": "C8kPeuWjMxOqm4Ca",
+			#   "ClientID": "client1",
+			#   "MessageType": "MatchPrevious",
+			#   "MessageID": "886bc405-9a75-478b-a201-da63e1dc473d",
+			#   "Timestamp": "2020-09-01 13:26:11.841"
+			# }
+			# {
+			#   "Data": {
+			#     "Title": "盛装舞步个人赛预赛"
+			#   },
+			#   "RequestMessageID": "c147bfa5-793e-4797-aec5-9ffc0c3423f5",
+			#   "Status": "Success",
+			#   "Message": "XXX成功",
+			#   "MessageType": "MatchPreviousResponse",
+			#   "MessageID": "62efaf0a-6f94-4360-bd86-ed850cc285eb",
+			#   "Timestamp": "2020-09-01 13:26:06.135"
+			# }
+			RequestMessageID = str(arg['MessageID'])
+			MessageID = str(self.generateUUID())
+			ClientID = arg['ClientID']
+			Timestamp = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")
+			Message = "上一屏成功"
+			Status = "Success"
+			NextRider = "上一个"
+			self.curr_ridernum -=1
+			if self.curr_ridernum<0 :self.curr_ridernum =0
+			self.app_show_result(False,self.curr_ridernum)
+			self.senddata(self.txt_data.toPlainText())  # 向LED发送数据
+
+			responestr = f"""{{
+							"Data": {{
+								    "Title": "{NextRider}"
+								   }},
+							"RequestMessageID":"{RequestMessageID}",
+							"Status": "{Status}",
+							"Message": "{Message}",
+							"MessageType": "MatchPreviousResponse",
+							"MessageID": "{MessageID}",
+							"Timestamp": "{Timestamp}"
+							}}"""
+			return responestr, self.ReceivePort
+
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "MatchNext"):
 			# {
 			#   "Key": "C8kPeuWjMxOqm4Ca",
@@ -839,6 +930,11 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			Message = "下一屏成功"
 			Status = "Success"
 			NextRider = "下一个"
+			self.curr_ridernum +=1
+
+			self.app_show_result(True,self.curr_ridernum)
+			self.senddata(self.txt_data.toPlainText())  # 向LED发送数据
+
 			responestr = f"""{{
 				"Data": {{
 					    "Title": "{NextRider}"
@@ -892,45 +988,6 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			  "Timestamp": "{Timestamp}"
 			}}"""
 
-			return responestr, self.ReceivePort
-
-		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "MatchPrevious"):
-			# {
-			#   "Key": "C8kPeuWjMxOqm4Ca",
-			#   "ClientID": "client1",
-			#   "MessageType": "MatchPrevious",
-			#   "MessageID": "886bc405-9a75-478b-a201-da63e1dc473d",
-			#   "Timestamp": "2020-09-01 13:26:11.841"
-			# }
-			# {
-			#   "Data": {
-			#     "Title": "盛装舞步个人赛预赛"
-			#   },
-			#   "RequestMessageID": "c147bfa5-793e-4797-aec5-9ffc0c3423f5",
-			#   "Status": "Success",
-			#   "Message": "XXX成功",
-			#   "MessageType": "MatchPreviousResponse",
-			#   "MessageID": "62efaf0a-6f94-4360-bd86-ed850cc285eb",
-			#   "Timestamp": "2020-09-01 13:26:06.135"
-			# }
-			RequestMessageID = str(arg['MessageID'])
-			MessageID = str(self.generateUUID())
-			ClientID = arg['ClientID']
-			Timestamp = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz")
-			Message = "上一屏成功"
-			Status = "Success"
-			NextRider = "上一个"
-			responestr = f"""{{
-							"Data": {{
-								    "Title": "{NextRider}"
-								   }},
-							"RequestMessageID":"{RequestMessageID}",
-							"Status": "{Status}",
-							"Message": "{Message}",
-							"MessageType": "MatchPreviousResponse",
-							"MessageID": "{MessageID}",
-							"Timestamp": "{Timestamp}"
-							}}"""
 			return responestr, self.ReceivePort
 
 		elif (arg["Key"] == "C8kPeuWjMxOqm4Ca" and arg['MessageType'] == "RankList"):
@@ -1592,18 +1649,18 @@ class cod_led(QMainWindow, Ui_MainWindow):
 			# }
 
 			pass
+		#{{双括号在f字符表达式中标明显示{
 
-	def receive_message(self, args, addr):
+	def receive_message(self, args, addr):#发回给手机端的信息
 		try:
 			self.addr = addr
 			x,port = self.do_message(json_dict(args),addr)#接收处理数据
 			#广播式发送数据
-			# re_addr = tuple([addr[0],port])
+			re_addr = tuple([addr[0],port])
 			re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			# re.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-			re_addr = tuple(['255.255.255.255',port])
-			re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)#广播式发送数据设置
+			re.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+			# re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+			# network = '<broadcast>'
 			re.sendto(x.encode('utf-8'), re_addr)
 			re.close()
 		except Exception as e:
@@ -1614,6 +1671,7 @@ class cod_led(QMainWindow, Ui_MainWindow):
 		global server
 		try:
 			self.r_thread = UDPThread()
+
 			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 			server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # 允许地址重用。
 			# 绑定 客户端口和地址:

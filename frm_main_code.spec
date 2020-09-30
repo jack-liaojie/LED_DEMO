@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['frm_main_code.py'],
-             pathex=['E:\\2020EQ\\CODE\\LED\\initialize\\', 'E:\\2020EQ\\CODE\\LED\\resource\\', 'E:\\2020EQ\\CODE\\LED'],
+             pathex=['D:\\2020EQ\\CODE\\LED'],
              binaries=[],
              datas=[],
              hiddenimports=[],

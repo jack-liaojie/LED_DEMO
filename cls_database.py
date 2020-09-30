@@ -318,10 +318,10 @@ if __name__ == '__main__':
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchResultList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchRegisterList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetDRRiderResult', ['1','7966','0','chn'])
-    # y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
+    y = x.do_field('get_Proc_SCB_EQ_GetMedalList', ['1','chn'])
     # y = x.do_field('get_Proc_SCB_EQ_GetMatchMovementList', ['1','chn'])
     # y = x.do_field('get_Proc_EQ_InitialDownload_InsertRiderHorse2DB_LJ',[''])
-    y = x.do_field('get_Proc_InitialDownload_Insert2sheet',['1','法国','个人','廖杰','','Corrinne Solyst','10','','','A'])
+    # y = x.do_field('get_Proc_InitialDownload_Insert2sheet',['1','法国','个人','廖杰','','Corrinne Solyst','10','','','A'])
     # y = x.do_field('get_Proc_LED_EQ_GetCompetitionSchedule',[1, 'ALL', 'CHN', 1])
     # x.exesql('truncate table Sheet1$')
     

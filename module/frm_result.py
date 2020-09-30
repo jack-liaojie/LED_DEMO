@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\2020EQ\CODE\LED\module\frm_result.ui'
+# Form implementation generated from reading ui file 'D:\2020EQ\CODE\LED\module\frm_result.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.2
 #
@@ -227,14 +227,14 @@ class Ui_Form(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label_5 = QtWidgets.QLabel(Form)
+        self.lbl_EH = QtWidgets.QLabel(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy)
-        self.label_5.setMinimumSize(QtCore.QSize(0, 50))
-        self.label_5.setMaximumSize(QtCore.QSize(16777215, 100))
+        sizePolicy.setHeightForWidth(self.lbl_EH.sizePolicy().hasHeightForWidth())
+        self.lbl_EH.setSizePolicy(sizePolicy)
+        self.lbl_EH.setMinimumSize(QtCore.QSize(0, 50))
+        self.lbl_EH.setMaximumSize(QtCore.QSize(16777215, 100))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 206, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -245,17 +245,17 @@ class Ui_Form(object):
         brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        self.label_5.setPalette(palette)
+        self.lbl_EH.setPalette(palette)
         font = QtGui.QFont()
         font.setPointSize(36)
         font.setBold(True)
         font.setWeight(75)
-        self.label_5.setFont(font)
-        self.label_5.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label_5.setScaledContents(True)
-        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_5.setObjectName("label_5")
-        self.verticalLayout_2.addWidget(self.label_5)
+        self.lbl_EH.setFont(font)
+        self.lbl_EH.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.lbl_EH.setScaledContents(True)
+        self.lbl_EH.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbl_EH.setObjectName("lbl_EH")
+        self.verticalLayout_2.addWidget(self.lbl_EH)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.horizontalLayout_2.setSpacing(0)
@@ -372,9 +372,9 @@ class Ui_Form(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.HighlightedText, brush)
         self.line.setPalette(palette)
         self.line.setStyleSheet("gridline-color: rgb(197, 197, 197);\n"
-"selection-background-color: rgb(255, 255, 255);\n"
-"selection-color: rgb(255, 255, 255);\n"
-"background-color: rgb(255, 255, 255);")
+"selection-background-color: rgb(231, 234, 213);\n"
+"selection-color: rgb(231, 234, 213);\n"
+"background-color: rgb(231, 234, 213);")
         self.line.setFrameShadow(QtWidgets.QFrame.Raised)
         self.line.setLineWidth(0)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -584,7 +584,7 @@ class Ui_Form(object):
         font.setWeight(9)
         self.lbl_order.setFont(font)
         self.lbl_order.setStyleSheet("font: 75 80pt \"微软雅黑\";\n"
-"color: rgb(255, 255, 255);")
+"color: rgb(231, 234, 213);")
         self.lbl_order.setScaledContents(True)
         self.lbl_order.setAlignment(QtCore.Qt.AlignCenter)
         self.lbl_order.setObjectName("lbl_order")
@@ -697,7 +697,7 @@ class Ui_Form(object):
         font.setWeight(9)
         self.lbl_rank.setFont(font)
         self.lbl_rank.setStyleSheet("font: 75 50pt \"微软雅黑\";\n"
-"color: rgb(255, 255, 255);\n"
+"color: rgb(231, 234, 213);\n"
 "background-color: rgb(161, 36, 50);")
         self.lbl_rank.setScaledContents(False)
         self.lbl_rank.setAlignment(QtCore.Qt.AlignCenter)
@@ -878,7 +878,7 @@ class Ui_Form(object):
         self.label_7.setText(_translate("Form", "成绩\n"
 "Result"))
         self.lbl_result.setText(_translate("Form", "2.388"))
-        self.label_5.setText(_translate("Form", "E"))
+        self.lbl_EH.setText(_translate("Form", "E"))
         self.lbl_E.setText(_translate("Form", "00000"))
         self.lbl_E_rank.setText(_translate("Form", "(E)"))
         self.lbl_city.setText(_translate("Form", "山西"))

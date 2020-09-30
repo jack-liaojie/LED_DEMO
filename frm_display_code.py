@@ -72,7 +72,8 @@ class cod_display(QWidget,Ui_Form):
 			pass
 		finally:
 			#开启UDP监控线程
-			self.start_udp((self.udp_ip,int(self.udp_port)))
+			self.start_udp(("",int(self.udp_port)))
+			# self.start_udp((self.udp_ip,int(self.udp_port)))
 			self.showMaximized()
 
 	"""启动线程监听udp指令"""
@@ -81,7 +82,9 @@ class cod_display(QWidget,Ui_Form):
 
 		try:
 			server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许地址重用。
+			# server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)#允许地址重用。
+			server.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+
 			# server.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack("ii", 1, 0))
 			#如果要已经处于连接状态的soket在调用closesocket后强制关闭，不经TIME_WAIT的过程：
 
@@ -169,7 +172,7 @@ class cod_display(QWidget,Ui_Form):
 		re = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 		re.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)  # 广播式发送数据设置
 
-		addr = tuple('255.255.255.255', addr[1])
+		addr = ('255.255.255.255', addr[1])
 		re.sendto(args.encode('utf-8'), addr)
 		re.close()
 

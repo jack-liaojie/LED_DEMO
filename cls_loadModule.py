@@ -33,10 +33,16 @@ class mod_result(QWidget,b):
 		self.lbl_name.setText(str(args['data'][0][8]))#姓名
 		self.lbl_city.setText(str(args['data'][0][6]))#队名
 		self.lbl_horse.setText(str(args['data'][0][9]))#马名
-		self.lbl_E.setText(str(args['data'][0][13]))#E成绩
+		if str(args['result'])=="盛装舞步配对赛第一轮":
+			self.lbl_EH.setText("H")
+			self.lbl_E.setText(str(args['data'][0][14]))#E成绩
+			self.lbl_E_rank.setText(str(args['data'][0][19]))#E名次
+		else:
+			self.lbl_E.setText(str(args['data'][0][13]))#E成绩
+			self.lbl_E_rank.setText(str(args['data'][0][18]))#E名次
+
 		self.lbl_M.setText(str(args['data'][0][16]))#M成绩
 		self.lbl_C.setText(str(args['data'][0][15]))#C成绩
-		self.lbl_E_rank.setText(str(args['data'][0][18]))#E名次
 		self.lbl_M_rank.setText(str(args['data'][0][21]))#M名次
 		self.lbl_C_rank.setText(str(args['data'][0][20]))#C名次
 		self.lbl_result.setText(str(args['data'][0][23]))#当场成绩
@@ -568,7 +574,7 @@ class mod_medal(QWidget,h):
 
 			self.tbwgt_content.setRowCount(i + 1)#设置行数
 
-			item = QTableWidgetItem(str(self.register[row][10]))
+			item = QTableWidgetItem(str(self.register[row][1])+" / "+str(self.register[row][2]))
 			if self.register[row][0] == 1:
 				icon = QIcon(r'.\resource\g.png')
 			elif self.register[row][0] == 2:
